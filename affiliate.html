@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<link rel="stylesheet" href="ambrosia.css">
+</helmet>
+
+<div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased">
+
+  <div style="background:#2C1B15; padding:11px clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between">
+      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+      <div style="font-size:11px; letter-spacing:0.14em; color:#A9A096">QUALIFIED PURCHASERS ONLY &middot; 21+</div>
+    </div>
+  </div>
+
+  <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
+    <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
+      <div style="order:1; justify-self:start; display:flex; align-items:center; gap:clamp(18px,2.4vw,34px)">
+        <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}" style="display:flex; align-items:center; gap:11px; white-space:nowrap; cursor:pointer; padding:0">
+          <span style="display:flex; flex-direction:column; gap:5px; width:17px"><span style="height:1px; background:#241C19; display:block"></span><span style="height:1px; background:#241C19; display:block"></span></span>
+          <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19">MENU</span>
+        </button>
+        <div style="position:relative; display:flex">
+          <button type="button" onClick="{{ toggleStd }}" aria-expanded="{{ stdOpen }}" style="display:flex; align-items:center; gap:8px; padding:0; cursor:pointer; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">OUR STANDARDS <span style="{{ stdCaretStyle }}">&rsaquo;</span></button>
+          <sc-if value="{{ stdOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:268px; background:#F0E9DC; border:1px solid #D8C9B2; box-shadow:0 22px 44px -22px rgba(36,28,25,0.34); padding:8px 0; z-index:40">
+              <a href="standard.html" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">The Ambrosia Standard</a>
+              <a href="standard.html#coa" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">Certificates of Analysis</a>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <a href="index.html" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:28px; height:28px">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+        <span style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(19px,2.1vw,27px); letter-spacing:0.32em; color:#6B1F28; white-space:nowrap; padding-left:0.32em">AMBROSIA</span>
+      </a>
+
+      <div style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
+        <a href="#portal" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">AFFILIATE PORTAL</a>
+        <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">{{ cartLabel }}</a>
+      </div>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="border-top:1px solid #D8C9B2">
+      <div style="max-width:1440px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:clamp(25px,4vw,64px); padding:clamp(26px,3vw,40px) 0 clamp(28px,4vw,52px)">
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="ghk-cu.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GHK-Cu</a>
+            <a href="glp-2.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-2</a>
+            <a href="glp-3.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-3</a>
+            <a href="glow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Glow</a>
+            <a href="klow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Klow</a>
+            <a href="wolverine.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Wolverine</a>
+          </div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#6E6055; margin:14px 0 4px">RECONSTITUTION SUPPLY</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="bacteriostatic-water.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Bacteriostatic Water</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">YOUR BAG</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="cart.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Cart</a>
+            <a href="checkout.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Checkout</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="affiliate.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Affiliate Portal</a>
+            <a href="contact.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">SUPPORT &amp; LEGAL</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="faq.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
+            <a href="standard.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Shipping & Restrictions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+
+  <!-- ─── I. the invitation ────────────────────────────────── -->
+  <div style="width:100%; height:clamp(112px,25vw,360px); background:#E4D8C6; overflow:hidden">
+    <img src="collective-cards.png" alt="Ambrosia Collective cards, gold on deep burgundy, resting on marble" style="width:100%; height:100%; object-fit:cover; object-position:center 44%; display:block">
+  </div>
+
+  <div style="padding:clamp(33px,5vw,68px) clamp(20px,4vw,56px) clamp(44px,8vw,112px)">
+    <div style="max-width:780px; margin:0 auto; text-align:center">
+      <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(33px,6.8vw,84px); line-height:1.03; letter-spacing:-0.014em; color:#6B1F28; margin:0 auto; max-width:15ch; text-wrap:balance">The Ambrosia Affiliate Collective</h1>
+      <p style="font-family:'Instrument Serif', serif; font-size:clamp(21px,2.5vw,29px); line-height:1.32; color:#7A5622; margin:28px auto 0; max-width:26ch; text-wrap:balance">A select community of creators who align with Ambrosia</p>
+      <p style="font-size:17px; line-height:1.8; color:#3C312C; margin:30px auto 0; max-width:520px; text-wrap:pretty">We care about how Ambrosia is represented. We look for creators who bring intention to their work, understand their audience, and align naturally with the brand.</p>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:20px; margin-top:clamp(33px,5vw,64px)">
+        <a href="#apply" style="display:inline-flex; align-items:center; gap:14px; height:58px; padding:0 44px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">APPLY TO JOIN THE COLLECTIVE<span style="font-size:14px; letter-spacing:0">&rarr;</span></a>
+        <div style="font-size:13px; font-weight:600; letter-spacing:0.08em; color:#6B1F28">Membership by Application</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── II. the standard ─────────────────────────────────── -->
+  <div style="padding:clamp(47px,10vw,144px) clamp(20px,4vw,56px)">
+    <div style="max-width:1000px; margin:0 auto">
+      <div style="text-align:center; max-width:620px; margin:0 auto">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.26em; color:#7A5622">THE AMBROSIA STANDARD</div>
+        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(30px,4.6vw,58px); line-height:1.08; letter-spacing:-0.012em; color:#6B1F28; margin:30px 0 0">Content with intention.</h2>
+      </div>
+
+      <div class="g3" style="gap:clamp(30px,4.5vw,72px); margin-top:clamp(30px,5vw,66px)">
+        <div style="border-top:1px solid #D8C9B2; padding-top:26px">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:18px">01</div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.2em; color:#241C19; margin-bottom:14px">ALIGNMENT</div>
+          <p style="font-size:15px; line-height:1.8; color:#3C312C; margin:0; text-wrap:pretty">Your voice and approach feel right for Ambrosia.</p>
+        </div>
+        <div style="border-top:1px solid #D8C9B2; padding-top:26px">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:18px">02</div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.2em; color:#241C19; margin-bottom:14px">INTENTION</div>
+          <p style="font-size:15px; line-height:1.8; color:#3C312C; margin:0; text-wrap:pretty">You care about the quality of what you create and how you present it.</p>
+        </div>
+        <div style="border-top:1px solid #D8C9B2; padding-top:26px">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:18px">03</div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.2em; color:#241C19; margin-bottom:14px">INTEGRITY</div>
+          <p style="font-size:15px; line-height:1.8; color:#3C312C; margin:0; text-wrap:pretty">You represent partnerships clearly and follow Ambrosia&rsquo;s affiliate terms.</p>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:32px; margin-top:clamp(38px,7vw,100px)">
+        <p style="font-family:'Instrument Serif', serif; font-size:clamp(25px,3.4vw,42px); line-height:1.25; color:#6B1F28; margin:0; text-align:center">Are you aligned?</p>
+        <a href="#apply" style="display:inline-flex; align-items:center; gap:14px; height:58px; padding:0 44px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">APPLY TO JOIN THE COLLECTIVE<span style="font-size:14px; letter-spacing:0">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── III. the partnership ─────────────────────────────── -->
+  <div style="background:#3E1218; padding:clamp(47px,10vw,144px) clamp(20px,4vw,56px)">
+    <div style="max-width:1000px; margin:0 auto">
+      <div style="text-align:center; max-width:620px; margin:0 auto">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.26em; color:#C9A227">INSIDE THE COLLECTIVE</div>
+        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(30px,4.6vw,58px); line-height:1.08; letter-spacing:-0.012em; color:#F0E9DC; margin:30px 0 0">Built to reward performance.</h2>
+        <p style="font-family:'Instrument Serif', serif; font-size:clamp(20px,2.2vw,26px); line-height:1.35; color:#C9A227; margin:26px auto 0">Your audience. Your platform. Your upside.</p>
+        <p style="font-size:16px; line-height:1.8; color:#E0CFC0; margin:22px auto 0; max-width:500px; text-wrap:pretty">The Ambrosia Collective gives approved partners the tools and commission structure to turn influence into meaningful earnings.</p>
+      </div>
+
+      <div class="g2" style="gap:clamp(30px,4.5vw,64px) clamp(33px,6vw,96px); margin-top:clamp(38px,7vw,104px)">
+        <div style="border-top:1px solid #7A3A42; padding-top:26px">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:18px">01</div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.2em; color:#F0E9DC; margin-bottom:14px">PRIVATE PARTNER PORTAL</div>
+          <p style="font-size:15px; line-height:1.8; color:#E0CFC0; margin:0; text-wrap:pretty">Your personal affiliate link, performance tracking, and earnings in one place.</p>
+        </div>
+        <div style="border-top:1px solid #7A3A42; padding-top:26px">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:18px">02</div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.2em; color:#F0E9DC; margin-bottom:14px">PERFORMANCE-BASED COMMISSION</div>
+          <p style="font-size:15px; line-height:1.8; color:#E0CFC0; margin:0; text-wrap:pretty">Earn through competitive commissions on qualifying orders, with greater earning potential as your performance scales</p>
+        </div>
+        <div style="border-top:1px solid #7A3A42; padding-top:26px">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:18px">03</div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.2em; color:#F0E9DC; margin-bottom:14px">EARLY ACCESS</div>
+          <p style="font-size:15px; line-height:1.8; color:#E0CFC0; margin:0; text-wrap:pretty">Select launches, restocks, and partner opportunities shared with the Collective first.</p>
+        </div>
+        <div style="border-top:1px solid #7A3A42; padding-top:26px">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:18px">04</div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.2em; color:#F0E9DC; margin-bottom:14px">DIRECT PARTNERSHIP</div>
+          <p style="font-size:15px; line-height:1.8; color:#E0CFC0; margin:0; text-wrap:pretty">Work directly with Ambrosia. No third-party affiliate network between us.</p>
+        </div>
+      </div>
+
+      <p style="font-family:'Instrument Serif', serif; font-size:clamp(25px,3.4vw,42px); line-height:1.25; color:#C9A227; margin:clamp(38px,7vw,100px) auto 0; max-width:24ch; text-align:center; text-wrap:balance">The better you perform, the more you earn.</p>
+    </div>
+  </div>
+
+  <!-- ─── IV. the application ──────────────────────────────── -->
+  <div id="apply" style="padding:clamp(47px,10vw,144px) clamp(20px,4vw,56px)">
+    <div style="max-width:620px; margin:0 auto">
+
+      <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="text-align:center">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.26em; color:#7A5622">APPLICATION</div>
+          <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(30px,4.6vw,58px); line-height:1.08; letter-spacing:-0.012em; color:#6B1F28; margin:30px 0 0">Join the Ambrosia Collective</h2>
+          <p style="font-size:16.5px; line-height:1.8; color:#3C312C; margin:26px auto 0; max-width:440px; text-wrap:pretty">Tell us a little about yourself and your work. We review every application individually.</p>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:clamp(26px,3vw,32px); margin-top:clamp(36px,6vw,76px)">
+          <div>
+            <label for="af-name" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin-bottom:10px">YOUR NAME</label><div style="font-size:12.5px; line-height:1.6; color:#6E6055; margin:-4px 0 8px">First and last</div>
+            <input id="af-name" type="text" value="{{ name }}" onChange="{{ setName }}" style="width:100%; padding:12px 0; font-size:16px; color:#241C19; background:transparent; border:none; border-bottom:1px solid #D8C9B2; transition:border-color 300ms ease">
+          </div>
+          <div>
+            <label for="af-email" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin-bottom:10px">EMAIL</label><div style="font-size:12.5px; line-height:1.6; color:#6E6055; margin:-4px 0 8px">Where we should reach you</div>
+            <input id="af-email" type="email" value="{{ email }}" onChange="{{ setEmail }}" style="width:100%; padding:12px 0; font-size:16px; color:#241C19; background:transparent; border:none; border-bottom:1px solid #D8C9B2; transition:border-color 300ms ease">
+          </div>
+          <div>
+            <label for="af-platform" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin-bottom:10px">YOUR PLATFORM</label><div style="font-size:12.5px; line-height:1.6; color:#6E6055; margin:-4px 0 8px">Instagram, TikTok, YouTube, website, or other</div>
+            <input id="af-platform" type="text" value="{{ platform }}" onChange="{{ setPlatform }}" style="width:100%; padding:12px 0; font-size:16px; color:#241C19; background:transparent; border:none; border-bottom:1px solid #D8C9B2; transition:border-color 300ms ease">
+          </div>
+          <div>
+            <label for="af-handle" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin-bottom:10px">YOUR LINK</label><div style="font-size:12.5px; line-height:1.6; color:#6E6055; margin:-4px 0 8px">Your profile or website</div>
+            <input id="af-handle" type="text" value="{{ handle }}" onChange="{{ setHandle }}" style="width:100%; padding:12px 0; font-size:16px; color:#241C19; background:transparent; border:none; border-bottom:1px solid #D8C9B2; transition:border-color 300ms ease">
+          </div>
+          <div>
+            <label for="af-why" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin-bottom:10px">WHY AMBROSIA?</label><div style="font-size:12.5px; line-height:1.6; color:#6E6055; margin:-4px 0 8px">One or two sentences is enough.</div>
+            <textarea id="af-why" value="{{ why }}" onChange="{{ setWhy }}" rows="3" style="width:100%; padding:12px 0; font-size:16px; line-height:1.7; color:#241C19; background:transparent; border:none; border-bottom:1px solid #D8C9B2; resize:vertical; transition:border-color 300ms ease"></textarea>
+          </div>
+
+          <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:clamp(16px,2.5vw,26px)">
+            <button type="button" onClick="{{ submit }}" aria-disabled="{{ notReady }}" style="{{ submitStyle }}">SUBMIT APPLICATION<span style="font-size:14px; letter-spacing:0; margin-left:14px">&rarr;</span></button>
+            <sc-if value="{{ showError }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="font-size:13px; line-height:1.7; color:#6B1F28; text-align:center">{{ errorText }}</div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ showConfirm }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center; padding:clamp(24px,4vw,56px) 0">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:52px; height:52px; margin:0 auto; display:block">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.26em; color:#7A5622; margin-top:32px">APPLICATION RECEIVED</div>
+        <p style="font-family:'Instrument Serif', serif; font-size:clamp(26px,3.2vw,38px); line-height:1.28; color:#6B1F28; margin:26px auto 0; max-width:22ch; text-wrap:balance">We&rsquo;ll review your application and reach out if there&rsquo;s an alignment.</p>
+        <div style="font-family:Cinzel, serif; font-weight:600; font-size:14px; letter-spacing:0.32em; color:#7A5622; margin-top:40px; padding-left:0.32em">AMBROSIA</div>
+
+        <div style="display:flex; justify-content:center; margin-top:clamp(33px,5vw,60px)">
+          <a href="index.html" style="display:inline-flex; align-items:center; height:52px; padding:0 34px; border:1px solid #D8C9B2; color:#241C19; font-size:12px; font-weight:600; letter-spacing:0.18em; white-space:nowrap; transition:border-color 500ms cubic-bezier(.2,.6,.2,1), background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="border-color:#7A5622; background:#E4D8C6">RETURN TO AMBROSIA</a>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <!-- ─── footer ───────────────────────────────────────────── -->
+  <!-- ─── the portal ───────────────────────────────────────── -->
+  <div id="portal" style="background:#E4D8C6; border-top:1px solid #D8C9B2; padding:clamp(36px,6vw,80px) clamp(20px,4vw,56px)">
+    <div style="max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; gap:32px; align-items:center; justify-content:space-between">
+      <div style="max-width:640px">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; margin-bottom:14px">ALREADY A PARTNER</div>
+        <p style="font-family:'Instrument Serif', serif; font-size:clamp(26px,2.9vw,36px); line-height:1.24; color:#241C19; margin:0; text-wrap:pretty">Sign in to the Affiliate Portal for your link, your performance and your earnings.</p>
+      </div>
+      <a href="affiliate-portal.html" style="display:inline-flex; align-items:center; gap:14px; height:52px; padding:0 32px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">AFFILIATE PORTAL<span style="font-size:14px; letter-spacing:0">&rarr;</span></a>
+    </div>
+  </div>
+
+  <div style="background:#2C1B15; padding:clamp(38px,7vw,100px) clamp(20px,4vw,56px) 0">
+    <div style="max-width:1440px; margin:0 auto">
+      <div class="g4" style="gap:clamp(28px,4vw,56px); padding-bottom:clamp(36px,6vw,80px)">
+        <div>
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px">
+            <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:24px; height:24px">
+              <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#C9A227" stroke-width="2.6"></path>
+              <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#C9A227" stroke-width="2.6"></path>
+              <g stroke="#C9A227" stroke-width="3.4" fill="#2C1B15">
+                <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+                <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+                <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+              </g>
+              <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#2C1B15"></circle>
+            </svg>
+            <span style="font-family:Cinzel, serif; font-size:17px; letter-spacing:0.3em; color:#F0E9DC">AMBROSIA</span>
+          </div>
+          <p style="font-size:13.5px; line-height:1.7; color:#A9A096; margin:0; max-width:250px">Research materials, verified from source to seal.</p>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="index.html#catalogue" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">All compounds</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="affiliate.html" style="font-size:13.5px; color:#F0E9DC; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Affiliate Portal</a>
+            <a href="faq.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">FAQ</a>
+            <a href="contact.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">LEGAL</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="affiliate-agreement.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Affiliate Terms</a>
+            <a href="standard.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Shipping &amp; Restrictions</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; margin-bottom:16px">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+        <p style="font-size:12px; line-height:1.75; color:#A9A096; margin:0; max-width:900px">Ambrosia supplies research materials to qualified purchasers aged 21 or older for laboratory research only. Nothing sold here is a drug, a supplement, a cosmetic or a food, and none of it has been evaluated or approved by the FDA for any use. Participation in the Collective is governed by the Affiliate Terms.</p>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0 clamp(33px,5vw,64px); display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between">
+        <div style="font-size:12px; line-height:1.8; color:#A9A096; max-width:640px">
+          Ambrosia LLC, a Tennessee limited liability company<br>
+          Nashville, Tennessee &middot; info@ambrosiastandard.com<br>
+          Governed by the laws of the State of Tennessee, with exclusive venue in Davidson County, Tennessee.
+        </div>
+        <div style="font-size:12px; color:#A9A096">&copy; 2026 Ambrosia LLC</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;previewConfirmation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;State&quot;}}">
+class Component extends DCLogic {
+  static SUBMENUS = [
+    { label: 'Compounds', links: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' }
+    ] },
+    { label: 'Reconstitution Supply', links: [
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] }
+  ];
+
+  static GROUPS = [
+    { label: 'Catalogue', items: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] },
+    { label: 'Partners', items: [
+      { label: 'Become an Affiliate', href: 'affiliate.html' },
+      { label: 'Affiliate Portal', href: 'affiliate-portal.html' },
+      { label: 'FAQ', href: 'faq.html' },
+      { label: 'Contact', href: 'contact.html' }
+    ] },
+    { label: 'Legal', items: [
+      { label: 'Certificates of Analysis', href: 'standard.html' },
+      { label: 'Research Use Policy', href: 'research-use-policy.html' },
+      { label: 'Terms of Sale', href: 'terms-of-sale.html' },
+      { label: 'Privacy Policy', href: 'privacy-policy.html' },
+      { label: 'Shipping & Restrictions', href: 'shipping-restrictions.html' },
+      { label: 'Returns & Documentation', href: 'returns-documentation.html' }
+    ] }
+  ];
+  state = { menuOpen: false, openGroup: null, openSub: null, name: '', email: '', platform: '', handle: '', why: '', sent: false, tried: false };
+
+  field(key) {
+    return e => this.setState({ [key]: e.target.value });
+  }
+
+  scrollToHash() {
+    const raw = (location.hash || '').slice(1);
+    if (!raw) return;
+    let id;
+    try { id = decodeURIComponent(raw); } catch (e) { id = raw; }
+    let tries = 0;
+    const tick = () => {
+      const el = document.getElementById(id);
+      if (el) { window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 16 }); return; }
+      if (tries++ < 90) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  cartCount() {
+    const CS = window.AmbrosiaCart;
+    return CS ? CS.count() : 0;
+  }
+
+  componentDidMount() {
+    this.scrollToHash();
+    if (!window.AmbrosiaCart) {
+      const s = document.createElement('script');
+      s.src = 'cart-store.js';
+      s.onload = () => this.forceUpdate();
+      document.head.appendChild(s);
+    } else {
+      this._off = window.AmbrosiaCart.on(() => this.forceUpdate());
+    }
+  }
+
+  componentWillUnmount() { if (this._off) this._off(); }
+
+  renderVals() {
+    const s = this.state;
+    const missing = [];
+    if (!s.name.trim()) missing.push('your name');
+    if (!s.email.trim()) missing.push('email');
+    if (!s.handle.trim()) missing.push('your link');
+    const ready = missing.length === 0;
+    const sent = this.props.previewConfirmation ? true : s.sent;
+    return {
+      cartLabel: 'CART (' + this.cartCount() + ')',
+      menuOpen: this.state.menuOpen,
+      stdOpen: !!this.state.stdOpen,
+      toggleStd: () => this.setState(p => ({ stdOpen: !p.stdOpen, menuOpen: false })),
+      closeStd: () => this.setState({ stdOpen: false }),
+      stdCaretStyle: 'font-size:15px; line-height:1; color:#7A5622; display:inline-block;'
+        + ' transition:transform 340ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+        + (this.state.stdOpen ? '90deg' : '0deg') + ')',
+      toggleMenu: () => this.setState(p => ({ menuOpen: !p.menuOpen, openGroup: null })),
+      menuGroups: Component.GROUPS.map((g, i) => ({
+        label: g.label,
+        items: g.items.map(it => {
+          const _close = () => this.setState({ menuOpen: false, openGroup: null, openSub: null });
+          const k = it.sub;
+          const hasSubs = typeof k === 'number';
+          return {
+            label: it.label,
+            href: it.href || '#',
+            close: _close,
+            isLink: !hasSubs,
+            hasSubs,
+            open: hasSubs && this.state.openSub === k,
+            toggle: () => this.setState(p => ({ openSub: p.openSub === k ? null : k })),
+            links: hasSubs ? Component.SUBMENUS[k].links.map(l => ({ label: l.label, href: l.href, close: _close })) : [],
+            caretStyle: 'font-size:18px; line-height:1; color:#7A5622; display:inline-block;'
+              + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+              + (hasSubs && this.state.openSub === k ? '90deg' : '0deg') + ')'
+          };
+        }),
+        open: this.state.openGroup === i,
+        toggle: () => this.setState(p => ({ openGroup: p.openGroup === i ? null : i })),
+        caretStyle: 'font-size:26px; line-height:1; color:#7A5622; display:inline-block;'
+          + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+          + (this.state.openGroup === i ? '90deg' : '0deg') + ')'
+      })),
+      showForm: !sent,
+      showConfirm: sent,
+      name: s.name, email: s.email, platform: s.platform, handle: s.handle, why: s.why,
+      setName: this.field('name'),
+      setEmail: this.field('email'),
+      setPlatform: this.field('platform'),
+      setHandle: this.field('handle'),
+      setWhy: this.field('why'),
+      notReady: !ready,
+      showError: s.tried && !ready,
+      errorText: 'Still needed: ' + missing.join(', ') + '.',
+      submitStyle: 'display:inline-flex; align-items:center; justify-content:center; height:58px;'
+        + ' padding:0 44px; font-size:12px; font-weight:600; letter-spacing:0.2em;'
+        + ' color:#F0E9DC'
+        + '; background:' + (ready ? '#C9A227' : '#6E6055')
+        + '; cursor:pointer; transition:background-color 350ms ease',
+      submit: () => { if (ready) this.setState({ sent: true, tried: false }); else this.setState({ tried: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

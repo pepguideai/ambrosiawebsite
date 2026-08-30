@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<link rel="stylesheet" href="ambrosia.css">
+</helmet>
+
+<div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased">
+
+  <div style="background:#2C1B15; padding:11px clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between">
+      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+      <div style="font-size:11px; letter-spacing:0.14em; color:#A9A096">QUALIFIED PURCHASERS ONLY &middot; 21+</div>
+    </div>
+  </div>
+
+  <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
+    <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
+      <div style="order:1; justify-self:start; display:flex; align-items:center; gap:clamp(18px,2.4vw,34px)">
+        <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}" style="display:flex; align-items:center; gap:11px; white-space:nowrap; cursor:pointer; padding:0">
+          <span style="display:flex; flex-direction:column; gap:5px; width:17px"><span style="height:1px; background:#241C19; display:block"></span><span style="height:1px; background:#241C19; display:block"></span></span>
+          <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19">MENU</span>
+        </button>
+        <div style="position:relative; display:flex">
+          <button type="button" onClick="{{ toggleStd }}" aria-expanded="{{ stdOpen }}" style="display:flex; align-items:center; gap:8px; padding:0; cursor:pointer; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">OUR STANDARDS <span style="{{ stdCaretStyle }}">&rsaquo;</span></button>
+          <sc-if value="{{ stdOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:268px; background:#F0E9DC; border:1px solid #D8C9B2; box-shadow:0 22px 44px -22px rgba(36,28,25,0.34); padding:8px 0; z-index:40">
+              <a href="standard.html" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">The Ambrosia Standard</a>
+              <a href="standard.html#coa" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">Certificates of Analysis</a>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <a href="index.html" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:28px; height:28px">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+        <span style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(19px,2.1vw,27px); letter-spacing:0.32em; color:#6B1F28; white-space:nowrap; padding-left:0.32em">AMBROSIA</span>
+      </a>
+
+      <div style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
+        <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CART ({{ cartCount }})</a>
+      </div>
+    </div>
+
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="border-top:1px solid #D8C9B2">
+      <div style="max-width:1440px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:clamp(25px,4vw,64px); padding:clamp(26px,3vw,40px) 0 clamp(28px,4vw,52px)">
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="ghk-cu.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GHK-Cu</a>
+            <a href="glp-2.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-2</a>
+            <a href="glp-3.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-3</a>
+            <a href="glow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Glow</a>
+            <a href="klow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Klow</a>
+            <a href="wolverine.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Wolverine</a>
+          </div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#6E6055; margin:14px 0 4px">RECONSTITUTION SUPPLY</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="bacteriostatic-water.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Bacteriostatic Water</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">YOUR BAG</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="cart.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Cart</a>
+            <a href="checkout.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Checkout</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="affiliate.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Affiliate Portal</a>
+            <a href="contact.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">SUPPORT &amp; LEGAL</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="faq.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
+            <a href="standard.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Shipping & Restrictions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+
+  <!-- ─── breadcrumb ───────────────────────────────────────── -->
+  <div style="padding:clamp(24px,3vw,36px) clamp(20px,4vw,56px) 0">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6E6055">
+      <a href="index.html" style="transition:color 350ms ease" style-hover="color:#241C19">CATALOGUE</a>
+      <span style="color:#A9A096">&rsaquo;</span>
+      <span style="color:#241C19">GLP-2</span>
+    </div>
+  </div>
+
+  <!-- ─── product ──────────────────────────────────────────── -->
+  <div style="padding:clamp(28px,4vw,52px) clamp(20px,4vw,56px) clamp(45px,9vw,128px)">
+    <div class="split" style="max-width:1440px; margin:0 auto; gap:clamp(33px,5vw,88px); align-items:start">
+
+      <div class="stick">
+        <div style="aspect-ratio:5/8; background:#E4D8C6; overflow:hidden; max-width:560px">
+          <img src="vial-glp-2.png" alt="GLP-2 vial on a textured plinth set in sand, in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+        </div>
+      </div>
+
+      <div style="max-width:560px; padding-top:clamp(0px,1vw,16px)">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">RESEARCH PEPTIDE</div>
+        <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,5.4vw,68px); line-height:1.02; letter-spacing:-0.012em; color:#6B1F28; margin:22px 0 0">GLP-2</h1>
+        <div style="font-size:15px; line-height:1.7; color:#3C312C; margin-top:16px">10, 20 or 30 MG per vial</div>
+
+        <div style="display:flex; gap:14px; align-items:baseline; margin-top:clamp(25px,3.5vw,40px)">
+          <div style="font-family:'Instrument Serif', serif; font-size:clamp(28px,3.6vw,44px); line-height:1; color:#241C19">{{ rangeLabel }}</div>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</div>
+        </div>
+
+        <div style="height:1px; background:#D8C9B2; margin:clamp(25px,3.5vw,40px) 0"></div>
+
+        <sc-if value="{{ multiSize }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin-bottom:14px">SIZE</div>
+          <div style="display:flex; flex-wrap:wrap; gap:10px">
+            <sc-for list="{{ sizes }}" as="opt" hint-placeholder-count="1">
+              <button type="button" onClick="{{ opt.select }}" aria-pressed="{{ opt.active }}" style="{{ opt.style }}">{{ opt.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:12px 18px; margin-top:clamp(20px,2.4vw,26px); padding-top:20px; border-top:1px solid #D8C9B2">
+          <div style="font-family:'Instrument Serif', serif; font-size:clamp(25px,3vw,36px); line-height:1; color:#241C19">{{ priceLabel }}</div>
+          <sc-if value="{{ priceDiscounted }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:15px; line-height:1.6; color:#6E6055; text-decoration:line-through">{{ priceGrossLabel }}</div>
+          </sc-if>
+          <div style="font-size:13px; line-height:1.6; color:#6E6055">{{ selectedLabel }}</div>
+        </div>
+
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin:clamp(24px,3vw,32px) 0 14px">QUANTITY</div>
+        <div style="display:inline-flex; align-items:center; border:1px solid #D8C9B2">
+          <button type="button" onClick="{{ dec }}" aria-label="Decrease quantity" style="width:52px; height:52px; font-size:19px; color:#241C19; cursor:pointer; transition:background-color 300ms ease" style-hover="background:#E4D8C6">&minus;</button>
+          <div aria-live="polite" style="min-width:52px; text-align:center; font-size:16px; color:#241C19">{{ qty }}</div>
+          <button type="button" onClick="{{ inc }}" aria-label="Increase quantity" style="width:52px; height:52px; font-size:19px; color:#241C19; cursor:pointer; transition:background-color 300ms ease" style-hover="background:#E4D8C6">+</button>
+        </div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin:clamp(22px,2.6vw,28px) 0 14px">QUICK QUANTITY</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(92px, 1fr)); gap:10px; padding-top:9px">
+          <sc-for list="{{ quickQty }}" as="q" hint-placeholder-count="5">
+            <button type="button" onClick="{{ q.select }}" aria-pressed="{{ q.active }}" style="{{ q.style }}">
+              <sc-if value="{{ q.hasBadge }}" hint-placeholder-val="{{ true }}">
+                <span style="{{ q.badgeStyle }}">{{ q.badge }}</span>
+              </sc-if>
+              <span style="display:flex; align-items:center; justify-content:center; height:34px">
+                <sc-for list="{{ q.thumbs }}" as="th" hint-placeholder-count="0">
+                  <span aria-hidden="true" style="{{ th.style }}"></span>
+                </sc-for>
+              </span>
+              <span style="font-size:13px; line-height:1.2; color:#241C19; white-space:nowrap">{{ q.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px; margin-top:14px; max-width:46ch">
+          <span style="font-size:13px; line-height:1.7; color:#3C312C">{{ tierHint }}</span>
+          <sc-if value="{{ tierHintSaving }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6B1F28; white-space:nowrap">{{ tierHintLabel }}</span>
+          </sc-if>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:clamp(25px,3.5vw,40px)">
+          <button type="button" onClick="{{ addToCart }}" style="display:inline-flex; align-items:center; justify-content:center; height:58px; padding:0 44px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; cursor:pointer; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218">{{ cartLabel }}</button>
+          <a href="#coa" style="display:flex; align-items:center; justify-content:center; height:56px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#5E4119; color:#F0E9DC">COA / HPLC / MS</a>
+        </div>
+
+        <div style="{{ waterCardStyle }}">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px">
+            <div style="width:9px; height:9px; border:1px solid #C9A227; background:#C9A227"></div>
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">{{ waterKicker }}</div>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:20px 28px">
+            <a href="bacteriostatic-water.html" aria-label="Bacteriostatic Water, 10 mL vial" style="flex:0 0 auto; width:74px; aspect-ratio:5/8; background:#F0E9DC url(vial-bac-water.png) center / cover no-repeat"></a>
+            <div style="flex:1 1 240px; display:flex; flex-direction:column; gap:8px; min-width:0">
+              <a href="bacteriostatic-water.html" style="font-family:'Instrument Serif', serif; font-size:25px; line-height:1.12; color:#241C19; transition:color 350ms ease" style-hover="color:#6B1F28">Bacteriostatic Water &middot; 10 mL</a>
+              <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; max-width:44ch; text-wrap:pretty">{{ waterPitch }}</p>
+              <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 16px; padding-top:2px">
+                <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1; color:#241C19">$20.00</div>
+                <div style="font-size:12px; letter-spacing:0.04em; color:#6E6055">Sold separately</div>
+              </div>
+            </div>
+            <button type="button" onClick="{{ addWater }}" style="{{ waterBtnStyle }}">{{ waterLabel }}</button>
+          </div>
+        </div>
+
+        <a href="faq.html#why-blue" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; margin-top:12px; padding:16px 18px; border:1px solid #D8C9B2; background:transparent; transition:border-color 380ms cubic-bezier(.2,.6,.2,1), background-color 380ms cubic-bezier(.2,.6,.2,1)" style-hover="border-color:#6B1F28; background:#E4D8C6">
+          <span style="display:flex; align-items:center; gap:12px; min-width:0">
+            <span style="flex:0 0 auto; width:11px; height:11px; border-radius:50%; background:#2E5C8A; box-shadow:0 0 0 3px rgba(46,92,138,0.18)"></span>
+            <span style="font-size:13.5px; line-height:1.6; color:#3C312C">Two compounds in the catalogue are blue. Why?</span>
+          </span>
+          <span style="display:flex; align-items:center; gap:10px; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; white-space:nowrap">READ THE ANSWER <span style="font-size:13px; letter-spacing:0">&rarr;</span></span>
+        </a>
+
+        <!-- specification -->
+        <div style="margin-top:clamp(33px,5.5vw,72px)">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; padding-bottom:18px; border-bottom:1px solid #241C19">SPECIFICATION</div>
+          <sc-for list="{{ specs }}" as="row" hint-placeholder-count="7">
+            <div style="display:flex; flex-wrap:wrap; gap:8px 24px; justify-content:space-between; padding:16px 2px; border-bottom:1px solid #D8C9B2">
+              <div style="font-size:12px; font-weight:600; letter-spacing:0.14em; color:#6E6055; flex:0 0 auto">{{ row.k }}</div>
+              <div style="{{ row.valueStyle }}">{{ row.v }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- intended use -->
+        <div style="margin-top:clamp(33px,5.5vw,72px)">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; padding-bottom:18px; border-bottom:1px solid #241C19">INTENDED USE</div>
+          <p style="font-size:15px; line-height:1.8; color:#3C312C; margin:20px 0 0; text-wrap:pretty">GLP-2 is a synthetic peptide research reagent supplied as a lyophilised powder, strictly for in-vitro laboratory research, testing and analytical work. It is not intended for human or animal administration, and it must not be used for diagnostic, therapeutic or clinical purposes. Ambrosia makes no claim regarding safety, efficacy or suitability for any such use.</p>
+        </div>
+
+        <!-- storage and handling -->
+        <div style="margin-top:clamp(33px,5vw,64px)">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; padding-bottom:18px; border-bottom:1px solid #241C19">STORAGE &amp; HANDLING</div>
+          <div style="display:flex; flex-direction:column">
+            <div style="display:flex; gap:18px; padding:17px 2px; border-bottom:1px solid #D8C9B2">
+              <div style="flex:0 0 auto; width:9px; height:9px; margin-top:7px; border:1px solid #C9A227; background:#C9A227"></div>
+              <div style="font-size:14.5px; line-height:1.7; color:#3C312C">Store the lyophilised powder at &minus;20&nbsp;&deg;C</div>
+            </div>
+            <div style="display:flex; gap:18px; padding:17px 2px; border-bottom:1px solid #D8C9B2">
+              <div style="flex:0 0 auto; width:9px; height:9px; margin-top:7px; border:1px solid #C9A227; background:#C9A227"></div>
+              <div style="font-size:14.5px; line-height:1.7; color:#3C312C">Once reconstituted for laboratory analysis, store at 2&ndash;8&nbsp;&deg;C</div>
+            </div>
+            <div style="display:flex; gap:18px; padding:17px 2px; border-bottom:1px solid #D8C9B2">
+              <div style="flex:0 0 auto; width:9px; height:9px; margin-top:7px; border:1px solid #C9A227; background:#C9A227"></div>
+              <div style="font-size:14.5px; line-height:1.7; color:#3C312C">Avoid repeated freeze and thaw cycles</div>
+            </div>
+            <div style="display:flex; gap:18px; padding:17px 2px; border-bottom:1px solid #D8C9B2">
+              <div style="flex:0 0 auto; width:9px; height:9px; margin-top:7px; border:1px solid #C9A227; background:#C9A227"></div>
+              <div style="font-size:14.5px; line-height:1.7; color:#3C312C">Maintain aseptic technique throughout handling</div>
+            </div>
+          </div>
+          <div style="font-size:13px; line-height:1.7; color:#3C312C; padding-top:16px">Sealed vials carry 24 months from the date of manufacture when held at &minus;20&nbsp;&deg;C. Once reconstituted, hold at 2&ndash;8&nbsp;&deg;C and use within 28 days.</div>
+        </div>
+
+        <!-- why ambrosia -->
+        <div style="margin-top:clamp(33px,5vw,64px)">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; padding-bottom:18px; border-bottom:1px solid #241C19">WHY AMBROSIA?</div>
+          <div class="g2" style="gap:clamp(20px,2.4vw,30px); padding-top:26px">
+            <div style="display:flex; flex-direction:column; gap:9px">
+              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Quality-controlled production</div>
+              <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Synthesis, fill and seal run to a written specification, with production records held against every lot.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:9px">
+              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Third-party tested</div>
+              <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Identity and purity are confirmed by an independent laboratory before a lot is released.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:9px">
+              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Secure order processing</div>
+              <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Payment is handled off our servers and order records are kept to what an audit would require.</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:9px">
+              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Fast, tracked shipping</div>
+              <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Orders leave the bench the same or next business day, with tracking issued on despatch.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- certificate of analysis -->
+        <div id="coa" style="scroll-margin-top:24px; margin-top:clamp(33px,5vw,64px); border:1px solid #D8C9B2; padding:clamp(26px,3.4vw,38px)">
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px">
+            <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:22px; height:22px; flex:0 0 auto">
+              <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="3"></path>
+              <circle cx="50" cy="50" r="5" stroke="#7A5622" stroke-width="4" fill="#F0E9DC"></circle>
+            </svg>
+            <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">CERTIFICATE OF ANALYSIS</div>
+          </div>
+          <p style="font-size:15px; line-height:1.8; color:#3C312C; margin:0 0 20px; text-wrap:pretty">Every lot is independently tested and its certificate of analysis published against the lot number printed on the vial. Identity, purity and lot documentation are confirmed before a lot is released.</p>
+          <p style="font-size:14px; line-height:1.75; color:#6B1F28; margin:0">Certificates for GLP-2 will be published on receipt of our first lot.</p>
+        </div>
+
+        <!-- research use -->
+        <div style="margin-top:clamp(25px,3.5vw,40px); background:#E4D8C6; padding:clamp(26px,3.4vw,38px)">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#6B1F28; margin-bottom:16px">FOR RESEARCH USE ONLY</div>
+          <p style="font-size:14px; line-height:1.8; color:#3C312C; margin:0; text-wrap:pretty">This material is supplied to qualified purchasers for laboratory research only. It is not a drug, a supplement, a cosmetic or a food, and it has not been evaluated or approved by the FDA for any use. It is not intended for human or veterinary consumption, diagnosis, treatment or prevention of any condition. Purchasers are responsible for handling it in accordance with applicable law and their own institutional requirements.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── footer ───────────────────────────────────────────── -->
+
+  <sc-if value="{{ tierModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:84; background:rgba(36,28,25,0.58); display:flex; align-items:center; justify-content:center; padding:24px">
+      <div role="dialog" aria-modal="true" aria-label="Add another vial and save" style="background:#F0E9DC; max-width:600px; width:100%; max-height:88vh; overflow:auto; padding:clamp(25px,4vw,44px); box-shadow:0 40px 90px -30px rgba(20,10,8,0.6)">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.22em; color:#7A5622">ADDED TO CART &middot; MORE VIALS, LOWER PRICE</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:clamp(26px,3vw,34px); line-height:1.15; color:#241C19; margin-top:14px">{{ tierHeadline }}</div>
+        <p style="font-size:14.5px; line-height:1.7; color:#3C312C; margin:16px 0 0; text-wrap:pretty">{{ tierBody }}</p>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:26px">
+          <sc-for list="{{ tierOffers }}" as="t" hint-placeholder-count="2">
+            <button type="button" onClick="{{ t.take }}" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; width:100%; padding:20px 22px; border:1px solid #D8C9B2; background:#E4D8C6; cursor:pointer; text-align:left; transition:border-color 340ms cubic-bezier(.2,.6,.2,1), background-color 340ms cubic-bezier(.2,.6,.2,1)" style-hover="border-color:#6B1F28; background:#DCCDB6">
+              <span style="display:flex; flex-direction:column; gap:5px; min-width:0">
+                <span style="font-family:'Instrument Serif', serif; font-size:20px; line-height:1.2; color:#241C19">{{ t.headline }}</span>
+                <span style="font-size:12px; letter-spacing:0.04em; color:#6E6055">{{ t.detail }}</span>
+              </span>
+              <span style="display:flex; flex-direction:column; gap:5px; align-items:flex-end; white-space:nowrap">
+                <span style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">{{ t.priceLabel }}</span>
+                <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6B1F28">{{ t.saveLabel }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:22px">
+          <button type="button" onClick="{{ tierSkip }}" style="flex:1 1 200px; display:inline-flex; align-items:center; justify-content:center; height:54px; padding:0 26px; border:1px solid #241C19; background:transparent; color:#241C19; font-family:Archivo, sans-serif; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; transition:background-color 380ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#241C19; color:#F0E9DC">{{ tierKeepLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ bulkModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:82; background:rgba(36,28,25,0.58); display:flex; align-items:center; justify-content:center; padding:24px">
+      <div role="dialog" aria-modal="true" aria-label="Buy in bulk and save" style="background:#F0E9DC; max-width:620px; width:100%; max-height:88vh; overflow:auto; padding:clamp(25px,4vw,44px); box-shadow:0 40px 90px -30px rgba(20,10,8,0.6)">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.22em; color:#7A5622">ADDED TO CART &middot; A LARGER FORMAT COSTS LESS</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:clamp(26px,3vw,34px); line-height:1.15; color:#241C19; margin-top:14px">{{ bulkHeadline }}</div>
+        <p style="font-size:14.5px; line-height:1.7; color:#3C312C; margin:16px 0 0; text-wrap:pretty">You selected {{ bulkCurrentLabel }}. The same material in a larger format works out cheaper per milligram, and ships as one lot with one certificate.</p>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:26px">
+          <sc-for list="{{ bulkOffers }}" as="o" hint-placeholder-count="2">
+            <button type="button" onClick="{{ o.take }}" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; width:100%; padding:20px 22px; border:1px solid #D8C9B2; background:#E4D8C6; cursor:pointer; text-align:left; transition:border-color 340ms cubic-bezier(.2,.6,.2,1), background-color 340ms cubic-bezier(.2,.6,.2,1)" style-hover="border-color:#6B1F28; background:#DCCDB6">
+              <span style="display:flex; flex-direction:column; gap:5px; min-width:0">
+                <span style="font-family:'Instrument Serif', serif; font-size:20px; line-height:1.2; color:#241C19">{{ o.headline }}</span>
+                <span style="font-size:12px; letter-spacing:0.04em; color:#6E6055">Instead of {{ o.wasLabel }} bought singly</span>
+              </span>
+              <span style="display:flex; flex-direction:column; gap:5px; align-items:flex-end; white-space:nowrap">
+                <span style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">{{ o.priceLabel }}</span>
+                <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6B1F28">{{ o.saveLabel }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:22px">
+          <button type="button" onClick="{{ bulkKeep }}" style="flex:1 1 200px; display:inline-flex; align-items:center; justify-content:center; height:54px; padding:0 26px; border:1px solid #241C19; background:transparent; color:#241C19; font-family:Archivo, sans-serif; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; transition:background-color 380ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#241C19; color:#F0E9DC">KEEP MY SELECTION</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ waterModal }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; z-index:80; background:rgba(36,28,25,0.58); display:flex; align-items:center; justify-content:center; padding:24px">
+      <div role="dialog" aria-modal="true" aria-label="Add bacteriostatic water" style="background:#F0E9DC; max-width:560px; width:100%; padding:clamp(25px,4vw,44px); box-shadow:0 40px 90px -30px rgba(20,10,8,0.6)">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.22em; color:#7A5622">ADDED TO CART &middot; ONE THING LEFT</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:clamp(26px,3vw,34px); line-height:1.15; color:#241C19; margin-top:14px">Will your research need bacteriostatic water?</div>
+        <p style="font-size:14.5px; line-height:1.7; color:#3C312C; margin:16px 0 0; text-wrap:pretty">Every vial ships lyophilised. Bacteriostatic water is what brings the material into solution, and it is not included with any vial. 10 mL vial &middot; $20.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:26px">
+          <button type="button" onClick="{{ modalAddWater }}" style="flex:1 1 240px; display:inline-flex; align-items:center; justify-content:center; height:56px; padding:0 28px; background:#6B1F28; color:#F0E9DC; font-family:Archivo, sans-serif; font-size:11px; font-weight:600; letter-spacing:0.16em; border:1px solid #6B1F28; cursor:pointer; transition:background-color 380ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36; color:#F0E9DC">ADD BACTERIOSTATIC WATER &middot; $20</button>
+          <button type="button" onClick="{{ modalClose }}" style="flex:1 1 150px; display:inline-flex; align-items:center; justify-content:center; height:56px; padding:0 24px; border:1px solid #241C19; background:transparent; color:#241C19; font-family:Archivo, sans-serif; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; transition:background-color 380ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#241C19; color:#F0E9DC">NO THANKS</button>
+        </div>
+        <div style="margin-top:18px">
+          <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; transition:color 350ms ease" style-hover="color:#3E1218">GO TO CART &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="background:#2C1B15; padding:clamp(38px,7vw,100px) clamp(20px,4vw,56px) 0">
+    <div style="max-width:1440px; margin:0 auto">
+      <div class="g4" style="gap:clamp(28px,4vw,56px); padding-bottom:clamp(36px,6vw,80px)">
+        <div>
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px">
+            <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:24px; height:24px">
+              <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#C9A227" stroke-width="2.6"></path>
+              <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#C9A227" stroke-width="2.6"></path>
+              <g stroke="#C9A227" stroke-width="3.4" fill="#2C1B15">
+                <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+                <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+                <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+              </g>
+              <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#2C1B15"></circle>
+            </svg>
+            <span style="font-family:Cinzel, serif; font-size:17px; letter-spacing:0.3em; color:#F0E9DC">AMBROSIA</span>
+          </div>
+          <p style="font-size:13.5px; line-height:1.7; color:#A9A096; margin:0; max-width:250px">Research materials, verified from source to seal.</p>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="index.html#catalogue" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">All compounds</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="affiliate.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Affiliate Portal</a>
+            <a href="faq.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">FAQ</a>
+            <a href="contact.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">LEGAL</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="standard.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Shipping &amp; Restrictions</a>
+            <a href="returns-documentation.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Returns &amp; Documentation</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; margin-bottom:16px">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+        <p style="font-size:12px; line-height:1.75; color:#A9A096; margin:0; max-width:900px">Ambrosia supplies research materials to qualified purchasers aged 21 or older for laboratory research only. Nothing sold here is a drug, a supplement, a cosmetic or a food, and none of it has been evaluated or approved by the FDA for any use.</p>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0 clamp(33px,5vw,64px); display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between">
+        <div style="font-size:12px; line-height:1.8; color:#A9A096; max-width:640px">
+          Ambrosia LLC, a Tennessee limited liability company<br>
+          Nashville, Tennessee &middot; info@ambrosiastandard.com<br>
+          Governed by the laws of the State of Tennessee, with exclusive venue in Davidson County, Tennessee.
+        </div>
+        <div style="font-size:12px; color:#A9A096">&copy; 2026 Ambrosia LLC</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+class Component extends DCLogic {
+  state = { menuOpen: false, openGroup: null, openSub: null, size: 0, qty: 1, cart: 0, added: false };
+
+  static SUBMENUS = [
+    { label: 'Compounds', links: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' }
+    ] },
+    { label: 'Reconstitution Supply', links: [
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] }
+  ];
+
+  static GROUPS = [
+    { label: 'Catalogue', items: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] },
+    { label: 'Partners', items: [
+      { label: 'Become an Affiliate', href: 'affiliate.html' },
+      { label: 'Affiliate Portal', href: 'affiliate-portal.html' },
+      { label: 'FAQ', href: 'faq.html' },
+      { label: 'Contact', href: 'contact.html' }
+    ] },
+    { label: 'Legal', items: [
+      { label: 'Certificates of Analysis', href: 'standard.html' },
+      { label: 'Research Use Policy', href: 'research-use-policy.html' },
+      { label: 'Terms of Sale', href: 'terms-of-sale.html' },
+      { label: 'Privacy Policy', href: 'privacy-policy.html' },
+      { label: 'Shipping & Restrictions', href: 'shipping-restrictions.html' },
+      { label: 'Returns & Documentation', href: 'returns-documentation.html' }
+    ] }
+  ];
+
+  static PAGE_SLUG = 'glp';
+  static VIAL_IMG = 'vial-glp-2.png';
+  static CART_ID = 'glp-2';
+
+  static money(n) {
+    return '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  static rangeLabel() {
+    const ps = (this.SIZES || []).map(s => s.price).filter(p => typeof p === 'number');
+    if (!ps.length) return this.PRICE_LABEL;
+    const lo = Math.min.apply(null, ps), hi = Math.max.apply(null, ps);
+    return lo === hi ? this.money(lo) : this.money(lo) + ' \u2013 ' + this.money(hi);
+  }
+
+  static parseSizes() {
+    const vials = [], kits = [];
+    (this.SIZES || []).forEach((o, i) => {
+      const lbl = o.label || '';
+      const v = /^(\d+)\s*MG$/i.exec(lbl);
+      const k = /^(\d+)\s*MG Full Kit \((\d+) Vials\)$/i.exec(lbl);
+      if (v) vials.push({ i: i, mg: +v[1], price: o.price, id: o.id, label: lbl });
+      else if (k) kits.push({ i: i, mg: +k[1], count: +k[2], price: o.price, id: o.id, label: lbl });
+    });
+    return { vials: vials, kits: kits };
+  }
+
+  static bulkOffers(sizeIndex) {
+    const parsed = this.parseSizes(), vials = parsed.vials, kits = parsed.kits;
+    let cur = null;
+    for (let n = 0; n < vials.length; n++) if (vials[n].i === sizeIndex) cur = vials[n];
+    if (!cur || typeof cur.price !== 'number' || !cur.price) return [];
+    const out = [];
+    for (let n = 0; n < kits.length; n++) {
+      const k = kits[n];
+      if (k.mg !== cur.mg || typeof k.price !== 'number') continue;
+      const each = cur.price * k.count;
+      if (each > k.price) out.push({ id: k.id, label: k.label,
+        headline: k.count + ' vials of ' + cur.mg + ' MG', price: k.price, was: each, save: each - k.price });
+    }
+    let best = null;
+    for (let n = 0; n < vials.length; n++) {
+      const v = vials[n];
+      if (v.mg <= cur.mg || typeof v.price !== 'number') continue;
+      const mult = v.mg / cur.mg;
+      if (mult !== Math.round(mult)) continue;
+      const each = cur.price * mult;
+      if (each <= v.price) continue;
+      const save = each - v.price;
+      if (!best || save > best.save) best = { id: v.id, label: v.label,
+        headline: 'One ' + v.mg + ' MG vial', price: v.price, was: each, save: save };
+    }
+    if (best) out.push(best);
+    return out;
+  }
+
+  static PRICE_LABEL = '$70';
+  static SIZES = [
+    { label: '10 MG', price: 70,  id: 'glp-2' },
+    { label: '20 MG', price: 120, id: 'glp-2-20' },
+    { label: '30 MG', price: 160, id: 'glp-2-30' }
+  ];
+
+  static SPECS = [
+    { k: 'MASS PER VIAL', v: '10, 20 or 30 MG per vial' },
+    { k: 'PURITY', v: '\u226599%, HPLC certified' },
+    { k: 'PHYSICAL FORM', v: 'Lyophilised powder' },
+    { k: 'APPEARANCE', v: 'White to off-white powder' },
+    { k: 'SOLUBILITY', v: 'Soluble in laboratory-grade sterile water' },
+    { k: 'RECONSTITUTION', v: 'Bacteriostatic water, sold separately' },
+    { k: 'STORAGE', v: '\u221220 \u00B0C lyophilised \u00B7 2\u20138 \u00B0C reconstituted' },
+    { k: 'LOT DOCUMENTATION', v: 'Production and handling records held for every lot' }
+  ];
+
+  scrollToHash() {
+    const raw = (location.hash || '').slice(1);
+    if (!raw) return;
+    let id;
+    try { id = decodeURIComponent(raw); } catch (e) { id = raw; }
+    let tries = 0;
+    const tick = () => {
+      const el = document.getElementById(id);
+      if (el) { window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 16 }); return; }
+      if (tries++ < 90) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+
+  takeTier(n) {
+    const CS = window.AmbrosiaCart;
+    if (CS && this.state.tierId) CS.setQty(this.state.tierId, n);
+    const hasWater = CS ? CS.read().some(l => l.id === 'bac-water') : true;
+    this.setState({ tierModal: false, bulkModal: false, waterModal: !hasWater });
+  }
+
+  skipTier() {
+    const CS = window.AmbrosiaCart;
+    const hasWater = CS ? CS.read().some(l => l.id === 'bac-water') : true;
+    const offers = this.state.bulkList || [];
+    this.setState({ tierModal: false, bulkModal: offers.length > 0, waterModal: offers.length === 0 && !hasWater });
+  }
+
+  /* ------------------------------------------------------------------------
+     Live pricing. cart-store.js owns the single Store API fetch; this reads
+     the result so there is one source of truth per page.
+
+     GLP-3 is wired (Woo product 11). The other products fall back to the
+     static SIZES below until their Woo product ID is filled into
+     WOO_PRODUCT_IDS in cart-store.js — no change needed on this page.
+     [SERVER] see cart-store.js
+     ------------------------------------------------------------------------ */
+  async loadLiveSizes() {
+    const CS = window.AmbrosiaCart;
+    if (!CS || !CS.ready) return;
+    try {
+      await CS.ready;
+      const slug = this.constructor.PAGE_SLUG;
+      const live = Object.keys(CS.CATALOG)
+        .filter(id => { const p = CS.CATALOG[id]; return p && p.live && p.href === slug + '.html'; })
+        .map(id => {
+          const p = CS.CATALOG[id];
+          const mg = parseInt((p.mass || '').replace(/[^0-9]/g, ''), 10) || 0;
+          return { id: id, label: (p.mass || '').replace(/ per vial/i, '').toUpperCase(), price: p.price, mg: mg };
+        })
+        .sort((a, b) => a.mg - b.mg);
+      if (live.length) this.setState({ liveSizes: live, size: 0 });
+    } catch (e) {
+      console.warn(this.constructor.PAGE_SLUG + ': live pricing unavailable, using static SIZES', e);
+    }
+  }
+
+  componentDidMount() {
+    this.loadLiveSizes();
+    let _ct = 0;
+    const _bootCart = () => {
+      const CS = window.AmbrosiaCart;
+      if (!CS) { if (_ct++ < 120) requestAnimationFrame(_bootCart); return; }
+      this._cartCount = CS.count();
+      this.forceUpdate();
+      this._offCart = CS.on(() => { this._cartCount = CS.count(); this.forceUpdate(); });
+    };
+    requestAnimationFrame(_bootCart);
+    this.scrollToHash();
+    this._esc = e => { if (e.key === 'Escape') this.setState({ menuOpen: false, waterModal: false, bulkModal: false, tierModal: false, stdOpen: false }); };
+    document.addEventListener('keydown', this._esc);
+  }
+
+  componentWillUnmount() {
+    if (this._offCart) this._offCart();
+    document.removeEventListener('keydown', this._esc);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const C = this.constructor;
+    const SIZES = (s.liveSizes && s.liveSizes.length) ? s.liveSizes : C.SIZES;
+    const size = SIZES[s.size] || SIZES[0];
+
+    return {
+      menuOpen: s.menuOpen,
+      stdOpen: !!s.stdOpen,
+      toggleStd: () => this.setState(p => ({ stdOpen: !p.stdOpen, menuOpen: false })),
+      closeStd: () => this.setState({ stdOpen: false }),
+      stdCaretStyle: 'font-size:15px; line-height:1; color:#7A5622; display:inline-block;'
+        + ' transition:transform 340ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+        + (s.stdOpen ? '90deg' : '0deg') + ')',
+      toggleMenu: () => this.setState(p => ({ menuOpen: !p.menuOpen, openGroup: null, stdOpen: false })),
+      menuGroups: C.GROUPS.map((g, i) => ({
+        label: g.label,
+        items: g.items.map(it => {
+          const _close = () => this.setState({ menuOpen: false, openGroup: null, openSub: null });
+          const k = it.sub;
+          const hasSubs = typeof k === 'number';
+          return {
+            label: it.label,
+            href: it.href || '#',
+            close: _close,
+            isLink: !hasSubs,
+            hasSubs,
+            open: hasSubs && this.state.openSub === k,
+            toggle: () => this.setState(p => ({ openSub: p.openSub === k ? null : k })),
+            links: hasSubs ? Component.SUBMENUS[k].links.map(l => ({ label: l.label, href: l.href, close: _close })) : [],
+            caretStyle: 'font-size:18px; line-height:1; color:#7A5622; display:inline-block;'
+              + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+              + (hasSubs && this.state.openSub === k ? '90deg' : '0deg') + ')'
+          };
+        }),
+        open: s.openGroup === i,
+        toggle: () => this.setState(p => ({ openGroup: p.openGroup === i ? null : i })),
+        caretStyle: 'font-size:26px; line-height:1; color:#7A5622; display:inline-block;'
+          + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+          + (s.openGroup === i ? '90deg' : '0deg') + ')'
+      })),
+
+      priceLabel: (() => {
+        const q = s.qty || 1;
+        const r = q >= 10 ? 0.15 : (q >= 3 ? 0.10 : (q >= 2 ? 0.05 : 0));
+        return C.money(Math.round((size.price ?? 0) * q * (1 - r) * 100) / 100);
+      })(),
+      priceDiscounted: (s.qty || 1) >= 2,
+      priceGrossLabel: C.money((size.price ?? 0) * (s.qty || 1)),
+      rangeLabel: C.rangeLabel(),
+      selectedLabel: (() => {
+        const q = s.qty || 1;
+        const r = q >= 10 ? 15 : (q >= 3 ? 10 : (q >= 2 ? 5 : 0));
+        const base = size.label ? size.label : '';
+        const vials = q === 1 ? '1 vial' : q + ' vials';
+        return (base ? base + ' \u00B7 ' : '') + vials + (r ? ' \u00B7 ' + r + '% off' : '');
+      })(),
+      hasSizes: SIZES.length > 0,
+      multiSize: SIZES.length > 1,
+      sizes: SIZES.map((o, i) => ({
+        label: o.label,
+        active: s.size === i,
+        select: () => this.setState({ size: i, added: false }),
+        style: 'display:inline-flex; align-items:center; justify-content:center; min-width:104px;'
+          + ' height:52px; padding:0 24px; font-size:14px; cursor:pointer;'
+          + ' transition:border-color 300ms ease, background-color 300ms ease; border:1px solid '
+          + (s.size === i ? '#6B1F28' : '#D8C9B2') + '; background:'
+          + (s.size === i ? '#6B1F28' : 'transparent') + '; color:'
+          + (s.size === i ? '#F0E9DC' : '#241C19')
+      })),
+
+      qty: s.qty,
+      dec: () => this.setState(p => ({ qty: Math.max(1, p.qty - 1), added: false })),
+      inc: () => this.setState(p => ({ qty: Math.min(99, p.qty + 1), added: false })),
+
+      cartCount: this._cartCount ?? 0,
+      cartLabel: s.added ? 'ADDED TO CART' : 'ADD TO CART',
+      waterLabel: s.waterAdded ? 'ADDED TO ORDER' : 'ADD TO ORDER',
+      waterKicker: s.added && !s.waterAdded ? 'ONE THING LEFT' : 'RECONSTITUTION SOLUTION',
+      waterPitch: s.waterAdded
+        ? 'In your order. Every vial ships lyophilised, so this is what brings the material into solution.'
+        : 'Every vial ships lyophilised. Without bacteriostatic water there is nothing to bring the material into solution, and it is not included with any vial.',
+      waterCardStyle: 'margin-top:clamp(22px,2.6vw,30px); background:#E4D8C6;'
+        + ' padding:clamp(22px,2.6vw,28px); transition:border-color 500ms cubic-bezier(.2,.6,.2,1), box-shadow 500ms cubic-bezier(.2,.6,.2,1);'
+        + ' border:1px solid ' + (s.added && !s.waterAdded ? '#6B1F28' : '#D8C9B2')
+        + '; box-shadow:' + (s.added && !s.waterAdded ? '0 18px 40px -28px rgba(107,31,40,0.55)' : 'none'),
+      waterBtnStyle: 'flex:0 0 auto; display:inline-flex; align-items:center; height:52px; padding:0 30px;'
+        + ' font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer;'
+        + ' transition:background-color 380ms cubic-bezier(.2,.6,.2,1), color 380ms cubic-bezier(.2,.6,.2,1);'
+        + (s.waterAdded
+            ? ' border:1px solid #D8C9B2; background:transparent; color:#6E6055'
+            : (s.added
+                ? ' border:1px solid #6B1F28; background:#6B1F28; color:#F0E9DC'
+                : ' border:1px solid #241C19; background:transparent; color:#241C19')),
+      quickQty: [1, 2, 3, 10].map(n => {
+        const rate = n >= 10 ? 0.15 : (n >= 3 ? 0.10 : (n >= 2 ? 0.05 : 0));
+        const active = (s.qty || 1) === n;
+        return {
+          label: n === 1 ? '1 Vial' : n + ' Vials',
+          badge: rate ? 'SAVES ' + Math.round(rate * 100) + '%' : '',
+          hasBadge: rate > 0,
+          active: active,
+          thumbs: Array.from({ length: Math.min(n, 3) }, (_, i) => ({
+            style: 'width:21px; height:32px; display:block; border:1px solid #D8C9B2; flex:0 0 auto;'
+              + (i > 0 ? ' margin-left:-6px;' : '')
+              + " background:#E4D8C6 url('" + C.VIAL_IMG + "') 50% 42% / cover no-repeat"
+          })),
+          select: () => this.setState({ qty: n }),
+          style: 'position:relative; display:flex; flex-direction:column; align-items:center; gap:9px;'
+            + ' min-width:0; padding:14px 10px 13px; cursor:pointer;'
+            + ' transition:border-color 340ms cubic-bezier(.2,.6,.2,1), background-color 340ms cubic-bezier(.2,.6,.2,1); border:1px solid '
+            + (active ? '#6B1F28' : '#D8C9B2') + '; background:' + (active ? '#E4D8C6' : 'transparent'),
+          badgeStyle: 'position:absolute; top:-9px; left:50%; transform:translateX(-50%); padding:3px 7px;'
+            + ' background:#6B1F28; color:#F0E9DC; font-size:9px; font-weight:600; letter-spacing:0.12em; white-space:nowrap'
+        };
+      }),
+      tierHint: (() => {
+        const q = s.qty || 1;
+        if (q >= 10) return 'Multi-vial pricing: 15% off at ten vials \u2014 the deepest rate we publish.';
+        if (q >= 3) return 'Multi-vial pricing: 10% off at three vials, 15% at ten.';
+        if (q === 2) return 'Multi-vial pricing: 5% off at two vials, 10% at three.';
+        return 'Two vials 5% off, three 10%, ten 15%.';
+      })(),
+      tierHintSaving: (s.qty || 1) >= 2,
+      tierHintLabel: (() => {
+        const q = s.qty || 1;
+        const r = q >= 10 ? 0.15 : (q >= 3 ? 0.10 : (q >= 2 ? 0.05 : 0));
+        const v = (size.price ?? 0) * q * r;
+        return 'YOU SAVE ' + C.money(Math.round(v * 100) / 100);
+      })(),
+      tierModal: !!s.tierModal,
+      tierHeadline: (s.tierQty || 1) >= 3 ? 'Ten vials takes 15% off.' : ((s.tierQty || 1) >= 2 ? 'Buying deeper costs less per vial.' : 'A second vial takes 5% off.'),
+      tierBody: 'Two of any one vial come at 5% off, three at 10% and ten at 15%. The discount is applied automatically in the cart, and it holds on every compound in the catalogue.',
+      tierKeepLabel: 'KEEP ' + (s.tierQty || 1) + ((s.tierQty || 1) === 1 ? ' VIAL' : ' VIALS'),
+      tierOffers: [2, 3, 10].filter(n => n > (s.tierQty || 1)).slice(0, 3).map(n => {
+        const rate = n >= 10 ? 0.15 : (n >= 3 ? 0.10 : 0.05);
+        const gross = (s.tierUnit || 0) * n;
+        const net = Math.round(gross * (1 - rate) * 100) / 100;
+        const fmt = v => '$' + Number(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return {
+          headline: n + ' vials \u00B7 ' + Math.round(rate * 100) + '% off',
+          detail: 'Instead of ' + fmt(gross) + ' at full price',
+          priceLabel: fmt(net),
+          saveLabel: 'SAVE ' + fmt(gross - net),
+          take: () => this.takeTier(n)
+        };
+      }),
+      tierSkip: () => this.skipTier(),
+      bulkModal: !!s.bulkModal,
+      bulkCurrentLabel: s.bulkFrom || '',
+      bulkHeadline: 'Buying in bulk costs less.',
+      bulkOffers: (s.bulkList || []).map(o => ({
+        label: o.label,
+        headline: o.headline,
+        priceLabel: '$' + Number(o.price).toLocaleString('en-US'),
+        wasLabel: '$' + Number(o.was).toLocaleString('en-US'),
+        saveLabel: 'Save $' + Number(o.save).toLocaleString('en-US'),
+        take: () => {
+          const CS = window.AmbrosiaCart;
+          if (CS) { if (s.addedId) CS.remove(s.addedId); CS.add(o.id, 1); }
+          this.setState(p => ({ bulkModal: false, waterModal: !!p.wantWater }));
+        }
+      })),
+      bulkKeep: () => this.setState(p => ({ bulkModal: false, waterModal: !!p.wantWater })),
+      waterModal: !!s.waterModal,
+      modalClose: () => this.setState({ waterModal: false }),
+      modalAddWater: () => {
+        if (window.AmbrosiaCart) window.AmbrosiaCart.add('bac-water', 1);
+        this.setState({ waterAdded: true, waterModal: false });
+      },
+      addWater: () => {
+        if (window.AmbrosiaCart) window.AmbrosiaCart.add('bac-water', 1);
+        this.setState({ waterAdded: true });
+      },
+      addToCart: () => {
+        const id = (size && size.id) || C.CART_ID;
+        if (window.AmbrosiaCart) window.AmbrosiaCart.add(id, s.qty);
+        const _CS = window.AmbrosiaCart;
+        const _line = _CS ? _CS.read().find(l => l.id === id) : null;
+        const tierQty = _line ? _line.qty : s.qty;
+        const tierUnit = _CS && _CS.CATALOG[id] ? _CS.CATALOG[id].price : 0;
+        const hasWater = window.AmbrosiaCart && window.AmbrosiaCart.read().some(l => l.id === 'bac-water');
+        const offers = (C.bulkOffers ? C.bulkOffers(s.size) : []) || [];
+        this.setState({
+          added: true, addedId: id, wantWater: !hasWater,
+          bulkList: offers, bulkFrom: (size && size.label) || '',
+          tierModal: tierQty < 10,
+          tierQty: tierQty, tierUnit: tierUnit, tierId: id,
+          bulkModal: tierQty >= 10 && offers.length > 0,
+          waterModal: tierQty >= 10 && offers.length === 0 && !hasWater
+        });
+      },
+
+      specs: C.SPECS.map(r => ({
+        k: r.k,
+        v: r.v,
+        valueStyle: 'font-size:15px; line-height:1.6; text-align:right; flex:1 1 200px; color:'
+          + (r.flag ? '#6B1F28' : '#241C19')
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

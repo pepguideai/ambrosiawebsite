@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<link rel="stylesheet" href="ambrosia.css">
+</helmet>
+
+<div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased">
+
+  <div style="background:#2C1B15; padding:11px clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between">
+      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+      <div style="font-size:11px; letter-spacing:0.14em; color:#A9A096">QUALIFIED PURCHASERS ONLY &middot; 21+</div>
+    </div>
+  </div>
+
+  <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
+    <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
+      <div style="order:1; justify-self:start; display:flex; align-items:center; gap:clamp(18px,2.4vw,34px)">
+        <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}" style="display:flex; align-items:center; gap:11px; white-space:nowrap; cursor:pointer; padding:0">
+          <span style="display:flex; flex-direction:column; gap:5px; width:17px"><span style="height:1px; background:#241C19; display:block"></span><span style="height:1px; background:#241C19; display:block"></span></span>
+          <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19">MENU</span>
+        </button>
+        <div style="position:relative; display:flex">
+          <button type="button" onClick="{{ toggleStd }}" aria-expanded="{{ stdOpen }}" style="display:flex; align-items:center; gap:8px; padding:0; cursor:pointer; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">OUR STANDARDS <span style="{{ stdCaretStyle }}">&rsaquo;</span></button>
+          <sc-if value="{{ stdOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:268px; background:#F0E9DC; border:1px solid #D8C9B2; box-shadow:0 22px 44px -22px rgba(36,28,25,0.34); padding:8px 0; z-index:40">
+              <a href="standard.html" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">The Ambrosia Standard</a>
+              <a href="standard.html#coa" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">Certificates of Analysis</a>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <a href="index.html" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:28px; height:28px">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+        <span style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(19px,2.1vw,27px); letter-spacing:0.32em; color:#6B1F28; white-space:nowrap; padding-left:0.32em">AMBROSIA</span>
+      </a>
+
+      <div style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
+        <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CART ({{ cartCount }})</a>
+      </div>
+    </div>
+
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="border-top:1px solid #D8C9B2">
+      <div style="max-width:1440px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:clamp(25px,4vw,64px); padding:clamp(26px,3vw,40px) 0 clamp(28px,4vw,52px)">
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="ghk-cu.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GHK-Cu</a>
+            <a href="glp-2.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-2</a>
+            <a href="glp-3.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-3</a>
+            <a href="glow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Glow</a>
+            <a href="klow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Klow</a>
+            <a href="wolverine.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Wolverine</a>
+          </div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#6E6055; margin:14px 0 4px">RECONSTITUTION SUPPLY</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="bacteriostatic-water.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Bacteriostatic Water</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">YOUR BAG</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="cart.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Cart</a>
+            <a href="checkout.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Checkout</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="affiliate.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Affiliate Portal</a>
+            <a href="contact.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">SUPPORT &amp; LEGAL</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="faq.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
+            <a href="standard.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Shipping & Restrictions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+
+  <div style="padding:clamp(24px,3vw,36px) clamp(20px,4vw,56px) 0">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6E6055">
+      <a href="index.html#catalogue" style="transition:color 350ms ease" style-hover="color:#241C19">CATALOGUE</a>
+      <span style="color:#A9A096">&rsaquo;</span>
+      <a href="cart.html" style="transition:color 350ms ease" style-hover="color:#241C19">CART</a>
+      <span style="color:#A9A096">&rsaquo;</span>
+      <span style="color:#241C19">CHECKOUT</span>
+    </div>
+  </div>
+
+  <div style="padding:clamp(25px,3.5vw,44px) clamp(20px,4vw,56px) clamp(45px,9vw,120px)">
+    <div style="max-width:1440px; margin:0 auto">
+
+      <sc-if value="{{ placed }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:720px; padding:clamp(33px,6vw,80px) 0">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">ORDER RECEIVED</div>
+          <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(33px,5vw,64px); line-height:1.04; letter-spacing:-0.012em; color:#6B1F28; margin:20px 0 0">Thank you. Your order is logged.</h1>
+          <div style="margin-top:28px; border-top:1px solid #D8C9B2; border-bottom:1px solid #D8C9B2; padding:22px 0; display:flex; flex-wrap:wrap; gap:32px">
+            <div style="display:flex; flex-direction:column; gap:7px">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">REFERENCE</div>
+              <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1; color:#241C19">{{ orderRef }}</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:7px">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">TOTAL</div>
+              <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1; color:#241C19">{{ placedTotal }}</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:7px">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">CONFIRMATION SENT TO</div>
+              <div style="font-size:15px; line-height:1.5; color:#241C19; padding-top:5px">{{ placedEmail }}</div>
+            </div>
+          </div>
+          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:26px 0 0; max-width:56ch; text-wrap:pretty">{{ placedNote }}</p>
+          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:16px 0 0; max-width:56ch; text-wrap:pretty">A certificate of analysis for each lot is attached to the confirmation email.</p>
+          <a href="index.html#catalogue" style="display:inline-flex; align-items:center; height:58px; margin-top:32px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36; color:#F0E9DC">BACK TO THE CATALOGUE</a>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ shopping }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 22px; padding-bottom:clamp(24px,3vw,36px); border-bottom:1px solid #D8C9B2">
+          <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,5.2vw,66px); line-height:1; letter-spacing:-0.012em; color:#6B1F28; margin:0">Checkout</h1>
+          <div style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#7A5622">{{ countLabel }}</div>
+        </div>
+
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:clamp(38px,8vw,110px) 0; display:flex; flex-direction:column; align-items:flex-start; gap:22px; max-width:560px">
+            <div style="font-family:'Instrument Serif', serif; font-size:clamp(26px,3vw,36px); line-height:1.2; color:#241C19">There is nothing to check out.</div>
+            <a href="index.html#catalogue" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36; color:#F0E9DC">BROWSE THE CATALOGUE</a>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ hasItems }}" hint-placeholder-val="{{ true }}">
+        <div class="csplit" style="gap:clamp(33px,5vw,84px); align-items:start; padding-top:clamp(25px,3.5vw,44px)">
+
+          <div style="display:flex; flex-direction:column; gap:clamp(31px,4.5vw,58px)">
+
+            <div>
+              <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:22px; border-bottom:1px solid #D8C9B2">
+                <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">01</span>
+                <span style="font-family:'Instrument Serif', serif; font-size:clamp(26px,2.6vw,32px); line-height:1.1; color:#241C19">Contact</span>
+              </div>
+              <div class="f2" style="gap:18px; padding-top:22px">
+                <label style="display:flex; flex-direction:column; gap:9px">
+                  <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">EMAIL</span>
+                  <input type="email" value="{{ v.email }}" onChange="{{ f.email }}" placeholder="name@institution.org" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:9px">
+                  <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">PHONE</span>
+                  <input type="tel" value="{{ v.phone }}" onChange="{{ f.phone }}" placeholder="For delivery questions only" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                </label>
+              </div>
+              <label style="display:flex; align-items:flex-start; gap:12px; padding-top:20px; cursor:pointer">
+                <input type="checkbox" checked="{{ v.makeAccount }}" onChange="{{ f.makeAccount }}" style="width:19px; height:19px; margin-top:1px; accent-color:#6B1F28; cursor:pointer">
+                <span style="font-size:14.5px; line-height:1.6; color:#3C312C">Create an account so lot documentation and past orders stay in one place. Optional.</span>
+              </label>
+              <sc-if value="{{ v.makeAccount }}" hint-placeholder-val="{{ false }}">
+                <label style="display:flex; flex-direction:column; gap:9px; padding-top:18px; max-width:400px">
+                  <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">PASSWORD</span>
+                  <input type="password" value="{{ v.password }}" onChange="{{ f.password }}" placeholder="At least 8 characters" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                </label>
+              </sc-if>
+            </div>
+
+            <div>
+              <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:22px; border-bottom:1px solid #D8C9B2">
+                <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">02</span>
+                <span style="font-family:'Instrument Serif', serif; font-size:clamp(26px,2.6vw,32px); line-height:1.1; color:#241C19">Shipping address</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:18px; padding-top:22px">
+                <div class="f2" style="gap:18px">
+                  <label style="display:flex; flex-direction:column; gap:9px">
+                    <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">FIRST NAME</span>
+                    <input type="text" value="{{ v.first }}" onChange="{{ f.first }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                  </label>
+                  <label style="display:flex; flex-direction:column; gap:9px">
+                    <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">LAST NAME</span>
+                    <input type="text" value="{{ v.last }}" onChange="{{ f.last }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                  </label>
+                </div>
+                <label style="display:flex; flex-direction:column; gap:9px">
+                  <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">INSTITUTION OR COMPANY</span>
+                  <input type="text" value="{{ v.org }}" onChange="{{ f.org }}" placeholder="Optional" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:9px">
+                  <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">ADDRESS</span>
+                  <input type="text" value="{{ v.addr1 }}" onChange="{{ f.addr1 }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:9px">
+                  <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">SUITE, UNIT OR LAB</span>
+                  <input type="text" value="{{ v.addr2 }}" onChange="{{ f.addr2 }}" placeholder="Optional" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                </label>
+                <div class="f3" style="gap:18px">
+                  <label style="display:flex; flex-direction:column; gap:9px">
+                    <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">CITY</span>
+                    <input type="text" value="{{ v.city }}" onChange="{{ f.city }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                  </label>
+                  <label style="display:flex; flex-direction:column; gap:9px">
+                    <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">STATE</span>
+                    <input type="text" value="{{ v.state }}" onChange="{{ f.state }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                  </label>
+                  <label style="display:flex; flex-direction:column; gap:9px">
+                    <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">ZIP</span>
+                    <input type="text" value="{{ v.zip }}" onChange="{{ f.zip }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                  </label>
+                </div>
+                <div style="font-size:12px; line-height:1.7; color:#3C312C">Ambrosia ships within the United States only. Orders to addresses outside the US cannot be accepted at this time.</div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:22px; border-bottom:1px solid #D8C9B2">
+                <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">03</span>
+                <span style="font-family:'Instrument Serif', serif; font-size:clamp(26px,2.6vw,32px); line-height:1.1; color:#241C19">Shipping method</span>
+              </div>
+              <sc-for list="{{ shipping }}" as="s" hint-placeholder-count="3">
+                <button type="button" onClick="{{ s.select }}" style="{{ s.style }}">
+                  <span style="display:flex; align-items:center; gap:14px; min-width:0">
+                    <span style="{{ s.dotStyle }}"></span>
+                    <span style="display:flex; flex-direction:column; gap:4px; text-align:left; min-width:0">
+                      <span style="font-size:15px; color:#241C19">{{ s.label }}</span>
+                      <span style="font-size:13px; line-height:1.5; color:#6E6055">{{ s.detail }}</span>
+                    </span>
+                  </span>
+                  <span style="font-size:15px; color:#241C19; white-space:nowrap">{{ s.priceLabel }}</span>
+                </button>
+              </sc-for>
+            </div>
+
+            <div>
+              <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:22px; border-bottom:1px solid #D8C9B2">
+                <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">04</span>
+                <span style="font-family:'Instrument Serif', serif; font-size:clamp(26px,2.6vw,32px); line-height:1.1; color:#241C19">Payment</span>
+              </div>
+
+              <div style="display:flex; gap:0; padding-top:22px">
+                <sc-for list="{{ payTabs }}" as="t" hint-placeholder-count="2">
+                  <button type="button" onClick="{{ t.select }}" style="{{ t.style }}">{{ t.label }}</button>
+                </sc-for>
+              </div>
+
+              <sc-if value="{{ payCard }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; flex-direction:column; gap:18px; padding-top:24px">
+                  <label style="display:flex; flex-direction:column; gap:9px">
+                    <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">CARD NUMBER</span>
+                    <input type="text" value="{{ v.cardNo }}" onChange="{{ f.cardNo }}" placeholder="0000 0000 0000 0000" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px; letter-spacing:0.08em">
+                  </label>
+                  <label style="display:flex; flex-direction:column; gap:9px">
+                    <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">NAME ON CARD</span>
+                    <input type="text" value="{{ v.cardName }}" onChange="{{ f.cardName }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                  </label>
+                  <div class="f2" style="gap:18px">
+                    <label style="display:flex; flex-direction:column; gap:9px">
+                      <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">EXPIRY</span>
+                      <input type="text" value="{{ v.cardExp }}" onChange="{{ f.cardExp }}" placeholder="MM / YY" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                    </label>
+                    <label style="display:flex; flex-direction:column; gap:9px">
+                      <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">SECURITY CODE</span>
+                      <input type="text" value="{{ v.cardCvc }}" onChange="{{ f.cardCvc }}" placeholder="CVC" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+                    </label>
+                  </div>
+                  <div style="font-size:12px; line-height:1.7; color:#3C312C">Card payments are handled by a third-party processor; Ambrosia does not store or directly handle card details. Your statement will read AMBROSIA LLC.</div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ payCrypto }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; flex-direction:column; gap:20px; padding-top:24px">
+                  <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">SETTLE IN</div>
+                  <div style="display:flex; flex-wrap:wrap; gap:12px">
+                    <sc-for list="{{ coins }}" as="c" hint-placeholder-count="3">
+                      <button type="button" onClick="{{ c.select }}" style="{{ c.style }}">{{ c.label }}</button>
+                    </sc-for>
+                  </div>
+                  <p style="font-size:14.5px; line-height:1.75; color:#3C312C; margin:0; max-width:56ch; text-wrap:pretty">A wallet address and the exact amount are emailed to you as soon as the order is placed. The address holds for thirty minutes. Your order enters the packing queue once the transaction confirms on chain.</p>
+                  <div style="font-size:12px; line-height:1.7; color:#3C312C">USDT transfers are released for dispatch after two network confirmations.</div>
+                </div>
+              </sc-if>
+            </div>
+
+            <div>
+              <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:22px; border-bottom:1px solid #D8C9B2">
+                <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">05</span>
+                <span style="font-family:'Instrument Serif', serif; font-size:clamp(26px,2.6vw,32px); line-height:1.1; color:#241C19">Confirm and place</span>
+              </div>
+
+              <label style="display:flex; align-items:flex-start; gap:14px; padding:24px 0 0; cursor:pointer">
+                <input type="checkbox" checked="{{ v.attest }}" onChange="{{ f.attest }}" style="width:21px; height:21px; margin-top:2px; accent-color:#6B1F28; cursor:pointer">
+                <span style="font-size:15px; line-height:1.7; color:#241C19; text-wrap:pretty">I am a qualified purchaser aged 21 or older. These materials are for laboratory research use only and are not for human consumption.</span>
+              </label>
+
+              <sc-if value="{{ errorMessage }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:20px; border-left:2px solid #6B1F28; padding:2px 0 2px 16px; font-size:14px; line-height:1.65; color:#6B1F28">{{ errorMessage }}</div>
+              </sc-if>
+
+              <button type="button" onClick="{{ placeOrder }}" style="display:flex; align-items:center; justify-content:center; width:100%; height:64px; margin-top:26px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">PLACE ORDER &middot; {{ totalLabel }}</button>
+
+              <p style="font-size:12.5px; line-height:1.75; color:#6E6055; margin:18px 0 0; text-wrap:pretty">Placing an order confirms you have read the Research Use Policy and the Terms of Sale. Ambrosia ships to qualified purchasers aged 21 or older and reserves the right to decline any order.</p>
+            </div>
+
+          </div>
+
+          <div class="stick">
+            <div style="background:#E4D8C6; padding:clamp(26px,3vw,36px)">
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px">
+                <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">YOUR ORDER</div>
+                <a href="cart.html" style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; transition:color 350ms ease" style-hover="color:#8E2C36">EDIT</a>
+              </div>
+
+              <div style="margin-top:22px; display:flex; flex-direction:column">
+                <sc-for list="{{ items }}" as="l">
+                  <div style="display:flex; align-items:center; gap:16px; padding:14px 0; border-top:1px solid #D8C9B2">
+                    <div role="img" aria-label="{{ l.alt }}" style="flex:0 0 auto; width:54px; aspect-ratio:5/8; background:#F0E9DC url({{ l.img }}) center / cover no-repeat; overflow:hidden"></div>
+                    <div style="flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:4px">
+                      <div style="font-size:14.5px; line-height:1.35; color:#241C19">{{ l.name }}</div>
+                      <div style="font-size:12.5px; color:#6E6055">{{ l.qtyLabel }}</div>
+                    </div>
+                    <div style="flex:0 0 auto; font-size:14.5px; color:#241C19; white-space:nowrap">{{ l.totalLabel }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="margin-top:20px; border-top:1px solid #D8C9B2; padding-top:20px; display:flex; flex-direction:column; gap:12px">
+                <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px">
+                  <div style="font-size:14px; color:#3C312C">Subtotal</div>
+                  <div style="font-size:14px; color:#241C19">{{ subtotalLabel }}</div>
+                </div>
+                <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px">
+                  <div style="font-size:14px; color:#3C312C">{{ shipName }}</div>
+                  <div style="font-size:14px; color:#241C19">{{ shippingLabel }}</div>
+                </div>
+                <sc-if value="{{ hasDiscount }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; align-items:baseline; justify-content:space-between; gap:20px">
+                    <div style="font-size:14px; color:#3C312C">{{ discountLabel }}</div>
+                    <div style="font-size:14px; color:#6B1F28">{{ discountAmount }}</div>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="margin-top:20px; border-top:1px solid #241C19; padding-top:20px; display:flex; align-items:baseline; justify-content:space-between; gap:20px">
+                <div style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#241C19">TOTAL</div>
+                <div style="font-family:'Instrument Serif', serif; font-size:clamp(26px,3vw,38px); line-height:1; color:#241C19">{{ totalLabel }}</div>
+              </div>
+
+              <p style="font-size:12px; line-height:1.7; color:#6E6055; margin:18px 0 0; text-wrap:pretty">Every vial ships lyophilised with the certificate of analysis for its lot.</p>
+            </div>
+          </div>
+
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <div style="background:#2C1B15; padding:clamp(38px,7vw,100px) clamp(20px,4vw,56px) 0">
+    <div style="max-width:1440px; margin:0 auto">
+      <div class="g4" style="gap:clamp(28px,4vw,56px); padding-bottom:clamp(36px,6vw,80px)">
+        <div>
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px">
+            <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:24px; height:24px">
+              <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#C9A227" stroke-width="2.6"></path>
+              <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#C9A227" stroke-width="2.6"></path>
+              <g stroke="#C9A227" stroke-width="3.4" fill="#2C1B15">
+                <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+                <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+                <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+              </g>
+              <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#2C1B15"></circle>
+            </svg>
+            <span style="font-family:Cinzel, serif; font-size:17px; letter-spacing:0.3em; color:#F0E9DC">AMBROSIA</span>
+          </div>
+          <p style="font-size:13.5px; line-height:1.7; color:#A9A096; margin:0; max-width:250px">Research materials, verified from source to seal.</p>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="index.html#catalogue" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">All compounds</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="affiliate.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Affiliate Portal</a>
+            <a href="faq.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">FAQ</a>
+            <a href="contact.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">LEGAL</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="standard.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Shipping &amp; Restrictions</a>
+            <a href="returns-documentation.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Returns &amp; Documentation</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; margin-bottom:16px">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+        <p style="font-size:12px; line-height:1.75; color:#A9A096; margin:0; max-width:900px">Ambrosia supplies research materials to qualified purchasers aged 21 or older for laboratory research only. Nothing sold here is a drug, a supplement, a cosmetic or a food, and none of it has been evaluated or approved by the FDA for any use.</p>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0 clamp(33px,5vw,64px); display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between">
+        <div style="font-size:12px; line-height:1.8; color:#A9A096; max-width:640px">
+          Ambrosia LLC, a Tennessee limited liability company<br>
+          Nashville, Tennessee &middot; info@ambrosiastandard.com<br>
+          Governed by the laws of the State of Tennessee, with exclusive venue in Davidson County, Tennessee.
+        </div>
+        <div style="font-size:12px; color:#A9A096">&copy; 2026 Ambrosia LLC</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;requireAttestation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Checkout&quot;}}">
+class Component extends DCLogic {
+  state = {
+    menuOpen: false, openGroup: null, openSub: null, lines: [],
+    ship: 'standard', applied: null,
+    pay: 'card', coin: 'BTC',
+    placed: false, orderRef: '', placedTotal: '', placedEmail: '', error: '',
+    v: {
+      email: '', phone: '', makeAccount: false, password: '',
+      first: '', last: '', org: '', addr1: '', addr2: '', city: '', state: '', zip: '',
+      cardNo: '', cardName: '', cardExp: '', cardCvc: '', attest: false
+    }
+  };
+
+  static PREFS = 'ambrosia-checkout-v1';
+
+  static SUBMENUS = [
+    { label: 'Compounds', links: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' }
+    ] },
+    { label: 'Reconstitution Supply', links: [
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] }
+  ];
+
+  static GROUPS = [
+    { label: 'Catalogue', items: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] },
+    { label: 'Partners', items: [
+      { label: 'Become an Affiliate', href: 'affiliate.html' },
+      { label: 'Affiliate Portal', href: 'affiliate-portal.html' },
+      { label: 'FAQ', href: 'faq.html' },
+      { label: 'Contact', href: 'contact.html' }
+    ] },
+    { label: 'Legal', items: [
+      { label: 'Certificates of Analysis', href: 'standard.html' },
+      { label: 'Research Use Policy', href: 'research-use-policy.html' },
+      { label: 'Terms of Sale', href: 'terms-of-sale.html' },
+      { label: 'Privacy Policy', href: 'privacy-policy.html' },
+      { label: 'Shipping & Restrictions', href: 'shipping-restrictions.html' },
+      { label: 'Returns & Documentation', href: 'returns-documentation.html' }
+    ] }
+  ];
+
+  static COINS = ['BTC', 'ETH', 'USDT'];
+
+  componentDidMount() {
+    let tries = 0;
+    const boot = () => {
+      const C = window.AmbrosiaCart;
+      if (!C) { if (tries++ < 120) requestAnimationFrame(boot); return; }
+      let prefs = {};
+      try { prefs = JSON.parse(localStorage.getItem(Component.PREFS) || '{}') || {}; } catch (e) {}
+      this.setState({
+        lines: C.lines(),
+        ship: prefs.ship || 'standard',
+        applied: prefs.applied && C.DISCOUNTS[prefs.applied] ? prefs.applied : null
+      });
+      this._off = C.on(() => this.setState({ lines: C.lines() }));
+    };
+    requestAnimationFrame(boot);
+    this._esc = e => { if (e.key === 'Escape') this.setState({ menuOpen: false, stdOpen: false }); };
+    document.addEventListener('keydown', this._esc);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this._esc);
+    if (this._off) this._off();
+  }
+
+  savePrefs(patch) {
+    let prefs = {};
+    try { prefs = JSON.parse(localStorage.getItem(Component.PREFS) || '{}') || {}; } catch (e) {}
+    try { localStorage.setItem(Component.PREFS, JSON.stringify({ ...prefs, ...patch })); } catch (e) {}
+  }
+
+  set(key, value) {
+    this.setState(p => ({ v: { ...p.v, [key]: value }, error: '' }));
+  }
+
+  field(key) { return e => this.set(key, e.target.value); }
+  check(key) { return e => this.set(key, e.target.checked); }
+
+  renderVals() {
+    const s = this.state;
+    const C = window.AmbrosiaCart;
+    const money = C ? C.money : (n => '$' + Number(n || 0).toFixed(2));
+    const shipOpts = C ? C.SHIPPING : [];
+    const discounts = C ? C.DISCOUNTS : {};
+
+    const lines = s.lines;
+    const count = lines.reduce((a, l) => a + l.qty, 0);
+    const subtotal = lines.reduce((a, l) => a + l.total, 0);
+    const ship = shipOpts.find(o => o.id === s.ship) || shipOpts[0] || { price: 0, label: 'Shipping' };
+    const disc = s.applied ? subtotal * discounts[s.applied].rate : 0;
+    const total = Math.max(0, subtotal - disc) + (count ? ship.price : 0);
+    const requireAttest = this.props.requireAttestation ?? true;
+
+    const tabStyle = active =>
+      'flex:1 1 0; height:54px; cursor:pointer; font-size:12px; font-weight:600; letter-spacing:0.16em;'
+      + ' transition:background 350ms ease, color 350ms ease; border:1px solid '
+      + (active ? '#6B1F28' : '#D8C9B2')
+      + '; background:' + (active ? '#6B1F28' : 'transparent')
+      + '; color:' + (active ? '#F0E9DC' : '#241C19');
+
+    return {
+      menuOpen: s.menuOpen,
+      stdOpen: !!s.stdOpen,
+      toggleStd: () => this.setState(p => ({ stdOpen: !p.stdOpen, menuOpen: false })),
+      closeStd: () => this.setState({ stdOpen: false }),
+      stdCaretStyle: 'font-size:15px; line-height:1; color:#7A5622; display:inline-block;'
+        + ' transition:transform 340ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+        + (s.stdOpen ? '90deg' : '0deg') + ')',
+      toggleMenu: () => this.setState(p => ({ menuOpen: !p.menuOpen, openGroup: null, stdOpen: false })),
+      menuGroups: Component.GROUPS.map((g, i) => ({
+        label: g.label,
+        items: g.items.map(it => {
+          const _close = () => this.setState({ menuOpen: false, openGroup: null, openSub: null });
+          const k = it.sub;
+          const hasSubs = typeof k === 'number';
+          return {
+            label: it.label,
+            href: it.href || '#',
+            close: _close,
+            isLink: !hasSubs,
+            hasSubs,
+            open: hasSubs && this.state.openSub === k,
+            toggle: () => this.setState(p => ({ openSub: p.openSub === k ? null : k })),
+            links: hasSubs ? Component.SUBMENUS[k].links.map(l => ({ label: l.label, href: l.href, close: _close })) : [],
+            caretStyle: 'font-size:18px; line-height:1; color:#7A5622; display:inline-block;'
+              + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+              + (hasSubs && this.state.openSub === k ? '90deg' : '0deg') + ')'
+          };
+        }),
+        open: s.openGroup === i,
+        toggle: () => this.setState(p => ({ openGroup: p.openGroup === i ? null : i })),
+        caretStyle: 'font-size:26px; line-height:1; color:#7A5622; display:inline-block;'
+          + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+          + (s.openGroup === i ? '90deg' : '0deg') + ')'
+      })),
+
+      cartCount: count,
+      countLabel: count === 1 ? '1 ITEM' : count + ' ITEMS',
+      placed: s.placed,
+      shopping: !s.placed,
+      isEmpty: count === 0,
+      hasItems: count > 0,
+
+      items: lines.map(l => ({
+        name: l.name,
+        img: l.img,
+        alt: l.name + ' vial in raking light',
+        qtyLabel: 'Quantity ' + l.qty,
+        totalLabel: l.priceFlag ? l.priceFlag : money(l.total)
+      })),
+
+      v: s.v,
+      f: {
+        email: this.field('email'), phone: this.field('phone'),
+        makeAccount: this.check('makeAccount'), password: this.field('password'),
+        first: this.field('first'), last: this.field('last'), org: this.field('org'),
+        addr1: this.field('addr1'), addr2: this.field('addr2'),
+        city: this.field('city'), state: this.field('state'), zip: this.field('zip'),
+        cardNo: this.field('cardNo'), cardName: this.field('cardName'),
+        cardExp: this.field('cardExp'), cardCvc: this.field('cardCvc'),
+        attest: this.check('attest')
+      },
+
+      shipping: shipOpts.map(o => ({
+        label: o.label,
+        detail: o.detail,
+        priceLabel: money(o.price),
+        select: () => { this.setState({ ship: o.id, error: '' }); this.savePrefs({ ship: o.id }); },
+        style: 'width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px;'
+          + ' padding:19px 2px; cursor:pointer; text-align:left; border-bottom:1px solid #D8C9B2;'
+          + ' transition:opacity 300ms ease; opacity:' + (s.ship === o.id ? '1' : '0.7'),
+        dotStyle: 'flex:0 0 auto; width:14px; height:14px; border-radius:50%; display:inline-block;'
+          + ' border:1px solid ' + (s.ship === o.id ? '#6B1F28' : '#A9A096')
+          + '; background:' + (s.ship === o.id ? '#6B1F28' : 'transparent')
+          + '; box-shadow:' + (s.ship === o.id ? 'inset 0 0 0 2.5px #F0E9DC' : 'none')
+      })),
+      shipName: ship.label + ' shipping',
+      shippingLabel: count ? money(ship.price) : money(0),
+
+      payTabs: [
+        { key: 'card', label: 'CARD' },
+        { key: 'crypto', label: 'CRYPTO' }
+      ].map(t => ({
+        label: t.label,
+        select: () => this.setState({ pay: t.key, error: '' }),
+        style: tabStyle(s.pay === t.key)
+      })),
+      payCard: s.pay === 'card',
+      payCrypto: s.pay === 'crypto',
+      coins: Component.COINS.map(c => ({
+        label: c,
+        select: () => this.setState({ coin: c }),
+        style: 'height:48px; padding:0 26px; cursor:pointer; font-size:13px; font-weight:600; letter-spacing:0.12em;'
+          + ' transition:background 350ms ease, color 350ms ease; border:1px solid '
+          + (s.coin === c ? '#241C19' : '#D8C9B2')
+          + '; background:' + (s.coin === c ? '#241C19' : 'transparent')
+          + '; color:' + (s.coin === c ? '#F0E9DC' : '#241C19')
+      })),
+
+      subtotalLabel: money(subtotal),
+      hasDiscount: !!s.applied && disc > 0,
+      discountLabel: s.applied ? 'Discount (' + s.applied + ')' : 'Discount',
+      discountAmount: '\u2212' + money(disc),
+      totalLabel: money(total),
+
+      errorMessage: s.error,
+      orderRef: s.orderRef,
+      placedTotal: s.placedTotal,
+      placedEmail: s.placedEmail,
+      placedNote: s.pay === 'crypto'
+        ? 'A wallet address and the exact ' + s.coin + ' amount are on their way to your inbox. Your order enters the packing queue once the transaction confirms.'
+        : 'Your card has been authorised. Your order enters the packing queue today and you will get tracking as soon as it leaves the bench.',
+
+      placeOrder: () => {
+        const v = s.v;
+        const missing = [];
+        if (!v.email.trim()) missing.push('an email address');
+        if (!v.first.trim() || !v.last.trim()) missing.push('a name');
+        if (!v.addr1.trim() || !v.city.trim() || !v.zip.trim()) missing.push('a shipping address');
+        if (s.pay === 'card' && !v.cardNo.trim()) missing.push('a card number');
+        if (requireAttest && !v.attest) missing.push('the research-use confirmation');
+
+        if (missing.length) {
+          const list = missing.length === 1
+            ? missing[0]
+            : missing.slice(0, -1).join(', ') + ' and ' + missing[missing.length - 1];
+          this.setState({ error: 'Before placing the order, add ' + list + '.' });
+          return;
+        }
+
+        const ref = 'AMB-' + String(Date.now()).slice(-6);
+        this.setState({ placed: true, orderRef: ref, placedTotal: money(total), placedEmail: v.email.trim(), error: '' });
+        if (window.AmbrosiaCart) window.AmbrosiaCart.clear();
+        window.scrollTo({ top: 0 });
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>

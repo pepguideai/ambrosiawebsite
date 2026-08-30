@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<link rel="stylesheet" href="ambrosia.css">
+</helmet>
+
+<div style="background:#3E1218; color:#F0E9DC; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column">
+
+  <div style="padding:clamp(24px,3vw,38px) clamp(20px,4vw,56px); display:flex; align-items:center; justify-content:space-between; gap:20px">
+    <a href="index.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#D8A9AE; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">&larr; RETURN</a>
+    <div style="font-size:11px; letter-spacing:0.18em; color:#8E6A6F">{{ stepLabel }}</div>
+  </div>
+
+  <div style="flex:1 1 auto; display:flex; align-items:center; justify-content:center; padding:clamp(28px,5vw,72px) clamp(20px,4vw,56px) clamp(38px,7vw,96px)">
+    <div style="width:100%; max-width:520px; text-align:center">
+
+      <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:44px; height:44px; margin:0 auto clamp(26px,4vw,44px); display:block">
+        <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#C9A227" stroke-width="2.6"></path>
+        <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#C9A227" stroke-width="2.6"></path>
+        <g stroke="#C9A227" stroke-width="3.4" fill="#3E1218">
+          <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+          <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+          <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+        </g>
+        <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#3E1218"></circle>
+      </svg>
+
+      <!-- ─── step one: email ──────────────────────────────── -->
+      <sc-if value="{{ onEmail }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(24px,3.4vw,38px); letter-spacing:0.16em; line-height:1.24; color:#F0E9DC; margin:0; padding-left:0.16em">YOUR OFFER AWAITS</h1>
+        <p style="font-size:16.5px; line-height:1.8; color:#E0CFC0; margin:26px auto 0; max-width:400px; text-wrap:pretty">Enter your email address to reveal what we&rsquo;ve prepared for you.</p>
+
+        <div style="margin-top:clamp(31px,5vw,54px); text-align:left">
+          <label for="of-email" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#C9A227; margin-bottom:12px">EMAIL ADDRESS</label>
+          <input id="of-email" type="email" inputmode="email" autocomplete="email" value="{{ email }}" onChange="{{ setEmail }}" onKeyDown="{{ emailKey }}" style="width:100%; padding:14px 0; font-size:17px; color:#F0E9DC; background:transparent; border:none; border-bottom:1px solid #7A3A42; transition:border-color 300ms ease">
+        </div>
+
+        <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:clamp(28px,4vw,44px)">
+          <button type="button" onClick="{{ nextStep }}" aria-disabled="{{ emailBlocked }}" style="{{ emailBtn }}">CONTINUE<span style="font-size:14px; letter-spacing:0; margin-left:14px">&rarr;</span></button>
+          <sc-if value="{{ emailError }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="font-size:13px; line-height:1.7; color:#E0B977">Enter a valid email address to continue.</div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── step two: mobile ─────────────────────────────── -->
+      <sc-if value="{{ onPhone }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(24px,3.4vw,38px); letter-spacing:0.16em; line-height:1.24; color:#F0E9DC; margin:0; padding-left:0.16em">THE FINAL DETAIL</h1>
+        <p style="font-size:16.5px; line-height:1.8; color:#E0CFC0; margin:26px auto 0; max-width:400px; text-wrap:pretty">Provide your mobile number to unlock your exclusive Ambrosia offer.</p>
+
+        <div style="margin-top:clamp(31px,5vw,54px); text-align:left">
+          <label for="of-phone" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#C9A227; margin-bottom:12px">MOBILE NUMBER</label>
+          <input id="of-phone" type="tel" inputmode="tel" autocomplete="tel" value="{{ phone }}" onChange="{{ setPhone }}" onKeyDown="{{ phoneKey }}" style="width:100%; padding:14px 0; font-size:17px; color:#F0E9DC; background:transparent; border:none; border-bottom:1px solid #7A3A42; transition:border-color 300ms ease">
+        </div>
+
+        <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:clamp(28px,4vw,44px)">
+          <button type="button" onClick="{{ reveal }}" aria-disabled="{{ phoneBlocked }}" style="{{ phoneBtn }}">UNLOCK MY OFFER<span style="font-size:14px; letter-spacing:0; margin-left:14px">&rarr;</span></button>
+          <sc-if value="{{ phoneError }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="font-size:13px; line-height:1.7; color:#E0B977">Enter a valid mobile number to continue.</div>
+          </sc-if>
+          <button type="button" onClick="{{ back }}" style="font-size:12px; letter-spacing:0.12em; color:#D8A9AE; cursor:pointer; padding:6px 0; transition:color 400ms ease" style-hover="color:#F0E9DC">BACK</button>
+        </div>
+
+        <p style="font-size:12px; line-height:1.75; color:#B08A8F; margin:clamp(30px,4.5vw,48px) auto 0; max-width:400px; text-wrap:pretty">Message frequency varies; message and data rates may apply. Consent is not a condition of purchase. Reply STOP to unsubscribe or HELP for help. Carriers are not liable for delayed or undelivered messages.</p>
+      </div>
+      </sc-if>
+
+      <!-- ─── revealed ─────────────────────────────────────── -->
+      <sc-if value="{{ onReveal }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227">YOUR WELCOME OFFER</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:clamp(45px,12vw,148px); line-height:0.92; letter-spacing:-0.02em; color:#F0E9DC; margin-top:22px">10%</div>
+        <div style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(15px,1.8vw,20px); letter-spacing:0.2em; color:#F0E9DC; margin-top:12px; padding-left:0.2em">OFF YOUR FIRST ORDER</div>
+
+        <div style="border-top:1px solid #7A3A42; border-bottom:1px solid #7A3A42; padding:clamp(22px,3vw,30px) 0; margin:clamp(30px,4.5vw,48px) 0">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#C9A227; margin-bottom:12px">YOUR CODE</div>
+          <div style="font-family:Archivo, sans-serif; font-size:clamp(24px,3.2vw,34px); font-weight:600; letter-spacing:0.26em; color:#F0E9DC; padding-left:0.26em">WELCOME10</div>
+        </div>
+
+        <p style="font-size:15px; line-height:1.8; color:#E0CFC0; margin:0 auto; max-width:400px; text-wrap:pretty">We&rsquo;ve sent this to {{ emailShown }}. It applies to your first qualifying order.</p>
+
+        <div style="display:flex; justify-content:center; margin-top:clamp(30px,4.5vw,52px)">
+          <a href="index.html" style="display:inline-flex; align-items:center; height:58px; padding:0 44px; background:#F0E9DC; color:#3E1218; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#E4D8C6">BROWSE THE CATALOGUE</a>
+        </div>
+
+        <p style="font-size:12px; line-height:1.75; color:#B08A8F; margin:clamp(30px,4.5vw,48px) auto 0; max-width:420px; text-wrap:pretty">Valid for 30 days from sign-up on a first order of $200 or more, before shipping and tax, by a verified account. Bacteriostatic water is excluded from the minimum. One per account, not combinable with other offers.</p>
+      </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <div style="border-top:1px solid #7A3A42; padding:22px clamp(20px,4vw,56px) clamp(25px,3.5vw,40px)">
+    <div style="max-width:1000px; margin:0 auto; text-align:center">
+      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; margin-bottom:14px">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+      <p style="font-size:12px; line-height:1.75; color:#B08A8F; margin:0">Ambrosia supplies research materials to qualified purchasers aged 21 or older for laboratory research only. &copy; 2026 Ambrosia LLC</p>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;previewStep&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Live&quot;,&quot;Email&quot;,&quot;Mobile&quot;,&quot;Revealed&quot;],&quot;default&quot;:&quot;Live&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;State&quot;}}">
+class Component extends DCLogic {
+  state = { step: 0, email: '', phone: '', tried: false };
+
+  get emailOk() {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(this.state.email.trim());
+  }
+
+  get phoneOk() {
+    return this.state.phone.replace(/\D/g, '').length >= 10;
+  }
+
+  btn(ready) {
+    return 'display:inline-flex; align-items:center; justify-content:center; height:58px;'
+      + ' padding:0 44px; font-size:12px; font-weight:600; letter-spacing:0.2em; cursor:pointer;'
+      + ' transition:background-color 400ms cubic-bezier(.2,.6,.2,1); background:'
+      + (ready ? '#F0E9DC' : '#7A3A42') + '; color:' + (ready ? '#3E1218' : '#E0CFC0');
+  }
+
+  scrollToHash() {
+    const raw = (location.hash || '').slice(1);
+    if (!raw) return;
+    let id;
+    try { id = decodeURIComponent(raw); } catch (e) { id = raw; }
+    let tries = 0;
+    const tick = () => {
+      const el = document.getElementById(id);
+      if (el) { window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 16 }); return; }
+      if (tries++ < 90) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  componentDidMount() {
+    this.scrollToHash();
+  }
+
+  renderVals() {
+    const s = this.state;
+    const p = this.props.previewStep;
+    const forced = p === 'Email' ? 0 : p === 'Mobile' ? 1 : p === 'Revealed' ? 2 : null;
+    const step = forced == null ? s.step : forced;
+    const eOk = this.emailOk, pOk = this.phoneOk;
+
+    const next = () => eOk ? this.setState({ step: 1, tried: false }) : this.setState({ tried: true });
+    const reveal = () => pOk ? this.setState({ step: 2, tried: false }) : this.setState({ tried: true });
+
+    return {
+      onEmail: step === 0,
+      onPhone: step === 1,
+      onReveal: step === 2,
+      stepLabel: step === 2 ? 'UNLOCKED' : 'STEP ' + (step + 1) + ' OF 2',
+
+      email: s.email,
+      setEmail: e => this.setState({ email: e.target.value, tried: false }),
+      emailKey: e => { if (e.key === 'Enter') next(); },
+      emailBlocked: !eOk,
+      emailError: s.tried && !eOk,
+      emailBtn: this.btn(eOk),
+      nextStep: next,
+
+      phone: s.phone,
+      setPhone: e => this.setState({ phone: e.target.value, tried: false }),
+      phoneKey: e => { if (e.key === 'Enter') reveal(); },
+      phoneBlocked: !pOk,
+      phoneError: s.tried && !pOk,
+      phoneBtn: this.btn(pOk),
+      reveal: reveal,
+      back: () => this.setState({ step: 0, tried: false }),
+
+      emailShown: s.email.trim() || 'your inbox'
+    };
+  }
+}
+</script>
+</body>
+</html>

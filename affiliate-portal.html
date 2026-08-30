@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<link rel="stylesheet" href="ambrosia.css">
+</helmet>
+
+<div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased">
+
+  <div style="background:#2C1B15; padding:11px clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between">
+      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+      <div style="font-size:11px; letter-spacing:0.14em; color:#A9A096">QUALIFIED PURCHASERS ONLY &middot; 21+</div>
+    </div>
+  </div>
+
+  <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
+    <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
+      <div style="order:1; justify-self:start; display:flex; align-items:center; gap:clamp(18px,2.4vw,34px)">
+        <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}" style="display:flex; align-items:center; gap:11px; white-space:nowrap; cursor:pointer; padding:0">
+          <span style="display:flex; flex-direction:column; gap:5px; width:17px"><span style="height:1px; background:#241C19; display:block"></span><span style="height:1px; background:#241C19; display:block"></span></span>
+          <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19">MENU</span>
+        </button>
+        <div style="position:relative; display:flex">
+          <button type="button" onClick="{{ toggleStd }}" aria-expanded="{{ stdOpen }}" style="display:flex; align-items:center; gap:8px; padding:0; cursor:pointer; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">OUR STANDARDS <span style="{{ stdCaretStyle }}">&rsaquo;</span></button>
+          <sc-if value="{{ stdOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:268px; background:#F0E9DC; border:1px solid #D8C9B2; box-shadow:0 22px 44px -22px rgba(36,28,25,0.34); padding:8px 0; z-index:40">
+              <a href="standard.html" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">The Ambrosia Standard</a>
+              <a href="standard.html#coa" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">Certificates of Analysis</a>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <a href="index.html" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:28px; height:28px">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+        <span style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(19px,2.1vw,27px); letter-spacing:0.32em; color:#6B1F28; white-space:nowrap; padding-left:0.32em">AMBROSIA</span>
+      </a>
+
+      <div style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
+        <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ signOut }}" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; cursor:pointer; padding:0; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">SIGN OUT</button>
+        </sc-if>
+        <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CART ({{ cartCount }})</a>
+      </div>
+    </div>
+
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="border-top:1px solid #D8C9B2">
+      <div style="max-width:1440px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:clamp(25px,4vw,64px); padding:clamp(26px,3vw,40px) 0 clamp(28px,4vw,52px)">
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="ghk-cu.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GHK-Cu</a>
+            <a href="glp-2.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-2</a>
+            <a href="glp-3.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-3</a>
+            <a href="glow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Glow</a>
+            <a href="klow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Klow</a>
+            <a href="wolverine.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Wolverine</a>
+          </div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#6E6055; margin:14px 0 4px">RECONSTITUTION SUPPLY</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="bacteriostatic-water.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Bacteriostatic Water</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">YOUR BAG</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="cart.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Cart</a>
+            <a href="checkout.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Checkout</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="affiliate.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Affiliate Portal</a>
+            <a href="contact.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">SUPPORT &amp; LEGAL</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="faq.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
+            <a href="standard.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Shipping & Restrictions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+
+  <!-- ─── sign in gate ─────────────────────────────────────── -->
+  <sc-if value="{{ signedOut }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:clamp(36px,6vw,96px) clamp(20px,4vw,56px) clamp(45px,9vw,120px)">
+    <div class="g2" style="max-width:1180px; margin:0 auto; gap:clamp(33px,5vw,80px); align-items:center">
+      <div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">AMBROSIA COLLECTIVE</div>
+        <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(33px,5vw,64px); line-height:1.04; letter-spacing:-0.012em; color:#6B1F28; margin:22px 0 0">Affiliate Portal</h1>
+        <p style="font-size:16px; line-height:1.8; color:#3C312C; margin:24px 0 0; max-width:46ch; text-wrap:pretty">Your link, your referred orders, your second line and your payout history in one place. Credentials are issued by Ambrosia once an application is approved.</p>
+        <div style="margin-top:28px; border-top:1px solid #D8C9B2; padding-top:22px">
+          <p style="font-size:14.5px; line-height:1.75; color:#6E6055; margin:0; max-width:46ch; text-wrap:pretty">Not a partner yet? <a href="affiliate.html" style="color:#6B1F28; border-bottom:1px solid #C9A227">Apply to join the Collective</a>.</p>
+        </div>
+      </div>
+
+      <div style="background:#E4D8C6; padding:clamp(25px,3.4vw,42px)">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">{{ signInKicker }}</div>
+
+        <sc-if value="{{ stepCredentials }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:18px; margin-top:24px">
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">AFFILIATE ID</span>
+            <input type="text" autocomplete="username" spellcheck="false" value="{{ loginId }}" onChange="{{ setLoginId }}" onKeyDown="{{ onKeyId }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px; letter-spacing:0.08em; text-transform:uppercase">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">PASSWORD</span>
+            <input type="password" autocomplete="current-password" value="{{ loginPass }}" onChange="{{ setLoginPass }}" onKeyDown="{{ onKeyId }}" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px">
+          </label>
+          <label style="display:flex; align-items:center; gap:12px; cursor:pointer">
+            <input type="checkbox" checked="{{ remember }}" onChange="{{ setRemember }}" style="width:17px; height:17px; accent-color:#6B1F28; cursor:pointer">
+            <span style="font-size:13.5px; line-height:1.6; color:#3C312C">Remember this device for 30 days</span>
+          </label>
+          <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:13px; line-height:1.6; color:#6B1F28">{{ loginError }}</div>
+          </sc-if>
+          <button type="button" onClick="{{ submitCredentials }}" style="display:flex; align-items:center; justify-content:center; height:58px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">CONTINUE</button>
+          <button type="button" onClick="{{ toggleHelp }}" style="align-self:flex-start; font-size:12px; font-weight:600; letter-spacing:0.14em; color:#6E6055; cursor:pointer; padding:0; transition:color 350ms ease" style-hover="color:#241C19">FORGOTTEN YOUR PASSWORD?</button>
+          <sc-if value="{{ helpOpen }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:13px; line-height:1.75; color:#3C312C; margin:0; max-width:44ch; text-wrap:pretty">Credentials are issued by Ambrosia, so they are reset by us rather than by you. Write to <span style="color:#6B1F28">partners@ambrosiastandard.com</span> from the address on your partner record and a new password will be issued within one business day.</p>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ stepCode }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; gap:18px; margin-top:24px">
+          <p style="font-size:14px; line-height:1.75; color:#3C312C; margin:0; max-width:42ch; text-wrap:pretty">{{ codeIntro }}</p>
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#6E6055">SIX-DIGIT CODE</span>
+            <input type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" value="{{ loginCode }}" onChange="{{ setLoginCode }}" onKeyDown="{{ onKeyCode }}" style="width:100%; height:56px; padding:0 18px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-family:'Instrument Serif', serif; font-size:26px; letter-spacing:0.34em">
+          </label>
+          <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:13px; line-height:1.6; color:#6B1F28">{{ loginError }}</div>
+          </sc-if>
+          <button type="button" onClick="{{ submitCode }}" style="display:flex; align-items:center; justify-content:center; height:58px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">VERIFY AND SIGN IN</button>
+          <button type="button" onClick="{{ backToCredentials }}" style="align-self:flex-start; font-size:12px; font-weight:600; letter-spacing:0.14em; color:#6E6055; cursor:pointer; padding:0; transition:color 350ms ease" style-hover="color:#241C19">&larr; USE A DIFFERENT ID</button>
+        </div>
+        </sc-if>
+
+        <div style="margin-top:26px; border-top:1px solid #D8C9B2; padding-top:22px">
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:12px">TEST ACCOUNT</div>
+          <p style="font-size:13px; line-height:1.75; color:#3C312C; margin:0; text-wrap:pretty">ID <span style="color:#241C19; letter-spacing:0.08em">AFFILIATE1</span> &nbsp;·&nbsp; password <span style="color:#241C19">ambrosia</span> &nbsp;·&nbsp; any six digits as the code.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ─── portal ───────────────────────────────────────────── -->
+  <sc-if value="{{ signedIn }}" hint-placeholder-val="{{ true }}">
+  <div style="padding:clamp(25px,3.5vw,44px) clamp(20px,4vw,56px) clamp(45px,9vw,120px)">
+    <div style="max-width:1440px; margin:0 auto">
+
+      <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px 32px; padding-bottom:clamp(24px,3vw,36px); border-bottom:1px solid #D8C9B2">
+        <div>
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">AMBROSIA COLLECTIVE</div>
+          <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(31px,4.6vw,60px); line-height:1.04; letter-spacing:-0.012em; color:#6B1F28; margin:20px 0 0">{{ greeting }}</h1>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:28px 40px">
+          <div style="display:flex; flex-direction:column; gap:7px">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">TIER</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:24px; line-height:1; color:#241C19">{{ tier }}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:7px">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">COMMISSION</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:24px; line-height:1; color:#241C19">{{ rateLabel }}</div>
+          </div>
+          <sc-if value="{{ hasTeam }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex; flex-direction:column; gap:7px">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">SECOND LINE</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:24px; line-height:1; color:#241C19">{{ overrideLabel }}</div>
+          </div>
+          </sc-if>
+          <div style="display:flex; flex-direction:column; gap:7px">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">PARTNER SINCE</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:24px; line-height:1; color:#241C19">{{ memberSince }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="psplit" style="gap:clamp(33px,5vw,80px); align-items:start; padding-top:clamp(28px,4vw,52px)">
+
+        <div style="display:flex; flex-direction:column; gap:clamp(31px,4.5vw,60px)">
+
+          <!-- your link -->
+          <div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; padding-bottom:18px; border-bottom:1px solid #241C19">YOUR LINK</div>
+            <div style="display:flex; flex-wrap:wrap; align-items:center; gap:12px; padding-top:22px">
+              <div style="flex:1 1 320px; min-width:0; height:56px; display:flex; align-items:center; padding:0 18px; border:1px solid #D8C9B2; background:#E4D8C6; font-size:15px; color:#241C19; overflow:hidden; white-space:nowrap; text-overflow:ellipsis">{{ link }}</div>
+              <button type="button" onClick="{{ copyLink }}" style="flex:0 0 auto; height:56px; padding:0 28px; background:#6B1F28; color:#F0E9DC; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">{{ copyLabel }}</button>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:10px 32px; padding-top:18px">
+              <div style="font-size:13px; line-height:1.6; color:#6E6055">Referral code <span style="color:#241C19; letter-spacing:0.1em">{{ code }}</span></div>
+              <div style="font-size:13px; line-height:1.6; color:#6E6055">Attribution window <span style="color:#241C19">{{ windowLabel }}</span></div>
+            </div>
+            <div style="font-size:13px; line-height:1.7; color:#3C312C; padding-top:14px; max-width:62ch; text-wrap:pretty">You earn {{ rateLabel }} on every qualifying order placed through your link, and {{ overrideLabel }} of the order value on anything your second line sells. They keep their own rate in full — second line commission is paid by Ambrosia, not taken from them.</div>
+
+            <div class="g2" style="gap:clamp(22px,3vw,44px); margin-top:clamp(26px,3.4vw,40px)">
+              <div>
+                <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-bottom:14px; border-bottom:1px solid #D8C9B2">HOW AN ORDER IS ATTRIBUTED</div>
+                <div style="display:flex; flex-direction:column">
+                  <div style="display:flex; gap:16px; padding:15px 0; border-bottom:1px solid #D8C9B2">
+                    <div style="flex:0 0 auto; width:9px; height:9px; margin-top:7px; border:1px solid #C9A227; background:#C9A227"></div>
+                    <div style="font-size:14px; line-height:1.7; color:#3C312C">A click on your link is remembered for <span style="color:#241C19">60 days</span>. The most recent link wins, and a referral code entered at checkout beats whichever link came before it.</div>
+                  </div>
+                  <div style="display:flex; gap:16px; padding:15px 0; border-bottom:1px solid #D8C9B2">
+                    <div style="flex:0 0 auto; width:9px; height:9px; margin-top:7px; border:1px solid #C9A227; background:#C9A227"></div>
+                    <div style="font-size:14px; line-height:1.7; color:#3C312C">Once a customer's first order is credited to you, their repeat orders keep paying you for <span style="color:#241C19">12 months</span>, whether or not they return through your link.</div>
+                  </div>
+                  <div style="display:flex; gap:16px; padding:15px 0; border-bottom:1px solid #D8C9B2">
+                    <div style="flex:0 0 auto; width:9px; height:9px; margin-top:7px; border:1px solid #C9A227; background:#C9A227"></div>
+                    <div style="font-size:14px; line-height:1.7; color:#3C312C">A refund reverses the commission it earned. Orders you place yourself do not earn.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-bottom:14px; border-bottom:1px solid #D8C9B2">RANK</div>
+                <div style="display:flex; flex-direction:column">
+                  <div style="{{ rankPartnerStyle }}">
+                    <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px">
+                      <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 14px">
+                        <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Partner</div>
+                        <sc-if value="{{ isPartnerRank }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:#6B1F28; border:1px solid #6B1F28; padding:5px 9px">YOUR RANK</div>
+                        </sc-if>
+                      </div>
+                      <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">20%</div>
+                    </div>
+                    <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:8px 0 0; text-wrap:pretty">Where every approved affiliate starts. Commission on your own referred orders.</p>
+                  </div>
+                  <div style="{{ rankSeniorStyle }}">
+                    <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px">
+                      <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 14px">
+                        <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Senior Partner</div>
+                        <sc-if value="{{ isSeniorRank }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:#6B1F28; border:1px solid #6B1F28; padding:5px 9px">YOUR RANK</div>
+                        </sc-if>
+                      </div>
+                      <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">30%</div>
+                    </div>
+                    <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:8px 0 0; text-wrap:pretty">The full rate on your own referred orders, by invitation. No second line yet.</p>
+                  </div>
+                  <div style="{{ rankFoundingStyle }}">
+                    <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px">
+                      <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 14px">
+                        <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Founding Partner</div>
+                        <sc-if value="{{ isFoundingRank }}" hint-placeholder-val="{{ true }}">
+                          <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:#6B1F28; border:1px solid #6B1F28; padding:5px 9px">YOUR RANK</div>
+                        </sc-if>
+                      </div>
+                      <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">30% + 10%</div>
+                    </div>
+                    <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:8px 0 0; text-wrap:pretty">The same 30% on your own orders, plus 10% second line commission on everything your affiliates sell. Founding Partners are the only rank that holds a line beneath them.</p>
+                  </div>
+                </div>
+                <p style="font-size:13px; line-height:1.75; color:#6E6055; margin:16px 0 0; text-wrap:pretty">Rank is granted by Ambrosia rather than earned automatically. A Partner who consistently produces is invited to Senior Partner, which raises the rate on their own sales; Founding Partner is the step after that, and affiliates are placed into their second line from that point on.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- performance -->
+          <div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; padding-bottom:18px; border-bottom:1px solid #241C19">PERFORMANCE</div>
+            <div class="g4" style="gap:clamp(18px,2.2vw,28px); padding-top:26px">
+              <sc-for list="{{ stats }}" as="s">
+                <div style="display:flex; flex-direction:column; gap:9px; border-top:1px solid #D8C9B2; padding-top:16px">
+                  <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:#7A5622; line-height:1.5">{{ s.k }}</div>
+                  <div style="font-family:'Instrument Serif', serif; font-size:clamp(26px,2.6vw,32px); line-height:1; color:#241C19">{{ s.v }}</div>
+                  <div style="font-size:12.5px; line-height:1.6; color:#6E6055">{{ s.note }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="margin-top:clamp(26px,3.4vw,44px)">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:20px">COMMISSION BY MONTH</div>
+              <div style="display:flex; align-items:flex-end; gap:clamp(10px,1.6vw,20px); height:200px; border-bottom:1px solid #D8C9B2; padding-bottom:2px">
+                <sc-for list="{{ bars }}" as="b">
+                  <div style="flex:1 1 0; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:10px; height:100%">
+                    <div style="font-size:12px; color:#6E6055; white-space:nowrap">{{ b.value }}</div>
+                    <div style="{{ b.style }}"></div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex; gap:clamp(10px,1.6vw,20px); padding-top:12px">
+                <sc-for list="{{ bars }}" as="b">
+                  <div style="flex:1 1 0; text-align:center; font-size:11px; font-weight:600; letter-spacing:0.12em; color:#7A5622">{{ b.label }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <!-- your team -->
+          <sc-if value="{{ hasTeam }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:16px; padding-bottom:18px; border-bottom:1px solid #241C19">
+              <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">YOUR SECOND LINE</div>
+              <div style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6E6055">{{ teamNote }}</div>
+            </div>
+
+            <div class="g3" style="gap:clamp(18px,2.2vw,28px); padding-top:26px">
+              <sc-for list="{{ teamStats }}" as="s" hint-placeholder-count="3">
+                <div style="display:flex; flex-direction:column; gap:9px; border-top:1px solid #D8C9B2; padding-top:16px">
+                  <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:#7A5622; line-height:1.5">{{ s.k }}</div>
+                  <div style="font-family:'Instrument Serif', serif; font-size:clamp(26px,2.6vw,32px); line-height:1; color:#241C19">{{ s.v }}</div>
+                  <div style="font-size:12.5px; line-height:1.6; color:#6E6055">{{ s.note }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div class="tscroll" style="margin-top:clamp(26px,3.4vw,40px)">
+            <div class="trow" style="gap:12px 20px; padding:16px 2px; border-bottom:1px solid #D8C9B2">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">AFFILIATE</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">JOINED</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">ORDERS</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">VOLUME</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">THEIRS</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">THIRD LINE</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">YOUR 10%</div>
+            </div>
+
+            <sc-for list="{{ team }}" as="m" hint-placeholder-count="3">
+              <div>
+                <button type="button" onClick="{{ m.toggle }}" aria-expanded="{{ m.open }}" class="trow" style="{{ m.rowStyle }}">
+                  <div style="display:flex; align-items:center; gap:11px; min-width:0">
+                    <span style="{{ m.caretStyle }}">&rsaquo;</span>
+                    <span style="display:flex; flex-direction:column; gap:4px; min-width:0">
+                      <span style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.2; color:#241C19; text-align:left">{{ m.name }}</span>
+                      <span style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#7A5622; text-align:left">{{ m.rank }}</span>
+                    </span>
+                  </div>
+                  <div style="font-size:13.5px; color:#6E6055; white-space:nowrap; text-align:left">{{ m.joined }}</div>
+                  <div style="font-size:13.5px; color:#3C312C; text-align:left">{{ m.orders }}</div>
+                  <div style="font-size:13.5px; color:#3C312C; white-space:nowrap; text-align:left">{{ m.volume }}</div>
+                  <div style="font-size:13.5px; color:#3C312C; white-space:nowrap; text-align:left">{{ m.commission }}</div>
+                  <div style="font-size:13.5px; color:#6E6055; text-align:left">{{ m.teamCount }}</div>
+                  <div style="font-family:'Instrument Serif', serif; font-size:19px; color:#241C19; white-space:nowrap; text-align:left">{{ m.override }}</div>
+                </button>
+                <sc-if value="{{ m.open }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#E4D8C6; padding:20px clamp(16px,2vw,26px) 22px; margin-bottom:2px; min-width:820px">
+                    <div style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:#7A5622">RECRUITED BY {{ m.upper }} &middot; YOUR THIRD LINE</div>
+                    <sc-for list="{{ m.recruits }}" as="r" hint-placeholder-count="2">
+                      <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 24px; padding:14px 0; border-bottom:1px solid #D8C9B2">
+                        <div style="font-size:14.5px; color:#241C19">{{ r.name }}</div>
+                        <div style="font-size:13px; color:#6E6055">Joined {{ r.joined }}</div>
+                        <div style="font-size:13px; color:#3C312C">{{ r.orders }} orders</div>
+                        <div style="font-size:13px; color:#3C312C">{{ r.volume }} volume</div>
+                      </div>
+                    </sc-for>
+                    <p style="font-size:12.5px; line-height:1.7; color:#6E6055; margin:14px 0 0; max-width:60ch; text-wrap:pretty">{{ m.recruitNote }}</p>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+            </div>
+
+            <div style="margin-top:clamp(24px,3vw,36px); border:1px solid #D8C9B2; padding:clamp(22px,2.6vw,30px)">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">PUT SOMEONE FORWARD</div>
+              <p style="font-size:14px; line-height:1.75; color:#3C312C; margin:14px 0 20px; max-width:60ch; text-wrap:pretty">Affiliates are not self-serve. Send us a name and we will take it from there — vetting, terms and credentials are issued by Ambrosia, and the account joins your second line once it is approved.</p>
+              <sc-if value="{{ referSent }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:14px; line-height:1.7; color:#6B1F28">{{ referConfirm }}</div>
+              </sc-if>
+              <sc-if value="{{ referOpen }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; flex-wrap:wrap; gap:12px">
+                <input type="text" placeholder="Name" value="{{ referName }}" onChange="{{ setReferName }}" style="flex:1 1 200px; min-width:0; height:54px; padding:0 16px; border:1px solid #D8C9B2; background:#E4D8C6; color:#241C19; font-size:15px">
+                <input type="text" placeholder="Email or handle" value="{{ referContact }}" onChange="{{ setReferContact }}" style="flex:1 1 200px; min-width:0; height:54px; padding:0 16px; border:1px solid #D8C9B2; background:#E4D8C6; color:#241C19; font-size:15px">
+                <button type="button" onClick="{{ submitRefer }}" style="flex:0 0 auto; height:54px; padding:0 30px; background:#6B1F28; color:#F0E9DC; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">SUBMIT</button>
+              </div>
+              </sc-if>
+            </div>
+          </div>
+          </sc-if>
+
+          <!-- referred orders -->
+          <div>
+            <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:16px; padding-bottom:18px; border-bottom:1px solid #241C19">
+              <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">REFERRED ORDERS</div>
+              <div style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6E6055">{{ ordersNote }}</div>
+            </div>
+            <sc-if value="{{ hasTeam }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; flex-wrap:wrap; gap:10px; padding-top:20px">
+                <sc-for list="{{ orderFilters }}" as="f" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ f.select }}" aria-pressed="{{ f.active }}" style="{{ f.style }}">{{ f.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <div class="orow" style="gap:12px 20px; padding:16px 2px; border-bottom:1px solid #D8C9B2">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">DATE</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">REFERENCE</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">ITEMS</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">ORDER</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">YOURS</div>
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6E6055">STATUS</div>
+            </div>
+            <sc-for list="{{ orders }}" as="o">
+              <div class="orow" style="gap:12px 20px; padding:18px 2px; border-bottom:1px solid #D8C9B2; align-items:center">
+                <div style="font-size:13.5px; color:#6E6055; white-space:nowrap">{{ o.date }}</div>
+                <div style="font-size:13.5px; color:#241C19; letter-spacing:0.04em; white-space:nowrap">{{ o.ref }}</div>
+                <div style="font-size:13.5px; line-height:1.6; color:#3C312C">{{ o.items }}</div>
+                <div style="font-size:13.5px; color:#3C312C; white-space:nowrap">{{ o.total }}</div>
+                <div style="font-family:'Instrument Serif', serif; font-size:19px; color:#241C19; white-space:nowrap">{{ o.commission }}</div>
+                <div style="{{ o.statusStyle }}">{{ o.status }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- assets -->
+          <div>
+            <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; padding-bottom:18px; border-bottom:1px solid #241C19">PARTNER ASSETS</div>
+            <div class="g3" style="gap:clamp(20px,2.4vw,30px); padding-top:26px">
+              <div style="display:flex; flex-direction:column; gap:9px">
+                <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Product photography</div>
+                <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Every vial as shot, on the sand ground, cleared for partner use.</p>
+                <a href="mailto:partners@ambrosiastandard.com?subject=Partner%20asset%20request" style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; padding-top:4px; transition:color 350ms ease" style-hover="color:#8E2C36">REQUEST &rarr;</a>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:9px">
+                <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">The mark</div>
+                <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Wordmark and hexagon, with the clear-space rules that go with them.</p>
+                <a href="mailto:partners@ambrosiastandard.com?subject=Partner%20asset%20request" style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; padding-top:4px; transition:color 350ms ease" style-hover="color:#8E2C36">REQUEST &rarr;</a>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:9px">
+                <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">What you may say</div>
+                <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">The claims policy for partners, and the language that is never permitted.</p>
+                <a href="affiliate-agreement.html" style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; padding-top:4px; transition:color 350ms ease" style-hover="color:#8E2C36">READ &rarr;</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- balance and payouts -->
+        <div class="stick">
+          <div style="background:#E4D8C6; padding:clamp(26px,3vw,36px)">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">UNPAID BALANCE</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:clamp(34px,4.4vw,56px); line-height:1; color:#241C19; margin-top:18px">{{ balance }}</div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px 28px; margin-top:16px">
+              <div style="font-size:13px; line-height:1.7; color:#3C312C">Your own sales <span style="color:#241C19">{{ ownEarned }}</span></div>
+              <sc-if value="{{ hasTeam }}" hint-placeholder-val="{{ true }}">
+                <div style="font-size:13px; line-height:1.7; color:#3C312C">Second line <span style="color:#241C19">{{ overrideEarned }}</span></div>
+              </sc-if>
+            </div>
+            <p style="font-size:13px; line-height:1.7; color:#3C312C; margin:12px 0 0; text-wrap:pretty">{{ balanceNote }}</p>
+
+            <div style="margin-top:24px; border-top:1px solid #D8C9B2; padding-top:20px; display:flex; flex-direction:column; gap:14px">
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px">
+                <div style="font-size:14px; color:#3C312C">Next payout</div>
+                <div style="font-size:14px; color:#241C19">{{ nextPayout }}</div>
+              </div>
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px">
+                <div style="font-size:14px; color:#3C312C">Method</div>
+                <div style="font-size:14px; color:#241C19">{{ method }}</div>
+              </div>
+              <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px">
+                <div style="font-size:14px; color:#3C312C">Minimum</div>
+                <div style="font-size:14px; color:#241C19">{{ minimum }}</div>
+              </div>
+            </div>
+
+            <button type="button" onClick="{{ requestPayout }}" style="display:flex; align-items:center; justify-content:center; width:100%; height:56px; margin-top:24px; background:#6B1F28; color:#F0E9DC; font-size:11px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#B08C1E">{{ payoutLabel }}</button>
+            <div style="margin-top:22px; border-top:1px solid #D8C9B2; padding-top:18px">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:10px">TAX &amp; DOCUMENTATION</div>
+              <p style="font-size:12.5px; line-height:1.75; color:#3C312C; margin:0; text-wrap:pretty">Commission is paid gross. Partners are responsible for their own reporting, and US partners paid $600 or more in a calendar year must have a completed W-9 on file before a payout is released.</p>
+            </div>
+            <div style="font-size:12px; line-height:1.7; color:#3C312C; padding-top:14px">Balances that clear before the first of the month are paid on that date. Anything under the $50 minimum rolls forward to the next run. Payouts are issued in USDT on the TRC-20 network.</div>
+          </div>
+
+          <div style="margin-top:clamp(24px,2.6vw,32px); border:1px solid #D8C9B2; padding:clamp(24px,2.8vw,32px)">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">PAYOUT HISTORY</div>
+            <div style="margin-top:18px">
+              <sc-for list="{{ payouts }}" as="p">
+                <div class="prow" style="gap:8px 16px; padding:15px 2px; border-top:1px solid #D8C9B2; align-items:center">
+                  <div style="font-size:13px; color:#6E6055; white-space:nowrap">{{ p.date }}</div>
+                  <div style="font-family:'Instrument Serif', serif; font-size:19px; color:#241C19; white-space:nowrap">{{ p.amount }}</div>
+                  <div style="font-size:13px; color:#3C312C">{{ p.method }}</div>
+                  <div style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#7A5622; white-space:nowrap">{{ p.status }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="margin-top:clamp(24px,2.6vw,32px); background:#2C1B15; padding:clamp(24px,2.8vw,32px)">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227">PARTNER TERMS</div>
+            <p style="font-size:13.5px; line-height:1.75; color:#D8C9B2; margin:16px 0 0; text-wrap:pretty">Commission is earned on qualifying orders once they clear. Reversals follow refunds. Partners may not make therapeutic, medical or human-use claims of any kind, and may not present research materials as fit for consumption.</p>
+            <a href="affiliate-agreement.html" style="display:inline-flex; align-items:center; gap:10px; margin-top:18px; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#C9A227; transition:color 350ms ease" style-hover="color:#E0B977">READ THE FULL TERMS &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="background:#2C1B15; padding:clamp(38px,7vw,100px) clamp(20px,4vw,56px) 0">
+    <div style="max-width:1440px; margin:0 auto">
+      <div class="g4" style="gap:clamp(28px,4vw,56px); padding-bottom:clamp(36px,6vw,80px)">
+        <div>
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px">
+            <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:24px; height:24px">
+              <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#C9A227" stroke-width="2.6"></path>
+              <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#C9A227" stroke-width="2.6"></path>
+              <g stroke="#C9A227" stroke-width="3.4" fill="#2C1B15">
+                <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+                <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+                <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+              </g>
+              <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#2C1B15"></circle>
+            </svg>
+            <span style="font-family:Cinzel, serif; font-size:17px; letter-spacing:0.3em; color:#F0E9DC">AMBROSIA</span>
+          </div>
+          <p style="font-size:13.5px; line-height:1.7; color:#A9A096; margin:0; max-width:250px">Research materials, verified from source to seal.</p>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="index.html#catalogue" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">All compounds</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="affiliate.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:13.5px; color:#F0E9DC; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Affiliate Portal</a>
+            <a href="faq.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">FAQ</a>
+            <a href="contact.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">LEGAL</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="standard.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Shipping &amp; Restrictions</a>
+            <a href="returns-documentation.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Returns &amp; Documentation</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; margin-bottom:16px">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+        <p style="font-size:12px; line-height:1.75; color:#A9A096; margin:0; max-width:900px">Ambrosia supplies research materials to qualified purchasers aged 21 or older for laboratory research only. Nothing sold here is a drug, a supplement, a cosmetic or a food, and none of it has been evaluated or approved by the FDA for any use.</p>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0 clamp(33px,5vw,64px); display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between">
+        <div style="font-size:12px; line-height:1.8; color:#A9A096; max-width:640px">
+          Ambrosia LLC, a Tennessee limited liability company<br>
+          Nashville, Tennessee &middot; info@ambrosiastandard.com<br>
+          Governed by the laws of the State of Tennessee, with exclusive venue in Davidson County, Tennessee.
+        </div>
+        <div style="font-size:12px; color:#A9A096">&copy; 2026 Ambrosia LLC</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;startSignedIn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Portal&quot;},&quot;partnerName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Dana&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Portal&quot;},&quot;referralCode&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;DANA15&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Portal&quot;},&quot;commissionRate&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:15,&quot;min&quot;:1,&quot;max&quot;:50,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Portal&quot;}}">
+class Component extends DCLogic {
+  state = {
+    menuOpen: false, openGroup: null, openSub: null,
+    signedIn: null,
+    loginEmail: '', loginPass: '',
+    copied: false, payoutAsked: false
+  };
+
+  static SUBMENUS = [
+    { label: 'Compounds', links: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' }
+    ] },
+    { label: 'Reconstitution Supply', links: [
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] }
+  ];
+
+  static KEY = 'ambrosia-affiliate-session';
+
+  static GROUPS = [
+    { label: 'Catalogue', items: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] },
+    { label: 'Partners', items: [
+      { label: 'Become an Affiliate', href: 'affiliate.html' },
+      { label: 'Affiliate Portal', href: 'affiliate-portal.html' },
+      { label: 'FAQ', href: 'faq.html' },
+      { label: 'Contact', href: 'contact.html' }
+    ] },
+    { label: 'Legal', items: [
+      { label: 'Certificates of Analysis', href: 'standard.html' },
+      { label: 'Research Use Policy', href: 'research-use-policy.html' },
+      { label: 'Terms of Sale', href: 'terms-of-sale.html' },
+      { label: 'Privacy Policy', href: 'privacy-policy.html' },
+      { label: 'Shipping & Restrictions', href: 'shipping-restrictions.html' },
+      { label: 'Returns & Documentation', href: 'returns-documentation.html' }
+    ] }
+  ];
+
+  static ORDERS = [
+    { date: '12 AUG 2026', ref: 'AMB-482913', items: 'GLP-1 10 mg \u00D7 1', total: '$70.00',  commission: '$10.50', status: 'CLEARING' },
+    { date: '09 AUG 2026', ref: 'AMB-482744', items: 'GHK-Cu 50 mg \u00D7 2 \u00B7 Bacteriostatic Water \u00D7 1', total: '$95.00', commission: '$14.25', status: 'CLEARING' },
+    { date: '04 AUG 2026', ref: 'AMB-482511', items: 'Glow 70 mg \u00D7 1', total: '$125.00', commission: '$18.75', status: 'CLEARING' },
+    { date: '28 JUL 2026', ref: 'AMB-481920', items: 'GLP-3 30 mg \u00D7 1', total: '$175.00', commission: '$26.25', status: 'CLEARED' },
+    { date: '21 JUL 2026', ref: 'AMB-481402', items: 'Melanotan 2 \u00D7 1 \u00B7 Bacteriostatic Water \u00D7 1', total: '$70.00', commission: '\u2212$10.50', status: 'REVERSED' }
+  ];
+
+  static DEVICE_KEY = 'ambrosia-affiliate-device';
+
+  static money(n) {
+    return '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  static ACCOUNTS = {
+    NICOLE: {
+      id: 'NICOLE', pass: 'ambrosia', name: 'Nicole', code: 'NICOLE30', rate: 30, override: 10,
+      tier: 'Founding Partner', since: 'MAR 2026', clicks: '3,140', conversion: '2.9%',
+      orders: [
+        { date: '24 AUG 2026', ref: 'AMB-491206', items: 'Klow 80 mg \u00D7 1', total: 170, status: 'CLEARING' },
+        { date: '19 AUG 2026', ref: 'AMB-490884', items: 'GLP-3 10 mg \u00D7 2 \u00B7 Bacteriostatic Water \u00D7 1', total: 145, status: 'CLEARING' },
+        { date: '12 AUG 2026', ref: 'AMB-490120', items: 'Glow 70 mg \u00D7 1', total: 125, status: 'CLEARED' },
+        { date: '06 AUG 2026', ref: 'AMB-489533', items: 'GHK-Cu 100 mg \u00D7 1', total: 65, status: 'CLEARED' },
+        { date: '02 AUG 2026', ref: 'AMB-489011', items: 'Wolverine 10 mg \u00D7 1', total: 80, status: 'REVERSED' }
+      ],
+      team: [
+        { name: 'Maya R.', rank: 'Senior Partner', joined: '12 MAY 2026', orders: 18, volume: 2140, recruits: [
+          { name: 'Jo T.', joined: '02 JUL 2026', orders: 6, volume: 610 },
+          { name: 'Priya S.', joined: '18 JUL 2026', orders: 3, volume: 285 }
+        ], recent: [
+          { date: '22 AUG 2026', ref: 'AMB-491044', items: 'GLP-2 10 mg \u00D7 2', total: 120, status: 'CLEARING' },
+          { date: '14 AUG 2026', ref: 'AMB-490311', items: 'Klow 80 mg \u00D7 1', total: 170, status: 'CLEARED' }
+        ] },
+        { name: 'Devon K.', joined: '04 JUN 2026', orders: 11, volume: 1305, recruits: [
+          { name: 'Ana M.', joined: '21 JUL 2026', orders: 4, volume: 430 }
+        ], recent: [
+          { date: '20 AUG 2026', ref: 'AMB-490902', items: 'Wolverine 20 mg \u00D7 1', total: 120, status: 'CLEARING' }
+        ] },
+        { name: 'Ruth A.', joined: '27 JUN 2026', orders: 7, volume: 890, recruits: [], recent: [
+          { date: '11 AUG 2026', ref: 'AMB-490077', items: 'Glow 70 mg \u00D7 1 \u00B7 Bacteriostatic Water \u00D7 1', total: 150, status: 'CLEARED' }
+        ] }
+      ],
+      bars: [{ label: 'MAR', n: 210 }, { label: 'APR', n: 388 }, { label: 'MAY', n: 496 },
+             { label: 'JUN', n: 631 }, { label: 'JUL', n: 889 }, { label: 'AUG', n: 543 }],
+      payouts: [
+        { date: '01 AUG 2026', amount: '$1,412.40', method: 'USDT \u00B7 TRC-20', status: 'PAID' },
+        { date: '01 JUL 2026', amount: '$988.75', method: 'USDT \u00B7 TRC-20', status: 'PAID' },
+        { date: '01 JUN 2026', amount: '$742.20', method: 'USDT \u00B7 TRC-20', status: 'PAID' }
+      ]
+    },
+    ELANA: {
+      id: 'ELANA', pass: 'ambrosia', name: 'Elana', code: 'ELANA30', rate: 30, override: 10,
+      tier: 'Founding Partner', since: 'MAR 2026', clicks: '2,610', conversion: '2.6%',
+      orders: [
+        { date: '23 AUG 2026', ref: 'AMB-491158', items: 'Klow 80 mg \u00D7 2', total: 340, status: 'CLEARING' },
+        { date: '17 AUG 2026', ref: 'AMB-490640', items: 'GHK-Cu 50 mg \u00D7 1', total: 40, status: 'CLEARING' },
+        { date: '10 AUG 2026', ref: 'AMB-489988', items: 'GLP-3 10 mg \u00D7 1', total: 70, status: 'CLEARED' },
+        { date: '04 AUG 2026', ref: 'AMB-489402', items: 'Glow 70 mg \u00D7 1', total: 125, status: 'CLEARED' }
+      ],
+      team: [
+        { name: 'Sam O.', rank: 'Senior Partner', joined: '20 MAY 2026', orders: 14, volume: 1680, recruits: [
+          { name: 'Kelly W.', joined: '09 JUL 2026', orders: 5, volume: 520 }
+        ], recent: [
+          { date: '21 AUG 2026', ref: 'AMB-490975', items: 'Wolverine 10 mg \u00D7 2', total: 160, status: 'CLEARING' }
+        ] },
+        { name: 'Bea L.', joined: '02 JUL 2026', orders: 9, volume: 1045, recruits: [], recent: [
+          { date: '13 AUG 2026', ref: 'AMB-490255', items: 'GLP-2 10 mg \u00D7 1', total: 60, status: 'CLEARED' }
+        ] }
+      ],
+      bars: [{ label: 'MAR', n: 180 }, { label: 'APR', n: 302 }, { label: 'MAY', n: 415 },
+             { label: 'JUN', n: 508 }, { label: 'JUL', n: 690 }, { label: 'AUG', n: 466 }],
+      payouts: [
+        { date: '01 AUG 2026', amount: '$1,090.10', method: 'USDT \u00B7 TRC-20', status: 'PAID' },
+        { date: '01 JUL 2026', amount: '$806.30', method: 'USDT \u00B7 TRC-20', status: 'PAID' }
+      ]
+    },
+    AFFILIATE1: {
+      id: 'AFFILIATE1', pass: 'ambrosia', name: 'Affiliate1', code: 'AFFILIATE1', rate: 30, override: 10,
+      tier: 'Founding Partner', since: 'AUG 2026', clicks: '184', conversion: '2.2%',
+      orders: [
+        { date: '25 AUG 2026', ref: 'AMB-491302', items: 'Klow 80 mg \u00D7 1', total: 170, status: 'CLEARING' },
+        { date: '18 AUG 2026', ref: 'AMB-490712', items: 'GHK-Cu 50 mg \u00D7 1 \u00B7 Bacteriostatic Water \u00D7 1', total: 65, status: 'CLEARED' }
+      ],
+      team: [
+        { name: 'Test Partner A', joined: '12 AUG 2026', orders: 3, volume: 340, recruits: [
+          { name: 'Test Partner B', joined: '20 AUG 2026', orders: 1, volume: 95 }
+        ], recent: [
+          { date: '22 AUG 2026', ref: 'AMB-491020', items: 'GLP-3 10 mg \u00D7 1', total: 70, status: 'CLEARING' }
+        ] }
+      ],
+      bars: [{ label: 'MAR', n: 0 }, { label: 'APR', n: 0 }, { label: 'MAY', n: 0 },
+             { label: 'JUN', n: 0 }, { label: 'JUL', n: 0 }, { label: 'AUG', n: 105 }],
+      payouts: []
+    }
+  };
+
+  static PAYOUTS = [
+    { date: '01 AUG 2026', amount: '$312.40', method: 'USDT \u00B7 TRC-20', status: 'PAID' },
+    { date: '01 JUL 2026', amount: '$188.75', method: 'USDT \u00B7 TRC-20', status: 'PAID' },
+    { date: '01 JUN 2026', amount: '$96.20',  method: 'USDT \u00B7 TRC-20', status: 'PAID' }
+  ];
+
+  static BARS = [
+    { label: 'MAR', n: 42 }, { label: 'APR', n: 88 }, { label: 'MAY', n: 96 },
+    { label: 'JUN', n: 131 }, { label: 'JUL', n: 189 }, { label: 'AUG', n: 43 }
+  ];
+
+  componentDidMount() {
+    let account = null;
+    try {
+      const raw = localStorage.getItem(Component.KEY);
+      if (raw && Component.ACCOUNTS[raw]) account = raw;
+    } catch (e) {}
+    this.setState({ account: account, signedIn: !!account, step: 'credentials' });
+
+    let tries = 0;
+    const boot = () => {
+      const C = window.AmbrosiaCart;
+      if (!C) { if (tries++ < 120) requestAnimationFrame(boot); return; }
+      this._cartCount = C.count();
+      this.forceUpdate();
+      this._offCart = C.on(() => { this._cartCount = C.count(); this.forceUpdate(); });
+    };
+    requestAnimationFrame(boot);
+
+    this._esc = e => { if (e.key === 'Escape') this.setState({ menuOpen: false, stdOpen: false }); };
+    document.addEventListener('keydown', this._esc);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this._esc);
+    if (this._offCart) this._offCart();
+    if (this._copyTimer) clearTimeout(this._copyTimer);
+  }
+
+  submitCredentials() {
+    const id = (this.state.loginId || '').trim().toUpperCase();
+    const pass = this.state.loginPass || '';
+    const acct = Component.ACCOUNTS[id];
+    if (!acct || acct.pass !== pass) {
+      this.setState({ loginError: 'That affiliate ID and password do not match a partner record.' });
+      return;
+    }
+    if (this.trustedDevice(id)) { this.enter(id); return; }
+    this.setState({ step: 'code', pendingId: id, loginError: '', loginCode: '' });
+  }
+
+  submitCode() {
+    const code = (this.state.loginCode || '').trim();
+    if (code.length !== 6) {
+      this.setState({ loginError: 'Enter the six-digit code.' });
+      return;
+    }
+    const id = this.state.pendingId;
+    if (this.state.remember !== false) {
+      try { localStorage.setItem(Component.DEVICE_KEY, id); } catch (e) {}
+    }
+    this.enter(id);
+  }
+
+  trustedDevice(id) {
+    try { return (localStorage.getItem(Component.DEVICE_KEY) || '') === id; } catch (e) { return false; }
+  }
+
+  enter(id) {
+    try { localStorage.setItem(Component.KEY, id); } catch (e) {}
+    this.setState({ account: id, signedIn: true, menuOpen: false, payoutAsked: false,
+      step: 'credentials', loginPass: '', loginCode: '', loginError: '', open: {} });
+    window.scrollTo({ top: 0 });
+  }
+
+  leave() {
+    try { localStorage.setItem(Component.KEY, ''); } catch (e) {}
+    this.setState({ account: null, signedIn: false, menuOpen: false, payoutAsked: false,
+      step: 'credentials', loginId: '', loginPass: '', loginCode: '', loginError: '',
+      referSent: false, referName: '', referContact: '' });
+    window.scrollTo({ top: 0 });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const C = Component;
+    const money = C.money;
+    const a = C.ACCOUNTS[s.account] || C.ACCOUNTS.AFFILIATE1;
+    const name = a.name;
+    const rate = a.rate;
+    const downRate = 20;
+    const code = a.code;
+    const link = 'ambrosia.com/?ref=' + code;
+    const peak = Math.max.apply(null, a.bars.map(b => b.n)) || 1;
+
+    const ownRows = a.orders.map(o => ({
+      date: o.date, ref: o.ref, items: o.items, total: money(o.total), status: o.status,
+      commission: (o.status === 'REVERSED' ? '\u2014' : money(o.total * rate / 100))
+    }));
+    const teamRows = [];
+    a.team.forEach(m => (m.recent || []).forEach(o => teamRows.push({
+      date: o.date, ref: o.ref, items: o.items + ' \u00B7 via ' + m.name, total: money(o.total),
+      status: o.status, commission: money(o.total * a.override / 100)
+    })));
+
+    const ownEarned = a.orders.reduce((t, o) => t + (o.status === 'REVERSED' ? 0 : o.total * rate / 100), 0);
+    const teamVolume = a.team.reduce((t, m) => t + m.volume, 0);
+    const overrideEarned = teamVolume * a.override / 100;
+    const secondLevel = a.team.reduce((t, m) => t + (m.recruits || []).length, 0);
+    const filter = s.filter || 'you';
+    const rows = filter === 'you' ? ownRows : (filter === 'team' ? teamRows : ownRows.concat(teamRows));
+
+    const STATUS_COLOR = { REVERSED: '#6E6055', CLEARING: '#7A5622', CLEARED: '#241C19', PAID: '#6B1F28' };
+    const statusStyle = st =>
+      'font-size:11px; font-weight:600; letter-spacing:0.14em; white-space:nowrap; color:'
+      + (STATUS_COLOR[st] || '#241C19');
+
+    return {
+      menuOpen: s.menuOpen,
+      stdOpen: !!s.stdOpen,
+      toggleStd: () => this.setState(p => ({ stdOpen: !p.stdOpen, menuOpen: false })),
+      closeStd: () => this.setState({ stdOpen: false }),
+      stdCaretStyle: 'font-size:15px; line-height:1; color:#7A5622; display:inline-block;'
+        + ' transition:transform 340ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+        + (s.stdOpen ? '90deg' : '0deg') + ')',
+      toggleMenu: () => this.setState(p => ({ menuOpen: !p.menuOpen, openGroup: null, stdOpen: false })),
+      menuGroups: Component.GROUPS.map((g, i) => ({
+        label: g.label,
+        items: g.items.map(it => {
+          const _close = () => this.setState({ menuOpen: false, openGroup: null, openSub: null });
+          const k = it.sub;
+          const hasSubs = typeof k === 'number';
+          return {
+            label: it.label,
+            href: it.href || '#',
+            close: _close,
+            isLink: !hasSubs,
+            hasSubs,
+            open: hasSubs && this.state.openSub === k,
+            toggle: () => this.setState(p => ({ openSub: p.openSub === k ? null : k })),
+            links: hasSubs ? Component.SUBMENUS[k].links.map(l => ({ label: l.label, href: l.href, close: _close })) : [],
+            caretStyle: 'font-size:18px; line-height:1; color:#7A5622; display:inline-block;'
+              + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+              + (hasSubs && this.state.openSub === k ? '90deg' : '0deg') + ')'
+          };
+        }),
+        open: s.openGroup === i,
+        toggle: () => this.setState(p => ({ openGroup: p.openGroup === i ? null : i })),
+        caretStyle: 'font-size:26px; line-height:1; color:#7A5622; display:inline-block;'
+          + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+          + (s.openGroup === i ? '90deg' : '0deg') + ')'
+      })),
+
+      cartCount: this._cartCount ?? 0,
+
+      signedIn: s.signedIn === true,
+      signedOut: s.signedIn === false,
+      signOut: () => this.leave(),
+
+      signInKicker: s.step === 'code' ? 'TWO-FACTOR VERIFICATION' : 'PARTNER SIGN IN',
+      stepCredentials: s.step !== 'code',
+      stepCode: s.step === 'code',
+      loginId: s.loginId || '',
+      loginPass: s.loginPass || '',
+      loginCode: s.loginCode || '',
+      loginError: s.loginError || '',
+      hasError: !!s.loginError,
+      remember: s.remember !== false,
+      helpOpen: !!s.helpOpen,
+      toggleHelp: () => this.setState(p => ({ helpOpen: !p.helpOpen })),
+      setLoginId: e => this.setState({ loginId: e.target.value, loginError: '' }),
+      setLoginPass: e => this.setState({ loginPass: e.target.value, loginError: '' }),
+      setLoginCode: e => this.setState({ loginCode: e.target.value.replace(/\D/g, '').slice(0, 6), loginError: '' }),
+      setRemember: e => this.setState({ remember: e.target.checked }),
+      onKeyId: e => { if (e.key === 'Enter') this.submitCredentials(); },
+      onKeyCode: e => { if (e.key === 'Enter') this.submitCode(); },
+      submitCredentials: () => this.submitCredentials(),
+      submitCode: () => this.submitCode(),
+      backToCredentials: () => this.setState({ step: 'credentials', loginCode: '', loginError: '' }),
+      codeIntro: 'A six-digit code has been sent to the number on the partner record for '
+        + (s.pendingId || '') + '. Enter it to finish signing in.',
+
+      greeting: 'Welcome back, ' + name + '.',
+      tier: a.tier,
+      rateLabel: rate + '%',
+      overrideLabel: a.override + '%',
+      memberSince: a.since,
+
+      hasTeam: a.team.length > 0,
+      teamNote: a.team.length + ' IN YOUR SECOND LINE \u00B7 ' + secondLevel + ' IN YOUR THIRD',
+      teamStats: [
+        { k: 'AFFILIATES BENEATH YOU', v: String(a.team.length + secondLevel),
+          note: a.team.length + ' in your second line, ' + secondLevel + ' in your third' },
+        { k: 'SECOND LINE VOLUME', v: money(teamVolume), note: 'Order value across your second line, lifetime' },
+        { k: 'SECOND LINE COMMISSION', v: money(overrideEarned), note: a.override + '% of their order value, paid on top of their own rate' }
+      ],
+      team: a.team.map((m, i) => { const mr = m.rank === 'Senior Partner' ? 30 : downRate; return ({
+        name: m.name,
+        rank: (m.rank || 'Partner').toUpperCase() + ' \u00B7 ' + mr + '%',
+        upper: m.name.toUpperCase(),
+        joined: m.joined,
+        orders: String(m.orders),
+        volume: money(m.volume),
+        commission: money(m.volume * mr / 100),
+        teamCount: String((m.recruits || []).length),
+        override: money(m.volume * a.override / 100),
+        recruits: (m.recruits || []).map(r => ({
+          name: r.name, joined: r.joined, orders: String(r.orders), volume: money(r.volume)
+        })),
+        recruitNote: (m.recruits || []).length
+          ? 'Third-line affiliates earn their own rank rate on their sales. Their volume is shown for visibility; second line commission is paid on your second line only.'
+          : m.name + ' has not recruited anyone yet.',
+        open: !!(s.open || {})[i],
+        toggle: () => this.setState(p => {
+          const open = Object.assign({}, p.open || {});
+          open[i] = !open[i];
+          return { open };
+        }),
+        caretStyle: 'font-size:20px; line-height:1; color:#7A5622; display:inline-block; flex:0 0 auto;'
+          + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+          + ((s.open || {})[i] ? '90deg' : '0deg') + ')',
+        rowStyle: 'width:100%; gap:12px 20px; padding:18px 2px; border-bottom:1px solid #D8C9B2;'
+          + ' align-items:center; cursor:pointer; text-align:left;'
+          + ' transition:background-color 320ms ease; background:'
+          + ((s.open || {})[i] ? '#E4D8C6' : 'transparent')
+      }); }),
+
+      referOpen: !s.referSent,
+      referSent: !!s.referSent,
+      referConfirm: 'Thank you \u2014 ' + (s.referSentName || 'your nomination')
+        + ' has been passed to Ambrosia. We will reach out, and if they are approved the account will be placed in your second line.',
+      referName: s.referName || '',
+      referContact: s.referContact || '',
+      setReferName: e => this.setState({ referName: e.target.value }),
+      setReferContact: e => this.setState({ referContact: e.target.value }),
+      submitRefer: () => this.setState(p => ({
+        referSent: true, referSentName: (p.referName || '').trim() || 'your nomination'
+      })),
+
+      orderFilters: [
+        { key: 'you', label: 'YOUR SALES' },
+        { key: 'team', label: 'SECOND LINE' },
+        { key: 'all', label: 'ALL' }
+      ].map(f => ({
+        label: f.label,
+        active: filter === f.key,
+        select: () => this.setState({ filter: f.key }),
+        style: 'display:inline-flex; align-items:center; height:42px; padding:0 20px; cursor:pointer;'
+          + ' font-size:11px; font-weight:600; letter-spacing:0.14em;'
+          + ' transition:background-color 320ms ease, border-color 320ms ease, color 320ms ease; border:1px solid '
+          + (filter === f.key ? '#6B1F28' : '#D8C9B2') + '; background:'
+          + (filter === f.key ? '#6B1F28' : 'transparent') + '; color:'
+          + (filter === f.key ? '#F0E9DC' : '#241C19')
+      })),
+
+      link,
+      code,
+      windowLabel: '60 days \u00B7 12-month customer binding',
+      isPartnerRank: a.tier === 'Partner',
+      isSeniorRank: a.tier === 'Senior Partner',
+      isFoundingRank: a.tier === 'Founding Partner',
+      rankPartnerStyle: 'padding:18px 0; border-bottom:1px solid #D8C9B2',
+      rankSeniorStyle: 'padding:18px 0; border-bottom:1px solid #D8C9B2',
+      rankFoundingStyle: 'padding:18px 0; border-bottom:1px solid #D8C9B2',
+      copyLabel: s.copied ? 'COPIED' : 'COPY LINK',
+      copyLink: () => {
+        const done = () => {
+          this.setState({ copied: true });
+          if (this._copyTimer) clearTimeout(this._copyTimer);
+          this._copyTimer = setTimeout(() => this.setState({ copied: false }), 1800);
+        };
+        try {
+          if (navigator.clipboard) navigator.clipboard.writeText('https://' + link).then(done, done);
+          else done();
+        } catch (e) { done(); }
+      },
+
+      stats: [
+        { k: 'YOUR COMMISSION', v: money(ownEarned), note: 'From your own referred orders, at ' + rate + '%' },
+        { k: 'SECOND LINE',     v: money(overrideEarned), note: a.override + '% of what your second line sells' },
+        { k: 'CLICKS',          v: a.clicks,  note: 'Last 90 days' },
+        { k: 'CONVERSION',      v: a.conversion, note: 'Clicks that became orders' }
+      ],
+
+      bars: a.bars.map(b => ({
+        label: b.label,
+        value: '$' + b.n,
+        style: 'width:100%; max-width:74px; height:' + Math.round((b.n / peak) * 100) + '%;'
+          + ' background:' + (b.n === peak ? '#6B1F28' : '#C9A227') + '; transition:height 700ms cubic-bezier(.2,.6,.2,1)'
+      })),
+
+      ordersNote: (filter === 'team' ? 'YOUR SECOND LINE \u00B7 ' : (filter === 'all' ? 'EVERYTHING \u00B7 ' : 'YOUR SALES \u00B7 '))
+        + rows.length + ' SHOWN',
+      orders: rows.map(o => ({ ...o, statusStyle: statusStyle(o.status) })),
+
+      ownEarned: money(ownEarned),
+      overrideEarned: money(overrideEarned),
+      balance: money(ownEarned + overrideEarned),
+      balanceNote: 'Commission clears fourteen days after an order ships, which is when a refund can no longer reverse it. Second line commission clears on the same schedule.',
+      nextPayout: '01 SEP 2026',
+      method: 'USDT \u00B7 TRC-20',
+      minimum: '$50.00',
+      payoutLabel: s.payoutAsked ? 'PAYOUT REQUESTED' : 'REQUEST PAYOUT',
+      requestPayout: () => this.setState({ payoutAsked: true }),
+
+      payouts: a.payouts
+    };
+  }
+}
+
+</script>
+</body>
+</html>

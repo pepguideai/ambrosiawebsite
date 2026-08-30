@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<link rel="stylesheet" href="ambrosia.css">
+</helmet>
+
+<div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased">
+
+  <!-- ─── age / eligibility gate ───────────────────────────── -->
+  <sc-if value="{{ gateOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed; inset:0; z-index:9999; background:rgba(36,28,25,0.94); display:flex; align-items:center; justify-content:center; padding:24px; overflow-y:auto">
+    <div style="background:#F0E9DC; width:100%; max-width:540px; padding:clamp(28px,5vw,54px); text-align:center">
+      <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:44px; height:44px; margin:0 auto; display:block">
+        <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+        <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+        <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+          <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+          <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+          <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+        </g>
+        <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+      </svg>
+      <div style="font-family:Cinzel, serif; font-weight:600; font-size:19px; letter-spacing:0.32em; color:#6B1F28; margin-top:16px; padding-left:0.32em">AMBROSIA</div>
+
+      <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(26px,3.4vw,34px); line-height:1.16; color:#241C19; margin:28px 0 0">Before you enter.</h2>
+      <p style="font-size:14.5px; line-height:1.7; color:#3C312C; margin:16px 0 0; text-wrap:pretty">Ambrosia supplies research materials to qualified purchasers only. Confirm both statements to continue.</p>
+
+      <div style="display:flex; flex-direction:column; gap:12px; margin-top:32px; text-align:left">
+        <label style="display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border:1px solid #D8C9B2; cursor:pointer; transition:border-color 300ms ease" style-hover="border-color:#7A5622">
+          <input type="checkbox" checked="{{ ageOk }}" onChange="{{ toggleAge }}" style="flex:0 0 auto; width:19px; height:19px; margin:1px 0 0; cursor:pointer">
+          <span style="font-size:14px; line-height:1.6; color:#241C19">I am 21 years of age or older.</span>
+        </label>
+        <label style="display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border:1px solid #D8C9B2; cursor:pointer; transition:border-color 300ms ease" style-hover="border-color:#7A5622">
+          <input type="checkbox" checked="{{ useOk }}" onChange="{{ toggleUse }}" style="flex:0 0 auto; width:19px; height:19px; margin:1px 0 0; cursor:pointer">
+          <span style="font-size:14px; line-height:1.6; color:#241C19">I am acquiring these materials for laboratory research only, not for human or animal use, and I agree to the <a href="research-use-policy.html" style="color:#7A5622; border-bottom:1px solid #C9A227">Research Use Policy</a> and <a href="terms-of-sale.html" style="color:#7A5622; border-bottom:1px solid #C9A227">Terms of Sale</a>.</span>
+        </label>
+      </div>
+
+      <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:28px">
+        <button type="button" onClick="{{ confirm }}" aria-disabled="{{ notReady }}" style="{{ confirmStyle }}">CONFIRM &amp; ENTER</button>
+        <a href="https://www.google.com" style="display:inline-flex; align-items:center; justify-content:center; height:52px; padding:0 30px; border:1px solid #D8C9B2; color:#241C19; font-size:12px; font-weight:600; letter-spacing:0.18em; transition:border-color 400ms ease" style-hover="border-color:#7A5622">EXIT</a>
+      </div>
+
+      <sc-if value="{{ gateError }}" hint-placeholder-val="{{ false }}">
+        <div role="alert" style="font-size:13px; line-height:1.7; color:#6B1F28; margin:18px 0 0">Both statements must be confirmed to continue.</div>
+      </sc-if>
+      <p style="font-size:11.5px; line-height:1.7; color:#6E6055; margin:24px 0 0">For research use only. Not for human or animal use, clinical use, or consumer application.</p>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ─── research-use strip ───────────────────────────────── -->
+  <div style="background:#2C1B15; padding:11px clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between">
+      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+      <div style="font-size:11px; letter-spacing:0.14em; color:#A9A096">{{ utilityNote }}</div>
+    </div>
+  </div>
+
+  <!-- ─── header ───────────────────────────────────────────── -->
+  <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
+    <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
+
+      <div style="order:1; justify-self:start; display:flex; align-items:center; gap:clamp(18px,2.4vw,34px)">
+        <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}" style="display:flex; align-items:center; gap:11px; white-space:nowrap; cursor:pointer; padding:0">
+          <span style="display:flex; flex-direction:column; gap:5px; width:17px"><span style="height:1px; background:#241C19; display:block"></span><span style="height:1px; background:#241C19; display:block"></span></span>
+          <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19">MENU</span>
+        </button>
+        <div style="position:relative; display:flex">
+          <button type="button" onClick="{{ toggleStd }}" aria-expanded="{{ stdOpen }}" style="display:flex; align-items:center; gap:8px; padding:0; cursor:pointer; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">OUR STANDARDS <span style="{{ stdCaretStyle }}">&rsaquo;</span></button>
+          <sc-if value="{{ stdOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:268px; background:#F0E9DC; border:1px solid #D8C9B2; box-shadow:0 22px 44px -22px rgba(36,28,25,0.34); padding:8px 0; z-index:40">
+              <a href="standard.html" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">The Ambrosia Standard</a>
+              <a href="standard.html#coa" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">Certificates of Analysis</a>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <a href="index.html" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
+        <svg width="36" height="36" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+        <span style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(19px,2.1vw,27px); letter-spacing:0.32em; color:#6B1F28; white-space:nowrap; padding-left:0.32em">AMBROSIA</span>
+      </a>
+
+      <div style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
+        <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CART ({{ cartCount }})</a>
+      </div>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="border-top:1px solid #D8C9B2">
+      <div style="max-width:1440px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:clamp(25px,4vw,64px); padding:clamp(26px,3vw,40px) 0 clamp(28px,4vw,52px)">
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="ghk-cu.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GHK-Cu</a>
+            <a href="glp-2.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-2</a>
+            <a href="glp-3.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">GLP-3</a>
+            <a href="glow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Glow</a>
+            <a href="klow.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Klow</a>
+            <a href="wolverine.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Wolverine</a>
+          </div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#6E6055; margin:14px 0 4px">RECONSTITUTION SUPPLY</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="bacteriostatic-water.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Bacteriostatic Water</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">YOUR BAG</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="cart.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Cart</a>
+            <a href="checkout.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Checkout</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="affiliate.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Affiliate Portal</a>
+            <a href="contact.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Contact</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; margin-bottom:16px">SUPPORT &amp; LEGAL</div>
+          <div style="display:flex; flex-direction:column">
+            <a href="faq.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
+            <a href="standard.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:14.5px; line-height:1.6; color:#3C312C; padding:7px 0; transition:color 350ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">Shipping & Restrictions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+
+  <!-- ─── hero ─────────────────────────────────────────────── -->
+  <div style="border-bottom:1px solid #D8C9B2">
+    <div style="width:100%; aspect-ratio:2.6/1; max-height:560px; background:#E4D8C6">
+      <img src="hero-vials-wide-tight.png" alt="GLP-2, GLP-3 and Wolverine vials lying on sand-toned stone with woven linen in raking light" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block">
+    </div>
+
+    <div style="padding:clamp(38px,7vw,110px) clamp(20px,4vw,56px) clamp(38px,7vw,100px)">
+      <div style="max-width:1040px; margin:0 auto; text-align:center">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#7A5622">VERIFIED FROM SOURCE TO SEAL</div>
+        <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,7vw,86px); line-height:1.02; letter-spacing:-0.018em; color:#6B1F28; margin:32px auto 0; max-width:24ch; text-wrap:balance">Research, Refined.</h1>
+
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; margin-top:clamp(33px,4.5vw,60px)">
+          <a href="offer.html" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218">UNLOCK YOUR MYSTERY OFFER</a>
+          <div style="font-size:13px; letter-spacing:0.04em; color:#6E6055">A welcome offer for your first qualifying order</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── credential strip ─────────────────────────────────── -->
+  <div style="padding:0 clamp(20px,4vw,56px); border-bottom:1px solid #D8C9B2">
+    <div class="g4" style="max-width:1440px; margin:0 auto; gap:clamp(24px,3vw,40px); padding:clamp(28px,3.5vw,44px) 0">
+      <div style="text-align:center"><div style="font-family:'Instrument Serif', serif; font-size:clamp(22px,2.2vw,30px); color:#241C19">Sourced</div></div>
+      <div style="text-align:center"><div style="font-family:'Instrument Serif', serif; font-size:clamp(22px,2.2vw,30px); color:#241C19">Tested</div></div>
+      <div style="text-align:center"><div style="font-family:'Instrument Serif', serif; font-size:clamp(22px,2.2vw,30px); color:#241C19">Documented</div></div>
+      <div style="text-align:center"><div style="font-family:'Instrument Serif', serif; font-size:clamp(22px,2.2vw,30px); color:#241C19">Sealed</div></div>
+    </div>
+  </div>
+
+  <!-- ─── catalogue index ──────────────────────────────────── -->
+  <div id="catalogue" style="padding:clamp(45px,9vw,132px) clamp(20px,4vw,56px) clamp(38px,7vw,96px)">
+    <div style="max-width:1440px; margin:0 auto">
+      <div style="max-width:1000px; margin-inline:auto">
+        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,8vw,104px); line-height:0.95; letter-spacing:0.1em; color:#6B1F28; margin:0; text-align:center; text-transform:uppercase">Catalogue</h2>
+        <div style="font-size:12px; font-weight:600; letter-spacing:0.22em; color:#7A5622; margin-top:clamp(18px,2vw,26px); text-align:center; text-transform:uppercase">Selected with purpose. With the documentation to match.</div>
+        <div style="height:1px; background:#D8C9B2; margin:clamp(25px,3vw,40px) 0 clamp(33px,5vw,72px)"></div>
+      </div>
+
+      <div style="max-width:1000px; margin-inline:auto">
+        <div style="display:flex; align-items:baseline; gap:18px; margin:0 0 clamp(24px,3vw,36px)">
+        <div style="font-family:'Instrument Serif', serif; font-size:clamp(24px,2.6vw,32px); line-height:1.15; color:#241C19">The Catalogue</div>
+        <div style="flex:1 1 auto; height:1px; background:#D8C9B2"></div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622; white-space:nowrap">SIX COMPOUNDS</div>
+      </div>
+      <div class="gcat" style="gap:clamp(20px,2.2vw,30px)">
+        <a href="ghk-cu.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+          <div style="aspect-ratio:5/8; background:#E4D8C6; overflow:hidden">
+            <img src="vial-ghk-cu.png" alt="GHK-Cu vial on a textured plinth set in sand, in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+          </div>
+          <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
+            <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">GHK-Cu</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$35+ <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+          </div>
+        </a>
+        <a href="glp-2.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+          <div style="aspect-ratio:5/8; background:#E4D8C6; overflow:hidden">
+            <img src="vial-glp-2.png" alt="GLP-2 vial on a textured plinth set in sand, in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+          </div>
+          <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
+            <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">GLP-2</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$70+ <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+          </div>
+        </a>
+        <a href="glp-3.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+          <div style="aspect-ratio:5/8; background:#E4D8C6; overflow:hidden">
+            <img src="vial-glp-3.png" alt="GLP-3 vial on a textured plinth set in sand, in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+          </div>
+          <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
+            <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">GLP-3</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$70+ <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+          </div>
+        </a>
+        <a href="glow.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+          <div style="aspect-ratio:5/8; background:#E4D8C6; overflow:hidden">
+            <img src="vial-glow.png" alt="Glow vial on a textured plinth set in sand, in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+          </div>
+          <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
+            <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Glow</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$125 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+          </div>
+        </a>
+        <a href="klow.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+          <div style="aspect-ratio:5/8; background:#E4D8C6; overflow:hidden">
+            <img src="vial-klow.png" alt="Klow vial on a textured plinth set in sand, in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+          </div>
+          <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
+            <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Klow</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$170 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+          </div>
+        </a>
+        <a href="wolverine.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+          <div style="aspect-ratio:5/8; background:#E4D8C6; overflow:hidden">
+            <img src="vial-wolverine.png" alt="Wolverine vial on a textured plinth set in sand, in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+          </div>
+          <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
+            <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Wolverine</div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$120 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+          </div>
+        </a>
+      </div>
+        <div style="display:flex; align-items:baseline; gap:18px; margin:clamp(36px,6vw,80px) 0 clamp(24px,3vw,36px)">
+          <div style="font-family:'Instrument Serif', serif; font-size:clamp(24px,2.6vw,32px); line-height:1.15; color:#241C19">Reconstitution Supply</div>
+          <div style="flex:1 1 auto; height:1px; background:#D8C9B2"></div>
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622; white-space:nowrap">SOLD SEPARATELY</div>
+        </div>
+        <div>
+        <a href="bacteriostatic-water.html" style="grid-column:1 / -1; display:block; width:100%; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+          <div style="background:#E4D8C6; display:flex; flex-wrap:wrap; align-items:stretch; min-height:clamp(149px,26vw,320px)">
+            <div style="flex:0 0 auto; width:clamp(180px,22%,260px); aspect-ratio:5/8; overflow:hidden">
+              <img src="vial-bac-water.png" alt="Bacteriostatic water vial on a wooden plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+            </div>
+            <div style="flex:1 1 260px; display:flex; flex-direction:column; justify-content:center; gap:16px; padding:clamp(25px,3.5vw,44px)">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">RECONSTITUTION SUPPLY</div>
+              <div style="display:flex; flex-wrap:nowrap; align-items:baseline; gap:clamp(12px,1.4vw,18px)"><div style="flex:0 1 auto; min-width:0; font-family:'Instrument Serif', serif; font-size:clamp(26px,2.8vw,34px); line-height:1.15; color:#241C19">Bacteriostatic Water</div><div style="flex:0 0 auto; display:flex; align-items:baseline; gap:7px; white-space:nowrap"><span style="flex:0 0 auto; width:1px; height:0.78em; background:#C9B99C; display:inline-block; margin-right:clamp(5px,0.6vw,9px)"></span><span style="font-family:'Instrument Serif', serif; font-size:clamp(20px,2.1vw,26px); line-height:1.15; color:#7A5622">$20</span><span style="font-family:Archivo, sans-serif; font-size:9.5px; font-weight:600; letter-spacing:0.16em; color:#A9A096">USD</span></div></div>
+              <p style="font-size:14.5px; line-height:1.7; color:#3C312C; margin:0; max-width:460px; text-wrap:pretty">10 mL vial, 0.9% benzyl alcohol added. Required to reconstitute lyophilized material, and sold separately from the catalogue.</p>
+            </div>
+          </div>
+          <div style="display:flex; gap:16px 24px; flex-wrap:wrap; align-items:center; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
+            <div style="font-size:12px; line-height:1.5; color:#6E6055">Required for reconstitution &middot; sold separately</div>
+            <div style="display:flex; align-items:center; gap:10px; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6B1F28; white-space:nowrap">VIEW SUPPLY <span style="font-size:13px; letter-spacing:0">&rarr;</span></div>
+          </div>
+        </a>        </div>      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── research-use block ───────────────────────────────── -->
+  <div id="research-use" style="background:#F0E9DC; padding:0 clamp(20px,4vw,56px)">
+    <div class="g2" style="max-width:1440px; margin:0 auto; border-top:1px solid #241C19; border-bottom:1px solid #241C19; padding:clamp(33px,5vw,72px) 0; gap:clamp(28px,4vw,72px)">
+      <div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#6B1F28; margin-bottom:20px">RESEARCH USE ONLY</div>
+        <p style="font-family:'Instrument Serif', serif; font-size:clamp(25px,3vw,38px); line-height:1.22; color:#6B1F28; margin:0; text-wrap:pretty">These materials are supplied for laboratory research. They are not for human or veterinary use.</p>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:18px">
+        <p style="font-size:15px; line-height:1.75; color:#3C312C; margin:0; text-wrap:pretty">Nothing sold here is a drug, a supplement, a cosmetic or a food. None of it has been evaluated or approved by the FDA for any use. It is not to be administered to humans or animals, and orders are accepted only from qualified purchasers acting in a research capacity.</p>
+        <p style="font-size:15px; line-height:1.75; color:#3C312C; margin:0; text-wrap:pretty">Ambrosia does not provide protocols or guidance of any kind, and will not respond to requests for them.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── footer ───────────────────────────────────────────── -->
+  <div style="background:#2C1B15; padding:clamp(38px,7vw,100px) clamp(20px,4vw,56px) 0">
+    <div style="max-width:1440px; margin:0 auto">
+      <div class="g4" style="gap:clamp(28px,4vw,56px); padding-bottom:clamp(36px,6vw,80px)">
+        <div>
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px">
+            <svg width="30" height="30" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+              <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#C9A227" stroke-width="2.6"></path>
+              <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#C9A227" stroke-width="2.6"></path>
+              <g stroke="#C9A227" stroke-width="3.4" fill="#2C1B15">
+                <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+                <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+                <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+              </g>
+              <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#2C1B15"></circle>
+            </svg>
+            <span style="font-family:Cinzel, serif; font-size:17px; letter-spacing:0.3em; color:#F0E9DC">AMBROSIA</span>
+          </div>
+          <p style="font-size:13.5px; line-height:1.7; color:#A9A096; margin:0; max-width:250px">Research materials, held to a single standard.</p>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">CATALOGUE</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="index.html#catalogue" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">All compounds</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">PARTNERS</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="affiliate.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Become an Affiliate</a>
+            <a href="affiliate-portal.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Affiliate Portal</a>
+            <a href="faq.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">FAQ</a>
+            <a href="contact.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Contact</a>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">LEGAL</div>
+          <div style="display:flex; flex-direction:column; gap:12px">
+            <a href="standard.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Certificates of Analysis</a>
+            <a href="research-use-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Research Use Policy</a>
+            <a href="terms-of-sale.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Terms of Sale</a>
+            <a href="privacy-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Privacy Policy</a>
+            <a href="shipping-restrictions.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Shipping &amp; Restrictions</a>
+            <a href="returns-documentation.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Returns &amp; Documentation</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+      </div>
+
+      <div style="border-top:1px solid #6B4A3E; padding:26px 0 clamp(33px,5vw,64px); display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between">
+        <div style="font-size:12px; line-height:1.8; color:#A9A096; max-width:640px">
+          Ambrosia LLC, a Tennessee limited liability company<br>
+          Nashville, Tennessee &middot; info@ambrosiastandard.com<br>
+          Governed by the laws of the State of Tennessee, with exclusive venue in Davidson County, Tennessee.
+        </div>
+        <div style="font-size:12px; color:#A9A096">&copy; 2026 Ambrosia LLC</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;cartCount&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;min&quot;:0,&quot;max&quot;:9,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;State&quot;},&quot;utilityNote&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;QUALIFIED PURCHASERS ONLY · 21+&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  static SUBMENUS = [
+    { label: 'Compounds', links: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' }
+    ] },
+    { label: 'Reconstitution Supply', links: [
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] }
+  ];
+
+  static GROUPS = [
+    { label: 'Catalogue', items: [
+      { label: 'GHK-Cu', href: 'ghk-cu.html' },
+      { label: 'GLP-2', href: 'glp-2.html' },
+      { label: 'GLP-3', href: 'glp-3.html' },
+      { label: 'Glow', href: 'glow.html' },
+      { label: 'Klow', href: 'klow.html' },
+      { label: 'Wolverine', href: 'wolverine.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
+    ] },
+    { label: 'Partners', items: [
+      { label: 'Become an Affiliate', href: 'affiliate.html' },
+      { label: 'Affiliate Portal', href: 'affiliate-portal.html' },
+      { label: 'FAQ', href: 'faq.html' },
+      { label: 'Contact', href: 'contact.html' }
+    ] },
+    { label: 'Legal', items: [
+      { label: 'Certificates of Analysis', href: 'standard.html' },
+      { label: 'Research Use Policy', href: 'research-use-policy.html' },
+      { label: 'Terms of Sale', href: 'terms-of-sale.html' },
+      { label: 'Privacy Policy', href: 'privacy-policy.html' },
+      { label: 'Shipping & Restrictions', href: 'shipping-restrictions.html' },
+      { label: 'Returns & Documentation', href: 'returns-documentation.html' }
+    ] }
+  ];
+  state = { menuOpen: false, openGroup: null, openSub: null, gateOpen: false, ageOk: false, useOk: false, tried: false };
+
+  scrollToHash() {
+    const raw = (location.hash || '').slice(1);
+    if (!raw) return;
+    let id;
+    try { id = decodeURIComponent(raw); } catch (e) { id = raw; }
+    let tries = 0;
+    const tick = () => {
+      const el = document.getElementById(id);
+      if (el) { window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 16 }); return; }
+      if (tries++ < 90) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  componentDidMount() {
+    let _ct = 0;
+    const _bootCart = () => {
+      const CS = window.AmbrosiaCart;
+      if (!CS) { if (_ct++ < 120) requestAnimationFrame(_bootCart); return; }
+      this._cartCount = CS.count();
+      this.forceUpdate();
+      this._offCart = CS.on(() => { this._cartCount = CS.count(); this.forceUpdate(); });
+    };
+    requestAnimationFrame(_bootCart);
+    this.scrollToHash();
+    let acked = false;
+    try { acked = localStorage.getItem('ambrosia-entry-ack') === 'yes'; } catch (e) {}
+    if (!acked) this.setState({ gateOpen: true });
+  }
+
+  renderVals() {
+    const { gateOpen, ageOk, useOk, tried } = this.state;
+    const ready = ageOk && useOk;
+    return {
+      menuOpen: this.state.menuOpen,
+      stdOpen: !!this.state.stdOpen,
+      toggleStd: () => this.setState(p => ({ stdOpen: !p.stdOpen, menuOpen: false })),
+      closeStd: () => this.setState({ stdOpen: false }),
+      stdCaretStyle: 'font-size:15px; line-height:1; color:#7A5622; display:inline-block;'
+        + ' transition:transform 340ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+        + (this.state.stdOpen ? '90deg' : '0deg') + ')',
+      toggleMenu: () => this.setState(p => ({ menuOpen: !p.menuOpen, openGroup: null })),
+      menuGroups: Component.GROUPS.map((g, i) => ({
+        label: g.label,
+        items: g.items.map(it => {
+          const _close = () => this.setState({ menuOpen: false, openGroup: null, openSub: null });
+          const k = it.sub;
+          const hasSubs = typeof k === 'number';
+          return {
+            label: it.label,
+            href: it.href || '#',
+            close: _close,
+            isLink: !hasSubs,
+            hasSubs,
+            open: hasSubs && this.state.openSub === k,
+            toggle: () => this.setState(p => ({ openSub: p.openSub === k ? null : k })),
+            links: hasSubs ? Component.SUBMENUS[k].links.map(l => ({ label: l.label, href: l.href, close: _close })) : [],
+            caretStyle: 'font-size:18px; line-height:1; color:#7A5622; display:inline-block;'
+              + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+              + (hasSubs && this.state.openSub === k ? '90deg' : '0deg') + ')'
+          };
+        }),
+        open: this.state.openGroup === i,
+        toggle: () => this.setState(p => ({ openGroup: p.openGroup === i ? null : i })),
+        caretStyle: 'font-size:26px; line-height:1; color:#7A5622; display:inline-block;'
+          + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+          + (this.state.openGroup === i ? '90deg' : '0deg') + ')'
+      })),
+      gateOpen,
+      ageOk, useOk,
+      notReady: !ready,
+      gateError: tried && !ready,
+      toggleAge: () => this.setState(s => ({ ageOk: !s.ageOk })),
+      toggleUse: () => this.setState(s => ({ useOk: !s.useOk })),
+      confirmStyle: 'display:inline-flex; align-items:center; justify-content:center; height:52px;'
+        + ' padding:0 30px; font-size:12px; font-weight:600; letter-spacing:0.18em; color:#F0E9DC;'
+        + ' background:' + (ready ? '#6B1F28' : '#6E6055')
+        + '; cursor:pointer; transition:background-color 350ms ease',
+      confirm: () => {
+        if (!ready) { this.setState({ tried: true }); return; }
+        try { localStorage.setItem('ambrosia-entry-ack', 'yes'); } catch (e) {}
+        this.setState({ gateOpen: false });
+      },
+      cartCount: this._cartCount ?? 0,
+      utilityNote: this.props.utilityNote ?? 'QUALIFIED PURCHASERS ONLY \u00B7 21+'
+    };
+  }
+}
+</script>
+</body>
+</html>
