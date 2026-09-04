@@ -8,38 +8,29 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js"></script>
 <link rel="stylesheet" href="ambrosia.css">
 </helmet>
 
 <div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased">
 
-  <div style="background:#2C1B15; padding:11px clamp(20px,4vw,56px)">
-    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between">
-      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
-      <div style="font-size:11px; letter-spacing:0.14em; color:#A9A096">QUALIFIED PURCHASERS ONLY &middot; 21+</div>
+  <div style="background:#3E1218; padding:11px clamp(20px,4vw,56px)">
+    <div class="amb-ticker" style="overflow:hidden; max-width:1440px; margin:0 auto">
+      <div class="amb-ticker-track" style="display:flex; width:max-content; align-items:center"><span style="display:flex; align-items:center; gap:clamp(34px,5vw,72px); padding-right:clamp(34px,5vw,72px)"><span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:nowrap">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</span><span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#F0E9DC; white-space:nowrap">FREE SHIPPING ON ORDERS OVER $200</span><span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#C9A227; white-space:nowrap">FREE 50MG GHK-CU ON ORDERS OVER $300</span><span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#E9CDA0; white-space:nowrap">SHIPS FROM THE USA &nbsp;·&nbsp; INTERNATIONAL SHIPPING AVAILABLE</span><span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#A9A096; white-space:nowrap">QUALIFIED PURCHASERS ONLY &nbsp;·&nbsp; 21+</span></span><span style="display:flex; align-items:center; gap:clamp(34px,5vw,72px); padding-right:clamp(34px,5vw,72px)"><span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:nowrap">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</span><span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#F0E9DC; white-space:nowrap">FREE SHIPPING ON ORDERS OVER $200</span><span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#C9A227; white-space:nowrap">FREE 50MG GHK-CU ON ORDERS OVER $300</span><span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#E9CDA0; white-space:nowrap">SHIPS FROM THE USA &nbsp;·&nbsp; INTERNATIONAL SHIPPING AVAILABLE</span><span style="font-size:11px; font-weight:600; letter-spacing:0.14em; color:#A9A096; white-space:nowrap">QUALIFIED PURCHASERS ONLY &nbsp;·&nbsp; 21+</span></span></div>
     </div>
   </div>
 
   <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
     <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
-      <div style="order:1; justify-self:start; display:flex; align-items:center; gap:clamp(18px,2.4vw,34px)">
+      <div style="order:1; justify-self:start; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:12px clamp(18px,2.4vw,34px)">
         <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}" style="display:flex; align-items:center; gap:11px; white-space:nowrap; cursor:pointer; padding:0">
           <span style="display:flex; flex-direction:column; gap:5px; width:17px"><span style="height:1px; background:#241C19; display:block"></span><span style="height:1px; background:#241C19; display:block"></span></span>
           <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19">MENU</span>
         </button>
-        <div style="position:relative; display:flex">
-          <button type="button" onClick="{{ toggleStd }}" aria-expanded="{{ stdOpen }}" style="display:flex; align-items:center; gap:8px; padding:0; cursor:pointer; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">OUR STANDARDS <span style="{{ stdCaretStyle }}">&rsaquo;</span></button>
-          <sc-if value="{{ stdOpen }}" hint-placeholder-val="{{ false }}">
-            <div style="position:absolute; top:calc(100% + 14px); left:0; min-width:268px; background:#F0E9DC; border:1px solid #D8C9B2; box-shadow:0 22px 44px -22px rgba(36,28,25,0.34); padding:8px 0; z-index:40">
-              <a href="standard.html" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">The Ambrosia Standard</a>
-              <a href="standard.html#coa" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">Certificates of Analysis</a>
-            </div>
-          </sc-if>
-        </div>
+        <a href="index.html#catalogue" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">SHOP</a>
       </div>
 
       <a href="index.html" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
@@ -57,6 +48,15 @@
       </a>
 
       <div style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
+        <div style="position:relative; display:flex">
+          <button type="button" onClick="{{ toggleStd }}" aria-expanded="{{ stdOpen }}" style="display:flex; align-items:center; gap:8px; padding:0; cursor:pointer; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">OUR STANDARDS <span style="{{ stdCaretStyle }}">&rsaquo;</span></button>
+          <sc-if value="{{ stdOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; top:calc(100% + 14px); right:0; min-width:268px; background:#F0E9DC; border:1px solid #D8C9B2; box-shadow:0 22px 44px -22px rgba(36,28,25,0.34); padding:8px 0; z-index:40">
+              <a href="standard.html" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">The Ambrosia Standard</a>
+              <a href="standard.html#coa" onClick="{{ closeStd }}" style="display:block; padding:12px 20px; font-size:14px; line-height:1.5; color:#241C19; transition:background-color 300ms ease" style-hover="background:#E4D8C6">Certificates of Analysis</a>
+            </div>
+          </sc-if>
+        </div>
         <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CART ({{ cartCount }})</a>
       </div>
     </div>
@@ -190,19 +190,19 @@
           <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622; padding-bottom:18px; border-bottom:1px solid #241C19">WHY AMBROSIA?</div>
           <div class="g2" style="gap:clamp(20px,2.4vw,30px); padding-top:26px">
             <div style="display:flex; flex-direction:column; gap:9px">
-              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Quality-controlled sourcing</div>
+              <div style="display:flex; align-items:center; gap:10px; font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex:0 0 auto"><path d="M20.5 6.4 L9.4 17.6 L3.9 12.2" stroke="#C9A227" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"></path></svg>Quality-controlled sourcing</div>
               <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Sourced to a written specification and held with lot records, so every vial can be traced back to its fill.</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:9px">
-              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Third-party tested</div>
+              <div style="display:flex; align-items:center; gap:10px; font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex:0 0 auto"><path d="M20.5 6.4 L9.4 17.6 L3.9 12.2" stroke="#C9A227" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"></path></svg>Third-party tested</div>
               <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Identity and purity are confirmed by an independent laboratory before a lot is released.</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:9px">
-              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Secure order processing</div>
+              <div style="display:flex; align-items:center; gap:10px; font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex:0 0 auto"><path d="M20.5 6.4 L9.4 17.6 L3.9 12.2" stroke="#C9A227" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"></path></svg>Secure order processing</div>
               <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Payment is handled off our servers and order records are kept to what an audit would require.</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:9px">
-              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19">Fast, tracked shipping</div>
+              <div style="display:flex; align-items:center; gap:10px; font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="flex:0 0 auto"><path d="M20.5 6.4 L9.4 17.6 L3.9 12.2" stroke="#C9A227" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"></path></svg>Fast, tracked shipping</div>
               <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Orders leave the bench the same or next business day, with tracking issued on despatch.</p>
             </div>
           </div>
@@ -442,7 +442,13 @@ class Component extends DCLogic {
     return {
       menuOpen: s.menuOpen,
       stdOpen: !!s.stdOpen,
-      toggleStd: () => this.setState(p => ({ stdOpen: !p.stdOpen, menuOpen: false })),
+      shopOpen: !!this.state.shopOpen,
+      toggleShop: () => this.setState(p => ({ shopOpen: !p.shopOpen, stdOpen: false, menuOpen: false })),
+      closeShop: () => this.setState({ shopOpen: false }),
+      shopCaretStyle: 'font-size:15px; line-height:1; color:#7A5622; display:inline-block;'
+        + ' transition:transform 340ms cubic-bezier(.2,.6,.2,1); transform:rotate('
+        + (this.state.shopOpen ? '90deg' : '0deg') + ')',
+      toggleStd: () => this.setState(p => ({ stdOpen: !p.stdOpen, menuOpen: false, shopOpen: false })),
       closeStd: () => this.setState({ stdOpen: false }),
       stdCaretStyle: 'font-size:15px; line-height:1; color:#7A5622; display:inline-block;'
         + ' transition:transform 340ms cubic-bezier(.2,.6,.2,1); transform:rotate('
