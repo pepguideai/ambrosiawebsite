@@ -25,15 +25,15 @@
 
   <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
     <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
-      <div style="order:1; justify-self:start; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:12px clamp(18px,2.4vw,34px)">
+      <div class="hleft" style="order:1; justify-self:start; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:12px clamp(18px,2.4vw,34px)">
         <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpen }}" style="display:flex; align-items:center; gap:11px; white-space:nowrap; cursor:pointer; padding:0">
           <span style="display:flex; flex-direction:column; gap:5px; width:17px"><span style="height:1px; background:#241C19; display:block"></span><span style="height:1px; background:#241C19; display:block"></span></span>
           <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19">MENU</span>
         </button>
-        <a href="index.html#catalogue" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">SHOP</a>
+        <a href="index.html#catalogue" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">SHOP</a>
       </div>
 
-      <a href="index.html" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
+      <a href="index.html" class="hmid" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
         <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:28px; height:28px">
           <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
           <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
@@ -44,11 +44,11 @@
           </g>
           <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
         </svg>
-        <span style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(19px,2.1vw,27px); letter-spacing:0.32em; color:#6B1F28; white-space:nowrap; padding-left:0.32em">AMBROSIA</span>
+        <span class="hword" style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(19px,2.1vw,27px); letter-spacing:0.32em; color:#6B1F28; white-space:nowrap; padding-left:0.32em">AMBROSIA</span>
       </a>
 
-      <div style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
-        <div style="position:relative; display:flex">
+      <div class="hright" style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
+        <div class="hstd" style="position:relative; display:flex">
           <button type="button" onClick="{{ toggleStd }}" aria-expanded="{{ stdOpen }}" style="display:flex; align-items:center; gap:8px; padding:0; cursor:pointer; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">OUR STANDARDS <span style="{{ stdCaretStyle }}">&rsaquo;</span></button>
           <sc-if value="{{ stdOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute; top:calc(100% + 14px); right:0; min-width:268px; background:#F0E9DC; border:1px solid #D8C9B2; box-shadow:0 22px 44px -22px rgba(36,28,25,0.34); padding:8px 0; z-index:40">
