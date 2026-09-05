@@ -2,6 +2,19 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+
+  "rewrites": [
+    { "source": "/checkout", "destination": "https://admin.ambrosiastandard.com/checkout" },
+    { "source": "/checkout/:path*", "destination": "https://admin.ambrosiastandard.com/checkout/:path*" },
+    { "source": "/order-received/:path*", "destination": "https://admin.ambrosiastandard.com/order-received/:path*" },
+    { "source": "/my-account", "destination": "https://admin.ambrosiastandard.com/my-account" },
+    { "source": "/my-account/:path*", "destination": "https://admin.ambrosiastandard.com/my-account/:path*" },
+    { "source": "/wp-json/:path*", "destination": "https://admin.ambrosiastandard.com/wp-json/:path*" },
+    { "source": "/wp-content/:path*", "destination": "https://admin.ambrosiastandard.com/wp-content/:path*" },
+    { "source": "/wp-includes/:path*", "destination": "https://admin.ambrosiastandard.com/wp-includes/:path*" },
+    { "source": "/wp-admin/admin-ajax.php", "destination": "https://admin.ambrosiastandard.com/wp-admin/admin-ajax.php" }
+  ],
+
   "headers": [
     {
       "source": "/(.*)\\.(png|jpg|jpeg|webp|woff2|ttf)",
@@ -12,7 +25,7 @@
     {
       "source": "/(.*)\\.(css|js)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     },
     {

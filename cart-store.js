@@ -20,7 +20,11 @@
   /* Idempotent: the runtime can evaluate this file more than once per page. */
   if (window.AmbrosiaCart) return;
 
-  var STORE_API_URL = 'https://admin.ambrosiastandard.com/wp-json/wc/store/v1';
+  /* Store API is same-origin in production: vercel.json rewrites /wp-json/* through
+     to WordPress, so ambrosiastandard.com serves it. That removes the CORS problem
+     AND lets Woo's cart cookies work, which is what makes the checkout handoff
+     possible. Opening these files straight off disk will 404 here — expected. */
+  var STORE_API_URL = '/wp-json/wc/store/v1';
   window.STORE_API_URL = STORE_API_URL; // legacy global, referenced by older page code
 
   var KEY = 'ambrosia-cart-v1';
@@ -39,12 +43,12 @@
      -------------------------------------------------------------------------- */
   var WOO_PRODUCT_IDS = {
     'glp-3':     11,
-    'glp-2':     null,
-    'ghk-cu':    null,
-    'glow':      null,
-    'klow':      null,
-    'wolverine': null,
-    'bac-water': null
+    'glp-2':     19,
+    'ghk-cu':    27,
+    'glow':      32,
+    'klow':      31,
+    'wolverine': 30,
+    'bac-water': 47
   };
 
   /* --------------------------------------------------------------------------
@@ -80,7 +84,11 @@
   ];
 
   /* [SERVER] Coupon codes must be validated by Woo, never client-side. */
-  var DISCOUNTS = { COLLECTIVE10: { label: 'Collective member', rate: 0.10 } };
+  var DISCOUNTS = {
+    COLLECTIVE10: { label: 'Collective member', rate: 0.10 },
+    NICOLE15:     { label: 'Partner referral', rate: 0.15 },
+    ELANA15:      { label: 'Partner referral', rate: 0.15 }
+  };
 
   /* --------------------------------------------------------------------------
      Multi-vial pricing: two of any one vial 5% off, three 10%, ten 15%.
@@ -282,6 +290,60 @@
     });
   }
 
+  /* --------------------------------------------------------------------------
+     Checkout handoff. The static site owns browsing and the cart; WooCommerce
+     owns money. This pushes the local cart into Woo's real cart over the
+     same-origin Store API, applies the discount code, then sends the customer
+     to /checkout — which vercel.json proxies to WordPress, so the address bar
+     stays on ambrosiastandard.com throughout.
+     -------------------------------------------------------------------------- */
+  async function storeNonce() {
+    var r = await fetch(STORE_API_URL + '/cart', { credentials: 'include' });
+    return r.headers.get('Nonce') || r.headers.get('X-WC-Store-API-Nonce') || '';
+  }
+
+  async function handoff(couponCode) {
+    var payload = wooPayload();
+    var blocked = payload.filter(function (l) { return !l.submittable; });
+    if (blocked.length) {
+      var err = new Error('Not yet available for online order: '
+        + blocked.map(function (l) { return l.slug; }).join(', '));
+      err.code = 'UNWIRED';
+      throw err;
+    }
+    if (!payload.length) throw new Error('Your cart is empty.');
+
+    var nonce = await storeNonce();
+    var hdrs = { 'Content-Type': 'application/json' };
+    if (nonce) hdrs.Nonce = nonce;
+
+    /* Start from an empty Woo cart so a re-run cannot double the quantities. */
+    await fetch(STORE_API_URL + '/cart/items', {
+      method: 'DELETE', headers: hdrs, credentials: 'include'
+    }).catch(function () {});
+
+    for (var i = 0; i < payload.length; i++) {
+      var line = payload[i];
+      var res = await fetch(STORE_API_URL + '/cart/add-item', {
+        method: 'POST', headers: hdrs, credentials: 'include',
+        body: JSON.stringify({ id: line.id, quantity: line.quantity })
+      });
+      if (!res.ok) {
+        var body = await res.text();
+        throw new Error('Woo rejected ' + line.slug + ' (' + res.status + '): ' + body.slice(0, 200));
+      }
+    }
+
+    if (couponCode) {
+      await fetch(STORE_API_URL + '/cart/apply-coupon', {
+        method: 'POST', headers: hdrs, credentials: 'include',
+        body: JSON.stringify({ code: couponCode })
+      }).catch(function (e) { console.warn('AmbrosiaCart: coupon not applied', e); });
+    }
+
+    window.location.href = '/checkout';
+  }
+
   function money(n) {
     return '$' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
@@ -302,6 +364,6 @@
     tierRate: tierRate, nextTier: nextTier,
     read: read, write: write, add: add, setQty: setQty, remove: remove, clear: clear,
     count: count, lines: lines, subtotal: subtotal, savings: savings,
-    wooPayload: wooPayload, money: money, on: on
+    wooPayload: wooPayload, handoff: handoff, money: money, on: on
   };
 })();
