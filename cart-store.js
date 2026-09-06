@@ -20,11 +20,17 @@
   /* Idempotent: the runtime can evaluate this file more than once per page. */
   if (window.AmbrosiaCart) return;
 
-  /* Store API is same-origin in production: vercel.json rewrites /wp-json/* through
-     to WordPress, so ambrosiastandard.com serves it. That removes the CORS problem
-     AND lets Woo's cart cookies work, which is what makes the checkout handoff
-     possible. Opening these files straight off disk will 404 here — expected. */
-  var STORE_API_URL = '/wp-json/wc/store/v1';
+  /* Store API is called on WordPress's OWN host, not through the www proxy.
+     Reason: WordPress scopes its session cookies to admin.ambrosiastandard.com.
+     A cart built over the proxy lands on www, so the customer arrives at
+     WordPress's checkout with no session and gets bounced to wp-login.
+
+     www and admin share the registrable domain, so the cart cookie is
+     same-site and carries into the checkout navigation. Cross-ORIGIN still
+     applies, so WordPress must return CORS headers for this origin — see the
+     "Ambrosia Store API CORS" WPCode snippet. */
+  var WOO_ORIGIN = 'https://admin.ambrosiastandard.com';
+  var STORE_API_URL = WOO_ORIGIN + '/wp-json/wc/store/v1';
   window.STORE_API_URL = STORE_API_URL; // legacy global, referenced by older page code
 
   var KEY = 'ambrosia-cart-v1';
@@ -314,8 +320,9 @@
      Checkout handoff. The static site owns browsing and the cart; WooCommerce
      owns money. This pushes the local cart into Woo's real cart over the
      same-origin Store API, applies the discount code, then sends the customer
-     to /checkout — which vercel.json proxies to WordPress, so the address bar
-     stays on ambrosiastandard.com throughout.
+     to WordPress's own checkout. The address bar shows the WordPress host for
+     the payment step; renaming that subdomain to checkout. or shop. makes it
+     read properly.
      -------------------------------------------------------------------------- */
   async function storeNonce() {
     var r = await fetch(STORE_API_URL + '/cart', { credentials: 'include' });
@@ -361,7 +368,7 @@
       }).catch(function (e) { console.warn('AmbrosiaCart: coupon not applied', e); });
     }
 
-    window.location.href = '/checkout';
+    window.location.href = WOO_ORIGIN + '/checkout';
   }
 
   function money(n) {

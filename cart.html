@@ -423,7 +423,9 @@ class Component extends DCLogic {
     const subtotal = lines.reduce((a, l) => a + l.total, 0);
     const ship = shipOpts.find(o => o.id === s.ship) || shipOpts[0] || { price: 0 };
     const disc = s.applied ? subtotal * discounts[s.applied].rate : 0;
-    const total = Math.max(0, subtotal - disc) + (count ? ship.price : 0);
+    const net = Math.max(0, subtotal - disc);
+    const shipCost = o => (o.id === 'standard' && net >= 200 ? 0 : o.price);
+    const total = net + (count ? shipCost(ship) : 0);
 
     const bacInCart = lines.some(l => l.id === 'bac-water');
 
@@ -499,7 +501,7 @@ class Component extends DCLogic {
       shipping: shipOpts.map(o => ({
         label: o.label,
         detail: o.detail,
-        priceLabel: money(o.price),
+        priceLabel: shipCost(o) === 0 ? 'FREE' : money(o.price),
         select: () => { this.setState({ ship: o.id }); this.savePrefs({ ship: o.id }); },
         style: 'width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px;'
           + ' padding:15px 2px; cursor:pointer; text-align:left; border-top:1px solid #D8C9B2;'
@@ -509,7 +511,7 @@ class Component extends DCLogic {
           + '; background:' + (s.ship === o.id ? '#6B1F28' : 'transparent')
           + '; box-shadow:' + (s.ship === o.id ? 'inset 0 0 0 2.5px #E4D8C6' : 'none')
       })),
-      shippingLabel: count ? money(ship.price) : money(0),
+      shippingLabel: count ? (shipCost(ship) === 0 ? 'Free' : money(shipCost(ship))) : money(0),
 
       checkoutLabel: s.handingOff ? 'TAKING YOU TO CHECKOUT\u2026' : 'PROCEED TO CHECKOUT',
       handoffError: s.handoffError || '',

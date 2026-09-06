@@ -3,12 +3,15 @@
   "cleanUrls": true,
   "trailingSlash": false,
 
+  "redirects": [
+    { "source": "/checkout", "destination": "https://admin.ambrosiastandard.com/checkout", "permanent": false },
+    { "source": "/checkout/:path*", "destination": "https://admin.ambrosiastandard.com/checkout/:path*", "permanent": false },
+    { "source": "/order-received/:path*", "destination": "https://admin.ambrosiastandard.com/order-received/:path*", "permanent": false },
+    { "source": "/my-account", "destination": "https://admin.ambrosiastandard.com/my-account", "permanent": false },
+    { "source": "/my-account/:path*", "destination": "https://admin.ambrosiastandard.com/my-account/:path*", "permanent": false }
+  ],
+
   "rewrites": [
-    { "source": "/checkout", "destination": "https://admin.ambrosiastandard.com/checkout" },
-    { "source": "/checkout/:path*", "destination": "https://admin.ambrosiastandard.com/checkout/:path*" },
-    { "source": "/order-received/:path*", "destination": "https://admin.ambrosiastandard.com/order-received/:path*" },
-    { "source": "/my-account", "destination": "https://admin.ambrosiastandard.com/my-account" },
-    { "source": "/my-account/:path*", "destination": "https://admin.ambrosiastandard.com/my-account/:path*" },
     { "source": "/wp-json/:path*", "destination": "https://admin.ambrosiastandard.com/wp-json/:path*" },
     { "source": "/wp-content/:path*", "destination": "https://admin.ambrosiastandard.com/wp-content/:path*" },
     { "source": "/wp-includes/:path*", "destination": "https://admin.ambrosiastandard.com/wp-includes/:path*" },
@@ -19,7 +22,8 @@
     {
       "source": "/(.*)\\.(png|jpg|jpeg|webp|woff2|ttf)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
     },
     {
