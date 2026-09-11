@@ -339,19 +339,22 @@
      the payment step; renaming that subdomain to checkout. or shop. makes it
      read properly.
      -------------------------------------------------------------------------- */
-  /* The Store API identifies a cart by the Cart-Token header, NOT by the session
-     cookie alone. Without threading the token through every call, each request
-     gets a brand-new cart: the DELETE clears one, each add-item builds another,
-     and /checkout opens an empty fifth. Read both the nonce and the token from
-     an opening /cart call and send them on everything after it. */
-  async function openSession() {
-    var r = await fetch(STORE_API_URL + '/cart', { credentials: 'include' });
-    return {
-      nonce: r.headers.get('Nonce') || r.headers.get('X-WC-Store-API-Nonce') || '',
-      token: r.headers.get('Cart-Token') || ''
-    };
-  }
+  /* --------------------------------------------------------------------------
+     Checkout handoff, by real form POST.
 
+     Earlier versions built the Woo cart with background fetch calls against the
+     Store API. That path depends on a cart session surviving CORS, a nonce, a
+     Cart-Token and a reverse proxy, and it kept losing the session — silently,
+     so checkout opened empty.
+
+     A form submission is a top-level navigation: WordPress receives it
+     first-party on its own host, creates the session itself, builds the cart
+     server-side and redirects to checkout already holding it. Nothing to block,
+     nothing to expire, nothing to proxy.
+
+     The receiving end is the "Ambrosia cart handoff" WPCode snippet
+     (woo-cart-handoff.php).
+     -------------------------------------------------------------------------- */
   async function handoff(couponCode) {
     /* The catalogue carries the Woo variation IDs. Without this await, a click
        that lands before the fetch settles sees every line as unwired. */
@@ -367,54 +370,34 @@
     }
     if (!payload.length) throw new Error('Your cart is empty.');
 
-    var session = await openSession();
-    var hdrs = { 'Content-Type': 'application/json' };
-    if (session.nonce) hdrs.Nonce = session.nonce;
-    if (session.token) hdrs['Cart-Token'] = session.token;
+    var lines = payload.map(function (l) {
+      return { id: l.id, qty: l.quantity };
+    });
 
-    /* Woo may hand back a refreshed token on any response; keep the newest. */
-    function absorb(res) {
-      var t = res && res.headers && res.headers.get('Cart-Token');
-      if (t) hdrs['Cart-Token'] = t;
-      var n = res && res.headers && res.headers.get('Nonce');
-      if (n) hdrs.Nonce = n;
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = WOO_ORIGIN + '/';
+    form.style.display = 'none';
+    form.acceptCharset = 'utf-8';
+
+    function field(name, value) {
+      var i = document.createElement('input');
+      i.type = 'hidden';
+      i.name = name;
+      i.value = value;
+      form.appendChild(i);
     }
 
-    /* Start from an empty Woo cart so a re-run cannot double the quantities. */
-    await fetch(STORE_API_URL + '/cart/items', {
-      method: 'DELETE', headers: hdrs, credentials: 'include'
-    }).then(absorb).catch(function () {});
+    field('ambrosia_handoff', '1');
+    field('cart', JSON.stringify(lines));
+    if (couponCode) field('coupon', couponCode);
 
-    for (var i = 0; i < payload.length; i++) {
-      var line = payload[i];
-      var res = await fetch(STORE_API_URL + '/cart/add-item', {
-        method: 'POST', headers: hdrs, credentials: 'include',
-        body: JSON.stringify({ id: line.id, quantity: line.quantity })
-      });
-      absorb(res);
-      if (!res.ok) {
-        var body = await res.text();
-        throw new Error('Woo rejected ' + line.slug + ' (' + res.status + '): ' + body.slice(0, 200));
-      }
-    }
+    document.body.appendChild(form);
+    form.submit();
 
-    if (couponCode) {
-      await fetch(STORE_API_URL + '/cart/apply-coupon', {
-        method: 'POST', headers: hdrs, credentials: 'include',
-        body: JSON.stringify({ code: couponCode })
-      }).then(absorb).catch(function (e) { console.warn('AmbrosiaCart: coupon not applied', e); });
-    }
-
-    var check = await fetch(STORE_API_URL + '/cart', {
-      headers: hdrs, credentials: 'include'
-    }).then(function (r) { return r.json(); }).catch(function () { return null; });
-
-    if (check && Array.isArray(check.items) && check.items.length === 0) {
-      throw new Error('Woo cart came back empty after adding ' + payload.length
-        + ' line(s) — cart session did not persist.');
-    }
-
-    window.location.href = CHECKOUT_ORIGIN + '/checkout';
+    /* The navigation is underway; resolve so the button keeps its pending state
+       rather than flashing back to idle mid-transition. */
+    return new Promise(function () {});
   }
 
   function money(n) {
