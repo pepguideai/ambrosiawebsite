@@ -99,9 +99,10 @@
 
   /* [SERVER] Coupon codes must be validated by Woo, never client-side. */
   var DISCOUNTS = {
-    COLLECTIVE10: { label: 'Collective member', rate: 0.10 },
-    NICOLE15:     { label: 'Partner referral', rate: 0.15 },
-    ELANA15:      { label: 'Partner referral', rate: 0.15 }
+    WELCOME10:  { label: 'Welcome', rate: 0.10 },
+ROSE10:     { label: 'Rose',    rate: 0.10 },
+NICOLE15:   { label: 'Partner referral', rate: 0.15 },
+ELANA15:    { label: 'Partner referral', rate: 0.15 }
   };
 
   /* --------------------------------------------------------------------------
