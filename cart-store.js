@@ -31,14 +31,21 @@
      "Ambrosia Store API CORS" WPCode snippet. */
   var WOO_ORIGIN = 'https://admin.ambrosiastandard.com';
 
-  /* Branded checkout switch. While false, the customer is sent to WordPress's
-     own host for payment. Flip to true ONLY after WP_HOME/WP_SITEURL point at
-     www and COOKIE_DOMAIN is widened to '.ambrosiastandard.com' — otherwise the
-     session does not survive the hop and checkout bounces to wp-login.
-     See checkout-branded-domain.md for the full sequence. */
-  var BRANDED_CHECKOUT = false;
+  /* Branded checkout switch. While false, the Store API is called cross-site on
+     the WordPress host and the customer is sent there to pay. That path works in
+     Chrome but FAILS on iOS: Safari blocks the third-party session cookie, so the
+     Store API nonce arrives unbound and Woo answers 403.
+
+     While true, both the API calls and /checkout go through this site's own
+     origin (Vercel rewrites /wp-json/* and /checkout to the WordPress host), so
+     nothing is cross-site and the session cookie is first-party.
+
+     Requires, together: WP_HOME on www, COOKIE_DOMAIN '.ambrosiastandard.com',
+     and /checkout moved from redirects to rewrites in vercel.json.
+     See checkout-branded-domain.md. */
+  var BRANDED_CHECKOUT = true;
   var CHECKOUT_ORIGIN = BRANDED_CHECKOUT ? '' : WOO_ORIGIN;
-  var STORE_API_URL = WOO_ORIGIN + '/wp-json/wc/store/v1';
+  var STORE_API_URL = (BRANDED_CHECKOUT ? '' : WOO_ORIGIN) + '/wp-json/wc/store/v1';
   window.STORE_API_URL = STORE_API_URL; // legacy global, referenced by older page code
 
   var KEY = 'ambrosia-cart-v1';
@@ -99,10 +106,10 @@
 
   /* [SERVER] Coupon codes must be validated by Woo, never client-side. */
   var DISCOUNTS = {
-    WELCOME10:  { label: 'Welcome', rate: 0.10 },
-ROSE10:     { label: 'Rose',    rate: 0.10 },
-NICOLE15:   { label: 'Partner referral', rate: 0.15 },
-ELANA15:    { label: 'Partner referral', rate: 0.15 }
+    WELCOME10:    { label: 'Welcome', rate: 0.10 },
+    ROSE10:       { label: 'Rose', rate: 0.10 },
+    NICOLE15:     { label: 'Partner referral', rate: 0.15 },
+    ELANA15:      { label: 'Partner referral', rate: 0.15 }
   };
 
   /* --------------------------------------------------------------------------
@@ -332,9 +339,17 @@ ELANA15:    { label: 'Partner referral', rate: 0.15 }
      the payment step; renaming that subdomain to checkout. or shop. makes it
      read properly.
      -------------------------------------------------------------------------- */
-  async function storeNonce() {
+  /* The Store API identifies a cart by the Cart-Token header, NOT by the session
+     cookie alone. Without threading the token through every call, each request
+     gets a brand-new cart: the DELETE clears one, each add-item builds another,
+     and /checkout opens an empty fifth. Read both the nonce and the token from
+     an opening /cart call and send them on everything after it. */
+  async function openSession() {
     var r = await fetch(STORE_API_URL + '/cart', { credentials: 'include' });
-    return r.headers.get('Nonce') || r.headers.get('X-WC-Store-API-Nonce') || '';
+    return {
+      nonce: r.headers.get('Nonce') || r.headers.get('X-WC-Store-API-Nonce') || '',
+      token: r.headers.get('Cart-Token') || ''
+    };
   }
 
   async function handoff(couponCode) {
@@ -352,14 +367,23 @@ ELANA15:    { label: 'Partner referral', rate: 0.15 }
     }
     if (!payload.length) throw new Error('Your cart is empty.');
 
-    var nonce = await storeNonce();
+    var session = await openSession();
     var hdrs = { 'Content-Type': 'application/json' };
-    if (nonce) hdrs.Nonce = nonce;
+    if (session.nonce) hdrs.Nonce = session.nonce;
+    if (session.token) hdrs['Cart-Token'] = session.token;
+
+    /* Woo may hand back a refreshed token on any response; keep the newest. */
+    function absorb(res) {
+      var t = res && res.headers && res.headers.get('Cart-Token');
+      if (t) hdrs['Cart-Token'] = t;
+      var n = res && res.headers && res.headers.get('Nonce');
+      if (n) hdrs.Nonce = n;
+    }
 
     /* Start from an empty Woo cart so a re-run cannot double the quantities. */
     await fetch(STORE_API_URL + '/cart/items', {
       method: 'DELETE', headers: hdrs, credentials: 'include'
-    }).catch(function () {});
+    }).then(absorb).catch(function () {});
 
     for (var i = 0; i < payload.length; i++) {
       var line = payload[i];
@@ -367,6 +391,7 @@ ELANA15:    { label: 'Partner referral', rate: 0.15 }
         method: 'POST', headers: hdrs, credentials: 'include',
         body: JSON.stringify({ id: line.id, quantity: line.quantity })
       });
+      absorb(res);
       if (!res.ok) {
         var body = await res.text();
         throw new Error('Woo rejected ' + line.slug + ' (' + res.status + '): ' + body.slice(0, 200));
@@ -377,7 +402,16 @@ ELANA15:    { label: 'Partner referral', rate: 0.15 }
       await fetch(STORE_API_URL + '/cart/apply-coupon', {
         method: 'POST', headers: hdrs, credentials: 'include',
         body: JSON.stringify({ code: couponCode })
-      }).catch(function (e) { console.warn('AmbrosiaCart: coupon not applied', e); });
+      }).then(absorb).catch(function (e) { console.warn('AmbrosiaCart: coupon not applied', e); });
+    }
+
+    var check = await fetch(STORE_API_URL + '/cart', {
+      headers: hdrs, credentials: 'include'
+    }).then(function (r) { return r.json(); }).catch(function () { return null; });
+
+    if (check && Array.isArray(check.items) && check.items.length === 0) {
+      throw new Error('Woo cart came back empty after adding ' + payload.length
+        + ' line(s) — cart session did not persist.');
     }
 
     window.location.href = CHECKOUT_ORIGIN + '/checkout';
