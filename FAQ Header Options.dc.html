@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preload" href="fonts/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="ambrosia.css?v=4">
+<style>
+  a { color: #6B1F28; }
+  a:hover { color: #241C19; }
+</style>
+</helmet>
+
+<div style="background:#E8DFCE; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; padding:clamp(24px,4vw,48px) clamp(16px,3vw,36px)">
+<div style="max-width:1000px; margin:0 auto; display:flex; flex-direction:column; gap:clamp(20px,3vw,30px)">
+
+  <div>
+    <div style="font-size:10px; font-weight:600; letter-spacing:0.22em; color:#7A5622; margin-bottom:10px">FAQ SECTION HEADER &middot; FIVE TREATMENTS</div>
+    <div style="font-size:14.5px; line-height:1.7; color:#3C312C; max-width:60ch; text-wrap:pretty">Each shown as it would sit on the homepage, kicker above and first question below. A is what is live now.</div>
+  </div>
+
+  <sc-for list="{{ opts }}" as="o" hint-placeholder-count="5">
+    <div style="background:#F0E9DC; border:1px solid #CBBBA2; padding:clamp(20px,2.6vw,32px)">
+      <div style="display:flex; flex-wrap:wrap; gap:10px 16px; align-items:baseline; margin-bottom:20px">
+        <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#6B1F28">{{ o.id }}</span>
+        <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#241C19">{{ o.name }}</span>
+        <span style="font-size:13px; line-height:1.6; color:#6E6055; flex:1 1 300px; text-wrap:pretty">{{ o.note }}</span>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:16px 40px; align-items:baseline; justify-content:space-between">
+        <div>
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">FREQUENTLY ASKED</div>
+          <div style="margin-top:14px">{{ o.heading }}</div>
+        </div>
+        <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6B1F28; white-space:nowrap">ALL QUESTIONS &rarr;</span>
+      </div>
+      <div style="border-top:1px solid #241C19; margin-top:22px; padding-top:22px">
+        <div style="font-family:'Instrument Serif', serif; font-size:23px; line-height:1.2; color:#241C19; margin-bottom:10px">What payment methods do you accept?</div>
+        <div style="font-size:15px; line-height:1.75; color:#3C312C; max-width:70ch; text-wrap:pretty">Credit and debit cards, and USDT on the TRC-20 network.</div>
+      </div>
+    </div>
+  </sc-for>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1040}}">
+class Component extends DCLogic {
+  renderVals() {
+    const h = (style, text) => React.createElement('div', { style }, text || 'Before you order');
+    return {
+      opts: [
+        { id: 'A', name: 'ARCHIVO SEMIBOLD', note: 'Live now. Recedes — it reads as a label, and the question below it is louder than the header.',
+          heading: h({ fontFamily: 'Archivo, sans-serif', fontWeight: 600, fontSize: '21px', letterSpacing: '0.01em', lineHeight: 1.3, color: '#241C19' }) },
+        { id: 'B', name: 'SERIF, RESTORED', note: 'What it was before. Clear as a header, but every band on the page then speaks in the same voice.',
+          heading: h({ fontFamily: "'Instrument Serif', serif", fontWeight: 400, fontSize: '46px', lineHeight: 1.05, color: '#241C19' }) },
+        { id: 'C', name: 'SERIF, SMALLER', note: 'Serif kept, dropped a step so it sits above the questions without competing with the hero.',
+          heading: h({ fontFamily: "'Instrument Serif', serif", fontWeight: 400, fontSize: '34px', lineHeight: 1.1, color: '#241C19' }) },
+        { id: 'D', name: 'CINZEL, LETTERSPACED', note: 'The wordmark face, used as a section rule. Most distinct from both the hero and the questions.',
+          heading: h({ fontFamily: 'Cinzel, serif', fontWeight: 600, fontSize: '20px', letterSpacing: '0.2em', lineHeight: 1.3, color: '#241C19', textTransform: 'uppercase' }, 'Before you order') },
+        { id: 'E', name: 'ARCHIVO, OXBLOOD', note: 'Same weight as A, in the accent. Holds its place without borrowing the serif.',
+          heading: h({ fontFamily: 'Archivo, sans-serif', fontWeight: 600, fontSize: '23px', letterSpacing: '0.01em', lineHeight: 1.3, color: '#6B1F28' }) }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preload" href="fonts/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="ambrosia.css?v=4">
+<style>
+  a { color: #6B1F28; }
+  a:hover { color: #241C19; }
+</style>
+</helmet>
+
+<div style="background:#E8DFCE; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; padding:clamp(24px,4vw,56px) clamp(16px,3vw,40px)">
+<div style="max-width:1100px; margin:0 auto; display:flex; flex-direction:column; gap:clamp(30px,4vw,52px)">
+
+  <div>
+    <div style="font-size:10px; font-weight:600; letter-spacing:0.22em; color:#7A5622; margin-bottom:12px">PROPOSED FIXES &middot; NOTHING APPLIED</div>
+    <div style="font-family:'Instrument Serif', serif; font-size:clamp(30px,4vw,46px); line-height:1.1; max-width:22ch; text-wrap:pretty">Five fixes, ordered by what they cost you</div>
+    <p style="font-size:15px; line-height:1.7; color:#3C312C; margin:16px 0 0; max-width:64ch; text-wrap:pretty">Ticker excluded. Each one below says what's wrong, what I'd do, and what it touches. Say which numbers you want and I'll build them.</p>
+  </div>
+
+  <sc-for list="{{ fixes }}" as="f" hint-placeholder-count="5">
+    <div style="background:#F0E9DC; border:1px solid #CBBBA2; padding:clamp(22px,3vw,36px); display:flex; flex-direction:column; gap:clamp(16px,2vw,22px)">
+      <div style="display:flex; flex-wrap:wrap; gap:12px 18px; align-items:baseline">
+        <span style="font-family:'Instrument Serif', serif; font-size:clamp(24px,2.6vw,32px); line-height:1; color:#7A5622">{{ f.n }}</span>
+        <span style="font-family:'Instrument Serif', serif; font-size:clamp(22px,2.4vw,30px); line-height:1.15; color:#241C19; flex:1 1 260px; text-wrap:balance">{{ f.title }}</span>
+        <span style="font-size:10px; font-weight:600; letter-spacing:0.18em; color:{{ f.effortColor }}; white-space:nowrap">{{ f.effort }}</span>
+      </div>
+      <div class="two" style="gap:clamp(18px,2.6vw,40px)">
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#8A3B45; margin-bottom:9px">THE PROBLEM</div>
+          <div style="font-size:14.5px; line-height:1.7; color:#3C312C; text-wrap:pretty">{{ f.problem }}</div>
+        </div>
+        <div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#4A6141; margin-bottom:9px">THE FIX</div>
+          <div style="font-size:14.5px; line-height:1.7; color:#3C312C; text-wrap:pretty">{{ f.fix }}</div>
+        </div>
+      </div>
+      <div style="font-size:12.5px; line-height:1.6; color:#6E6055; border-top:1px solid #D8C9B2; padding-top:14px">Touches: {{ f.touches }}</div>
+    </div>
+  </sc-for>
+
+  <div style="display:flex; flex-direction:column; gap:14px">
+    <div style="font-size:10px; font-weight:600; letter-spacing:0.22em; color:#7A5622">SPECIMEN &middot; FIX 02, THE FOOTER GROUND</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:2px">
+      <div style="background:#2C1B15; padding:26px 22px">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:10px">NOW &middot; #2C1B15</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:22px; color:#F0E9DC">Brown, used nowhere else</div>
+      </div>
+      <div style="background:#3E1218; padding:26px 22px">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:10px">PROPOSED &middot; #3E1218</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:22px; color:#F0E9DC">Matches ticker and standard band</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:14px">
+    <div style="font-size:10px; font-weight:600; letter-spacing:0.22em; color:#7A5622">SPECIMEN &middot; FIX 03, A MIDDLE REGISTER</div>
+    <div class="two" style="gap:2px">
+      <div style="background:#F0E9DC; border:1px solid #CBBBA2; padding:26px 24px">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#8A3B45; margin-bottom:18px">NOW &middot; TWO VOICES</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:40px; line-height:1.05; color:#241C19">Research, Refined.</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:30px; line-height:1.15; color:#241C19; margin-top:22px">Before you order</div>
+        <div style="font-size:14.5px; line-height:1.7; color:#3C312C; margin-top:14px">Both set in the same face at close sizes, so a section header carries nearly the weight of the page's one big statement.</div>
+      </div>
+      <div style="background:#F0E9DC; border:1px solid #CBBBA2; padding:26px 24px">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#4A6141; margin-bottom:18px">PROPOSED &middot; THREE</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:40px; line-height:1.05; color:#241C19">Research, Refined.</div>
+        <div style="font-size:19px; font-weight:600; letter-spacing:0.01em; line-height:1.3; color:#241C19; margin-top:22px">Before you order</div>
+        <div style="font-size:14.5px; line-height:1.7; color:#3C312C; margin-top:14px">Section headers drop to Archivo at semibold. The serif is reserved for one statement per page, so scrolling has a rhythm instead of a drone.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#3E1218; padding:clamp(24px,3.4vw,40px); display:flex; flex-direction:column; gap:12px">
+    <div style="font-size:10px; font-weight:600; letter-spacing:0.22em; color:#C9A227">MY ORDER OF WORK</div>
+    <div style="font-size:15px; line-height:1.8; color:#D8C9B2; max-width:70ch; text-wrap:pretty">05 first, because it costs credibility on every order. Then 01, because duplication gets worse the longer it sits. 02 and 03 are an afternoon together. 04 last, or never, if you'd rather leave the arrows alone.</div>
+  </div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1140}}">
+class Component extends DCLogic {
+  renderVals() {
+    const S = { effort: 'SMALL', effortColor: '#4A6141' };
+    const M = { effort: 'MEDIUM', effortColor: '#7A5622' };
+    const L = { effort: 'LARGE', effortColor: '#8A3B45' };
+    return {
+      fixes: [
+        Object.assign({
+          n: '01', title: 'One canonical Standard, not two',
+          problem: 'The four points and the certificate summary now live on both the homepage and standard.html. When a lot changes, two files need editing, and the day one is missed the site contradicts itself.',
+          fix: 'Homepage keeps the photograph, the four point titles and the VIEW CERTIFICATES button \u2014 headlines only, no body copy. standard.html stays the full account and the only place lot data appears.',
+          touches: 'index.html'
+        }, S),
+        Object.assign({
+          n: '02', title: 'Retire the brown',
+          problem: 'Three dark values are in play: #3E1218 on the ticker and the standard band, #2A0C11 on the certificates, #2C1B15 on every footer. The footer is the only thing wearing the brown, so it reads as a leftover rather than a choice.',
+          fix: 'Footer moves to #3E1218 across all 21 pages, with its hairlines warmed to match. Two dark values remain: the ground, and the deeper certificates band.',
+          touches: '21 pages, one find-and-replace'
+        }, S),
+        Object.assign({
+          n: '03', title: 'Give the type a middle register',
+          problem: 'Instrument Serif sets every heading on every page. A page statement and a section label differ only by a few points of size, so nothing tells you which is which and long pages flatten as you scroll.',
+          fix: 'Serif for one statement per page. Section headers become Archivo semibold at around 19px \u2014 the weight the kickers already use, one step up. Body copy unchanged.',
+          touches: 'section headers sitewide'
+        }, M),
+        Object.assign({
+          n: '04', title: 'Label the compound arrows',
+          problem: 'The edge chevrons on product pages have no visible label, so nothing tells you they lead to GLP-3 rather than back to the catalogue. They also vanish under 720px, which is most of your traffic.',
+          fix: 'Either add the compound name beside each chevron on desktop, or drop them for a next/previous strip at the foot of the page that works at every width. I would take the strip.',
+          touches: '7 product pages'
+        }, S),
+        Object.assign({
+          n: '05', title: 'Keep checkout on the branded domain',
+          problem: 'Customers leave ambrosiastandard.com for admin.ambrosiastandard.com at the moment they hand over money. That address bar undoes what the certificates buy you, and it is the single most expensive thing on the site.',
+          fix: 'Option B as planned: set WP_HOME to www, widen the cookie domain so sessions survive, and route checkout through the branded address. Needs a wp-config change and a full-flow test order.',
+          touches: 'WordPress config, cart-store.js, vercel.json'
+        }, L)
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

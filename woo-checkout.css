@@ -1,0 +1,289 @@
+/* ==========================================================================
+   Ambrosia — WooCommerce checkout skin
+   Paste into WPCode as a CSS snippet, location "Site Wide Footer" (or a
+   Custom CSS snippet). Styles the Woo block checkout, the order-received
+   page and My Account to match ambrosiastandard.com.
+
+   Fonts load from the live static site. On www.ambrosiastandard.com/checkout
+   that is same-origin, so they resolve. Viewed directly on the admin
+   subdomain they fall back to system faces — expected, admin-only.
+   ========================================================================== */
+
+@font-face { font-family:'AmbCinzel'; src:url('https://www.ambrosiastandard.com/fonts/Cinzel.ttf') format('truetype-variations'); font-weight:400 700; font-display:swap; }
+@font-face { font-family:'AmbInstrument'; src:url('https://www.ambrosiastandard.com/fonts/InstrumentSerif-Regular.ttf') format('truetype'); font-weight:400; font-display:swap; }
+@font-face { font-family:'AmbArchivo'; src:url('https://www.ambrosiastandard.com/fonts/Archivo.ttf') format('truetype-variations'); font-weight:400 700; font-display:swap; }
+
+:root {
+  --amb-bg:#F0E9DC;
+  --amb-panel:#E4D8C6;
+  --amb-rule:#D8C9B2;
+  --amb-ink:#3C312C;
+  --amb-muted:#A9A096;
+  --amb-ox:#6B1F28;
+  --amb-deep:#3E1218;
+  --amb-gold:#C9A227;
+  --amb-brown:#7A5622;
+}
+
+/* ── ground ─────────────────────────────────────────────────────────────── */
+body.woocommerce-checkout,
+body.woocommerce-order-received,
+body.woocommerce-account,
+body.woocommerce-cart {
+  background:var(--amb-bg) !important;
+  color:var(--amb-ink) !important;
+  font-family:'AmbArchivo', system-ui, sans-serif !important;
+}
+
+/* Hide the WordPress theme's header, nav and footer on commerce pages so
+   customers can't wander into the unstyled parallel storefront. */
+body.woocommerce-checkout header.wp-block-template-part,
+body.woocommerce-checkout footer.wp-block-template-part,
+body.woocommerce-order-received header.wp-block-template-part,
+body.woocommerce-order-received footer.wp-block-template-part,
+body.woocommerce-checkout .wp-block-navigation,
+body.woocommerce-order-received .wp-block-navigation,
+body.woocommerce-checkout .wp-block-site-title,
+body.woocommerce-order-received .wp-block-site-title { display:none !important; }
+
+/* An oxblood bar in place of the hidden header. */
+body.woocommerce-checkout .wp-site-blocks::before,
+body.woocommerce-order-received .wp-site-blocks::before {
+  content:'AMBROSIA';
+  display:block;
+  background:var(--amb-deep);
+  color:var(--amb-bg);
+  font-family:'AmbCinzel', Georgia, serif;
+  font-size:15px;
+  letter-spacing:0.34em;
+  text-align:center;
+  padding:20px 16px;
+  margin-bottom:clamp(28px,5vw,56px);
+}
+
+/* ── headings ───────────────────────────────────────────────────────────── */
+.wc-block-components-title,
+.wc-block-components-checkout-step__title,
+.woocommerce-order h1, .woocommerce-order h2, .woocommerce-order h3,
+.entry-content h1, .entry-content h2 {
+  font-family:'AmbInstrument', Georgia, serif !important;
+  font-weight:400 !important;
+  color:var(--amb-ink) !important;
+  letter-spacing:0.01em !important;
+}
+.wc-block-components-checkout-step__title { font-size:26px !important; }
+.wc-block-components-checkout-step__heading { border-bottom:1px solid var(--amb-rule); padding-bottom:12px; margin-bottom:20px; }
+.wc-block-components-checkout-step__description { color:var(--amb-brown) !important; }
+
+/* Step numbers in gold, matching the mockup's 01 / 02 / 03 rhythm. */
+.wc-block-components-checkout-step__number {
+  background:transparent !important;
+  color:var(--amb-gold) !important;
+  border:1px solid var(--amb-gold) !important;
+  font-family:'AmbArchivo', sans-serif !important;
+  letter-spacing:0.08em !important;
+}
+
+/* ── fields ─────────────────────────────────────────────────────────────── */
+.wc-block-components-text-input input,
+.wc-block-components-textarea,
+.wc-block-components-select__select,
+.wc-block-components-combobox input,
+.woocommerce-input-wrapper input,
+.woocommerce form input[type="text"],
+.woocommerce form input[type="email"],
+.woocommerce form input[type="tel"],
+.woocommerce form input[type="password"],
+.woocommerce form select {
+  background:transparent !important;
+  border:1px solid var(--amb-rule) !important;
+  border-radius:0 !important;
+  color:var(--amb-ink) !important;
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:15px !important;
+  padding:16px 14px !important;
+  box-shadow:none !important;
+}
+.wc-block-components-text-input input:focus,
+.wc-block-components-select__select:focus,
+.woocommerce form input:focus,
+.woocommerce form select:focus {
+  border-color:var(--amb-brown) !important;
+  outline:2px solid var(--amb-brown) !important;
+  outline-offset:2px !important;
+}
+.wc-block-components-text-input label,
+.wc-block-components-select__label,
+.woocommerce form label {
+  color:var(--amb-brown) !important;
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:11px !important;
+  letter-spacing:0.16em !important;
+  text-transform:uppercase !important;
+}
+.wc-block-components-text-input.is-active label { color:var(--amb-brown) !important; }
+
+/* ── radios: shipping options and payment methods ───────────────────────── */
+.wc-block-components-radio-control__option,
+.wc-block-components-radio-control-accordion__option {
+  background:transparent !important;
+  border-top:1px solid var(--amb-rule) !important;
+  border-left:none !important; border-right:none !important; border-bottom:none !important;
+  border-radius:0 !important;
+  padding:18px 4px !important;
+}
+.wc-block-components-radio-control__option-layout { color:var(--amb-ink) !important; }
+.wc-block-components-radio-control__label {
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:14px !important;
+  letter-spacing:0.04em !important;
+}
+.wc-block-components-radio-control__secondary-label,
+.wc-block-components-radio-control__description { color:var(--amb-brown) !important; font-size:12.5px !important; }
+.wc-block-components-radio-control__input { accent-color:var(--amb-ox) !important; }
+.wc-block-components-radio-control__option--checked-option-highlighted,
+.wc-block-components-radio-control-accordion__option--checked-option-highlighted {
+  background:rgba(107,31,40,0.04) !important;
+}
+
+input[type="checkbox"], input[type="radio"] { accent-color:var(--amb-ox) !important; }
+
+/* ── order summary sidebar ──────────────────────────────────────────────── */
+.wc-block-components-sidebar,
+.wp-block-woocommerce-checkout-totals-block {
+  background:var(--amb-panel) !important;
+  padding:clamp(22px,3vw,34px) !important;
+  border-radius:0 !important;
+}
+.wc-block-components-order-summary__content { border:none !important; }
+.wc-block-components-order-summary-item__description,
+.wc-block-components-product-metadata { color:var(--amb-brown) !important; }
+.wc-block-components-order-summary-item__image img { border-radius:0 !important; }
+.wc-block-components-totals-item {
+  font-family:'AmbArchivo', sans-serif !important;
+  color:var(--amb-ink) !important;
+}
+.wc-block-components-totals-item__label { letter-spacing:0.04em !important; }
+.wc-block-components-totals-footer-item {
+  border-top:1px solid var(--amb-brown) !important;
+  padding-top:18px !important;
+}
+.wc-block-components-totals-footer-item .wc-block-components-totals-item__label,
+.wc-block-components-totals-footer-item .wc-block-components-totals-item__value {
+  font-family:'AmbCinzel', Georgia, serif !important;
+  font-size:18px !important;
+  letter-spacing:0.1em !important;
+}
+.wc-block-components-totals-discount__coupon-list-item,
+.wc-block-components-totals-discount .wc-block-components-totals-item__value { color:var(--amb-ox) !important; }
+
+/* Coupon field */
+.wc-block-components-totals-coupon__form .wc-block-components-text-input input { border-color:var(--amb-brown) !important; }
+.wc-block-components-panel__button { color:var(--amb-brown) !important; font-family:'AmbArchivo', sans-serif !important; letter-spacing:0.1em !important; text-transform:uppercase !important; font-size:11px !important; }
+
+/* ── buttons ────────────────────────────────────────────────────────────── */
+.wc-block-components-button:not(.is-link),
+.wc-block-components-checkout-place-order-button,
+.woocommerce a.button, .woocommerce button.button, .woocommerce input.button,
+.woocommerce #respond input#submit {
+  background:var(--amb-ox) !important;
+  color:var(--amb-bg) !important;
+  border:none !important;
+  border-radius:0 !important;
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:12.5px !important;
+  font-weight:600 !important;
+  letter-spacing:0.22em !important;
+  text-transform:uppercase !important;
+  min-height:58px !important;
+  padding:0 28px !important;
+  transition:background 320ms cubic-bezier(.2,.6,.2,1) !important;
+}
+.wc-block-components-button:not(.is-link):hover,
+.wc-block-components-checkout-place-order-button:hover,
+.woocommerce a.button:hover, .woocommerce button.button:hover {
+  background:var(--amb-deep) !important;
+}
+.wc-block-components-button:not(.is-link):focus-visible,
+.woocommerce button.button:focus-visible {
+  outline:2px solid var(--amb-brown) !important;
+  outline-offset:3px !important;
+}
+.wc-block-components-button.is-link, .wc-block-components-button__text a { color:var(--amb-ox) !important; }
+
+/* ── notices ────────────────────────────────────────────────────────────── */
+.wc-block-components-notice-banner {
+  border-radius:0 !important;
+  border-left-width:2px !important;
+  font-family:'AmbArchivo', sans-serif !important;
+}
+.wc-block-components-notice-banner.is-error { border-color:var(--amb-ox) !important; background:rgba(107,31,40,0.06) !important; }
+.wc-block-components-notice-banner.is-success { border-color:var(--amb-brown) !important; background:rgba(122,86,34,0.06) !important; }
+.wc-block-components-validation-error { color:var(--amb-ox) !important; }
+
+/* ── order-received / thank-you page ───────────────────────────────────── */
+.woocommerce-order-overview,
+.woocommerce table.shop_table {
+  background:transparent !important;
+  border:1px solid var(--amb-rule) !important;
+  border-radius:0 !important;
+  border-collapse:collapse !important;
+}
+.woocommerce table.shop_table th,
+.woocommerce table.shop_table td {
+  border-color:var(--amb-rule) !important;
+  font-family:'AmbArchivo', sans-serif !important;
+  color:var(--amb-ink) !important;
+  padding:16px 18px !important;
+}
+.woocommerce table.shop_table th {
+  font-size:11px !important;
+  letter-spacing:0.16em !important;
+  text-transform:uppercase !important;
+  color:var(--amb-brown) !important;
+}
+.woocommerce ul.order_details {
+  background:var(--amb-panel) !important;
+  border:none !important;
+  padding:26px !important;
+  border-radius:0 !important;
+}
+.woocommerce ul.order_details li {
+  border-color:var(--amb-rule) !important;
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:11px !important;
+  letter-spacing:0.16em !important;
+  text-transform:uppercase !important;
+  color:var(--amb-brown) !important;
+}
+.woocommerce ul.order_details li strong {
+  font-family:'AmbInstrument', Georgia, serif !important;
+  font-size:19px !important;
+  letter-spacing:0 !important;
+  text-transform:none !important;
+  color:var(--amb-ink) !important;
+}
+
+/* Research-use reminder under the thank-you heading. */
+body.woocommerce-order-received .woocommerce-order::before {
+  content:'FOR RESEARCH USE ONLY · NOT FOR HUMAN CONSUMPTION';
+  display:block;
+  font-family:'AmbArchivo', sans-serif;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.22em;
+  color:var(--amb-gold);
+  padding-bottom:20px;
+}
+
+/* ── links ──────────────────────────────────────────────────────────────── */
+.woocommerce a, .wc-block-components-checkout-step a { color:var(--amb-ox) !important; }
+.woocommerce a:hover, .wc-block-components-checkout-step a:hover { color:var(--amb-deep) !important; }
+
+/* ── width ──────────────────────────────────────────────────────────────── */
+body.woocommerce-checkout .wp-block-woocommerce-checkout,
+body.woocommerce-order-received .woocommerce {
+  max-width:1240px !important;
+  margin:0 auto !important;
+  padding:0 clamp(20px,4vw,56px) clamp(56px,8vw,110px) !important;
+}

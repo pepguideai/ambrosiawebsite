@@ -30,6 +30,14 @@
      applies, so WordPress must return CORS headers for this origin — see the
      "Ambrosia Store API CORS" WPCode snippet. */
   var WOO_ORIGIN = 'https://admin.ambrosiastandard.com';
+
+  /* Branded checkout switch. While false, the customer is sent to WordPress's
+     own host for payment. Flip to true ONLY after WP_HOME/WP_SITEURL point at
+     www and COOKIE_DOMAIN is widened to '.ambrosiastandard.com' — otherwise the
+     session does not survive the hop and checkout bounces to wp-login.
+     See checkout-branded-domain.md for the full sequence. */
+  var BRANDED_CHECKOUT = false;
+  var CHECKOUT_ORIGIN = BRANDED_CHECKOUT ? '' : WOO_ORIGIN;
   var STORE_API_URL = WOO_ORIGIN + '/wp-json/wc/store/v1';
   window.STORE_API_URL = STORE_API_URL; // legacy global, referenced by older page code
 
@@ -71,7 +79,7 @@
     'ghk-cu':       { name: 'GHK-Cu',                mass: '50 mg per vial',  price: 35,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
     'ghk-cu-100':   { name: 'GHK-Cu',                mass: '100 mg per vial', price: 50,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
     'glow':         { name: 'Glow',                  mass: '70 mg per vial',  price: 125, img: 'vial-glow.png',      href: 'glow.html' },
-    'klow':         { name: 'Klow',                  mass: '80 mg per vial',  price: 170, img: 'vial-klow.png',      href: 'klow.html' },
+    'klow':         { name: 'Klow',                  mass: '80 mg per vial',  price: 180, img: 'vial-klow.png',      href: 'klow.html' },
     'wolverine':    { name: 'Wolverine',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' },
     'bac-water':    { name: 'Bacteriostatic Water',  mass: '10 mL',           price: 20,  img: 'vial-bac-water.png', href: 'bacteriostatic-water.html' }
   };
@@ -91,8 +99,7 @@
 
   /* [SERVER] Coupon codes must be validated by Woo, never client-side. */
   var DISCOUNTS = {
-    WELCOME10: { label: 'Welcome', rate: 0.10 },
-    ROSE10: { label: 'Founder', rate: 0.10 },
+    COLLECTIVE10: { label: 'Collective member', rate: 0.10 },
     NICOLE15:     { label: 'Partner referral', rate: 0.15 },
     ELANA15:      { label: 'Partner referral', rate: 0.15 }
   };
@@ -178,8 +185,7 @@
     var slugs = Object.keys(WOO_PRODUCT_IDS).filter(function (s) { return WOO_PRODUCT_IDS[s]; });
     if (!slugs.length) return CATALOG;
 
-    for (var i = 0; i < slugs.length; i++) {
-      var baseSlug = slugs[i];
+    await Promise.all(slugs.map(async function (baseSlug) {
       var id = WOO_PRODUCT_IDS[baseSlug];
       try {
         var p = await fetchJson(STORE_API_URL + '/products/' + id);
@@ -233,7 +239,7 @@
       } catch (e) {
         console.error('AmbrosiaCart: live fetch failed for ' + baseSlug + ' (' + (e && e.message ? e.message : e) + ') \u2014 using fallback prices. If this is a CORS error, allow the site origin on ' + STORE_API_URL);
       }
-    }
+    }));
 
     var pending = Object.keys(WOO_PRODUCT_IDS).filter(function (s) { return !WOO_PRODUCT_IDS[s]; });
     if (pending.length) {
@@ -331,6 +337,10 @@
   }
 
   async function handoff(couponCode) {
+    /* The catalogue carries the Woo variation IDs. Without this await, a click
+       that lands before the fetch settles sees every line as unwired. */
+    try { await catalogReady; } catch (e) {}
+
     var payload = wooPayload();
     var blocked = payload.filter(function (l) { return !l.submittable; });
     if (blocked.length) {
@@ -369,7 +379,7 @@
       }).catch(function (e) { console.warn('AmbrosiaCart: coupon not applied', e); });
     }
 
-    window.location.href = WOO_ORIGIN + '/checkout';
+    window.location.href = CHECKOUT_ORIGIN + '/checkout';
   }
 
   function money(n) {
