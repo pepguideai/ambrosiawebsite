@@ -76,23 +76,41 @@
      FALLBACK prices. [SERVER] Delete a block once its Woo ID is filled in above
      and the live fetch is confirmed for it.
      -------------------------------------------------------------------------- */
+  /* Every line carries its real Woo id, read from the live Store API on
+     2026-09-10. wooId is what the checkout handoff submits, so it must never
+     depend on a network call succeeding — a failed fetch used to leave these
+     null and the cart refused the item as "not available for online order".
+
+     Variable products point at the VARIATION id; the handoff snippet resolves
+     its parent server-side. Simple products point at the product itself.
+
+       GLP-3     parent 11   10MG/1 vial 16 · 20MG 17 · 30MG 18
+                             (10-vial kits: 13 / 14 / 15 — not sold here yet)
+       GLP-2     parent 19   10MG/1 vial 20 · 20MG 22 · 30MG 24
+                             (10-vial kits: 21 / 26 / 25 — not sold here yet)
+       GHK-Cu    parent 27   50MG 28 · 100MG 29
+       Wolverine simple  30
+       Klow      simple  31
+       Glow      simple  32
+       Bac water simple  47
+     -------------------------------------------------------------------------- */
   var FALLBACK = {
-    'glp-2':        { name: 'GLP-2',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-2-20':     { name: 'GLP-2',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-2-30':     { name: 'GLP-2',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-3':        { name: 'GLP-3',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-3.png',     href: 'glp-3.html' },
-    'glp-3-20':     { name: 'GLP-3',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-3.png',     href: 'glp-3.html' },
-    'glp-3-30':     { name: 'GLP-3',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-3.png',     href: 'glp-3.html' },
-    'ghk-cu':       { name: 'GHK-Cu',                mass: '50 mg per vial',  price: 35,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
-    'ghk-cu-100':   { name: 'GHK-Cu',                mass: '100 mg per vial', price: 50,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
-    'glow':         { name: 'Glow',                  mass: '70 mg per vial',  price: 125, img: 'vial-glow.png',      href: 'glow.html' },
-    'klow':         { name: 'Klow',                  mass: '80 mg per vial',  price: 180, img: 'vial-klow.png',      href: 'klow.html' },
-    'wolverine':    { name: 'Wolverine',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' },
-    'bac-water':    { name: 'Bacteriostatic Water',  mass: '10 mL',           price: 20,  img: 'vial-bac-water.png', href: 'bacteriostatic-water.html' }
+    'glp-2':        { wooId: 20, name: 'GLP-2',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
+    'glp-2-20':     { wooId: 22, name: 'GLP-2',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-2.png',     href: 'glp-2.html' },
+    'glp-2-30':     { wooId: 24, name: 'GLP-2',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-2.png',     href: 'glp-2.html' },
+    'glp-3':        { wooId: 16, name: 'GLP-3',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'glp-3-20':     { wooId: 17, name: 'GLP-3',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'glp-3-30':     { wooId: 18, name: 'GLP-3',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'ghk-cu':       { wooId: 28, name: 'GHK-Cu',                mass: '50 mg per vial',  price: 35,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
+    'ghk-cu-100':   { wooId: 29, name: 'GHK-Cu',                mass: '100 mg per vial', price: 50,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
+    'glow':         { wooId: 32, name: 'Glow',                  mass: '70 mg per vial',  price: 125, img: 'vial-glow.png',      href: 'glow.html' },
+    'klow':         { wooId: 31, name: 'Klow',                  mass: '80 mg per vial',  price: 180, img: 'vial-klow.png',      href: 'klow.html' },
+    'wolverine':    { wooId: 30, name: 'Wolverine',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' },
+    'bac-water':    { wooId: 47, name: 'Bacteriostatic Water',  mass: '10 mL',           price: 20,  img: 'vial-bac-water.png', href: 'bacteriostatic-water.html' }
   };
 
   var CATALOG = {};
-  for (var k in FALLBACK) CATALOG[k] = Object.assign({ live: false, wooId: null }, FALLBACK[k]);
+  for (var k in FALLBACK) CATALOG[k] = Object.assign({ live: false }, FALLBACK[k]);
 
   var catalogReady = null;
 
