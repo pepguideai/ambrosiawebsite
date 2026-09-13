@@ -123,30 +123,260 @@ body.woocommerce-order-received .wp-site-blocks::before {
 }
 .wc-block-components-text-input.is-active label { color:var(--amb-brown) !important; }
 
+/* Labels sit ABOVE their field.
+
+   Woo's markup order is input-then-label (the float-label pattern), so simply
+   making the label static drops it BELOW the box. column-reverse puts it back
+   on top, and the gap is what stops the label touching the white rectangle. */
+.wc-block-components-text-input,
+.wc-block-components-combobox {
+  display:flex !important;
+  flex-direction:column-reverse !important;
+  gap:10px !important;
+  position:static !important;
+  padding-top:0 !important;
+  margin-bottom:20px !important;
+}
+.wc-block-components-text-input label,
+.wc-block-components-combobox label,
+.wc-block-components-select__label {
+  position:static !important;
+  transform:none !important;
+  display:block !important;
+  margin:0 !important;
+  padding:0 !important;
+  max-width:none !important;
+  overflow:visible !important;
+  font-size:10px !important;
+  letter-spacing:0.2em !important;
+  line-height:1.2 !important;
+}
+.wc-block-components-text-input input,
+.wc-block-components-combobox input,
+.wc-block-components-select__select {
+  height:56px !important;
+  padding:0 16px !important;
+  background:#FFFFFF !important;
+  box-sizing:border-box !important;
+  width:100% !important;
+}
+.wc-block-components-textarea { background:#FFFFFF !important; box-sizing:border-box !important; }
+
 /* ── radios: shipping options and payment methods ───────────────────────── */
-.wc-block-components-radio-control__option,
-.wc-block-components-radio-control-accordion__option {
-  background:transparent !important;
-  border-top:1px solid var(--amb-rule) !important;
-  border-left:none !important; border-right:none !important; border-bottom:none !important;
-  border-radius:0 !important;
-  padding:18px 4px !important;
-}
-.wc-block-components-radio-control__option-layout { color:var(--amb-ink) !important; }
-.wc-block-components-radio-control__label {
-  font-family:'AmbArchivo', sans-serif !important;
-  font-size:14px !important;
-  letter-spacing:0.04em !important;
-}
-.wc-block-components-radio-control__secondary-label,
-.wc-block-components-radio-control__description { color:var(--amb-brown) !important; font-size:12.5px !important; }
-.wc-block-components-radio-control__input { accent-color:var(--amb-ox) !important; }
-.wc-block-components-radio-control__option--checked-option-highlighted,
-.wc-block-components-radio-control-accordion__option--checked-option-highlighted {
-  background:rgba(107,31,40,0.04) !important;
+/* Each option is a card: a 22px marker, the label, the price. Three tracks, so
+   the marker cannot drift into the text and the price cannot float. Woo's own
+   marker is an absolutely-positioned pseudo-element whose offsets assume its
+   own row padding; ours differs, which is what put the dot on top of the
+   label. Suppress theirs, draw ours on the input. */
+
+.wc-block-components-radio-control {
+  display:flex !important;
+  flex-direction:column !important;
+  gap:10px !important;
+  border:none !important;
 }
 
-input[type="checkbox"], input[type="radio"] { accent-color:var(--amb-ox) !important; }
+.wc-block-components-radio-control__option,
+.wc-block-components-radio-control-accordion__option {
+  position:relative !important;
+  display:flex !important;
+  align-items:flex-start !important;
+  gap:20px !important;
+  margin:0 !important;
+  padding:18px 20px !important;
+  min-height:44px !important;
+  background:#FFFFFF !important;
+  border:1px solid var(--amb-rule) !important;
+  border-radius:0 !important;
+  box-sizing:border-box !important;
+  cursor:pointer;
+  transition:border-color 250ms ease, background-color 250ms ease !important;
+}
+
+.wc-block-components-radio-control__option::before,
+.wc-block-components-radio-control__option::after,
+.wc-block-components-radio-control__option-layout::before,
+.wc-block-components-radio-control__option-layout::after { content:none !important; display:none !important; }
+
+/* The marker. flex-start plus this nudge puts it beside the option NAME, on
+   the first line. Centred, it drifted down onto the delivery time. */
+.wc-block-components-radio-control__input {
+  position:relative !important;
+  flex:0 0 auto !important;
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  width:22px !important;
+  height:22px !important;
+  min-width:22px !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:1px solid var(--amb-brown) !important;
+  border-radius:50% !important;
+  background:#FFFFFF !important;
+  box-shadow:none !important;
+  box-sizing:border-box !important;
+  cursor:pointer;
+  transition:border-color 200ms ease !important;
+}
+.wc-block-components-radio-control__input::after {
+  content:'' !important;
+  position:absolute !important;
+  top:50% !important;
+  left:50% !important;
+  width:10px !important;
+  height:10px !important;
+  margin:-5px 0 0 -5px !important;
+  border-radius:50% !important;
+  background:var(--amb-ox) !important;
+  opacity:0;
+  transition:opacity 160ms ease;
+}
+.wc-block-components-radio-control__input:checked { border-color:var(--amb-ox) !important; }
+.wc-block-components-radio-control__input:checked::after { opacity:1; }
+.wc-block-components-radio-control__input:focus-visible {
+  outline:2px solid var(--amb-brown) !important;
+  outline-offset:2px !important;
+}
+
+/* Label left, price right, on one baseline */
+.wc-block-components-radio-control__option-layout {
+  flex:1 1 auto !important;
+  min-width:0 !important;
+  color:var(--amb-ink) !important;
+}
+.wc-block-components-radio-control__label-group {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  gap:16px !important;
+  align-items:baseline !important;
+}
+.wc-block-components-radio-control__label {
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:15px !important;
+  line-height:1.3 !important;
+  letter-spacing:0 !important;
+  color:var(--amb-ink) !important;
+}
+.wc-block-components-radio-control__secondary-label,
+.wc-block-components-radio-control__secondary-description {
+  font-family:'AmbInstrument', Georgia, serif !important;
+  font-size:17px !important;
+  line-height:1.2 !important;
+  letter-spacing:0 !important;
+  color:var(--amb-ink) !important;
+  white-space:nowrap !important;
+  text-align:right !important;
+}
+.wc-block-components-radio-control__description-group { margin-top:5px !important; }
+.wc-block-components-radio-control__description {
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:12.5px !important;
+  line-height:1.5 !important;
+  color:#6E6055 !important;
+}
+
+/* Selected: oxblood hairline over a 5% tint. Woo adds the highlighted class on
+   some layouts and not others, so :has covers the rest. */
+.wc-block-components-radio-control__option--checked-option-highlighted,
+.wc-block-components-radio-control-accordion__option--checked-option-highlighted,
+.wc-block-components-radio-control__option:has(.wc-block-components-radio-control__input:checked),
+.wc-block-components-radio-control-accordion__option:has(.wc-block-components-radio-control__input:checked) {
+  border-color:var(--amb-ox) !important;
+  background:rgba(107,31,40,0.05) !important;
+}
+
+/* Delivery windows. Keyed to the rate ids defined in the "Ambrosia free
+   shipping" snippet, so these captions stay attached to the right option
+   whatever order WooCommerce renders them in. */
+.wc-block-components-radio-control__input[id*="ambrosia_standard"] + .wc-block-components-radio-control__option-layout .wc-block-components-radio-control__label-group::after,
+.wc-block-components-radio-control__input[id*="ambrosia_expedited"] + .wc-block-components-radio-control__option-layout .wc-block-components-radio-control__label-group::after,
+.wc-block-components-radio-control__input[id*="ambrosia_overnight"] + .wc-block-components-radio-control__option-layout .wc-block-components-radio-control__label-group::after {
+  grid-column:1;
+  display:block;
+  font-family:'AmbArchivo', sans-serif;
+  font-size:12.5px;
+  line-height:1.5;
+  color:#6E6055;
+  margin-top:5px;
+}
+.wc-block-components-radio-control__input[id*="ambrosia_standard"] + .wc-block-components-radio-control__option-layout .wc-block-components-radio-control__label-group::after { content:'3\2013 5 business days'; }
+.wc-block-components-radio-control__input[id*="ambrosia_expedited"] + .wc-block-components-radio-control__option-layout .wc-block-components-radio-control__label-group::after { content:'2 business days'; }
+.wc-block-components-radio-control__input[id*="ambrosia_overnight"] + .wc-block-components-radio-control__option-layout .wc-block-components-radio-control__label-group::after { content:'Next business day'; }
+
+/* Woo prints "Free" for a zero rate; the mockup says FREE in small caps. */
+.wc-block-components-radio-control__input[id*="ambrosia_standard"] + .wc-block-components-radio-control__option-layout .wc-block-components-radio-control__secondary-label,
+.wc-block-components-radio-control__input[id*="ambrosia_standard"] + .wc-block-components-radio-control__option-layout .wc-block-components-radio-control__secondary-description {
+  text-transform:uppercase !important;
+  letter-spacing:0.12em !important;
+}
+
+/* ── checkbox ───────────────────────────────────────────────────────────── */
+.wc-block-components-checkbox__input[type="checkbox"] {
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  width:22px !important;
+  height:22px !important;
+  min-width:22px !important;
+  margin:0 20px 0 0 !important;
+  border:1px solid var(--amb-brown) !important;
+  border-radius:0 !important;
+  background:#FFFFFF !important;
+  box-sizing:border-box !important;
+  cursor:pointer;
+}
+.wc-block-components-checkbox__input[type="checkbox"]:focus-visible {
+  outline:2px solid var(--amb-brown) !important;
+  outline-offset:2px !important;
+}
+.wc-block-components-checkbox__mark {
+  fill:var(--amb-ox) !important;
+  width:14px !important;
+  height:14px !important;
+  top:4px !important;
+  left:4px !important;
+}
+.wc-block-components-checkbox__label {
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:14.5px !important;
+  line-height:1.5 !important;
+  color:var(--amb-ink) !important;
+}
+
+input[type="checkbox"]:not(.wc-block-components-checkbox__input) { accent-color:var(--amb-ox) !important; }
+input[type="radio"]:not(.wc-block-components-radio-control__input) { accent-color:var(--amb-ox) !important; }
+
+/* Woo prints "You are currently checking out as a guest." under the contact
+   heading. Ambrosia doesn't frame ordering that way, so it is suppressed. */
+.wc-block-checkout__guest-checkout-notice,
+.wc-block-checkout__contact-fields .wc-block-components-checkout-step__description {
+  display:none !important;
+}
+
+/* ── address card ───────────────────────────────────────────────────────── */
+.wc-block-components-address-card {
+  background:#FFFFFF !important;
+  border:1px solid var(--amb-rule) !important;
+  border-radius:0 !important;
+  padding:18px !important;
+}
+.wc-block-components-address-card address {
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:14px !important;
+  line-height:1.65 !important;
+  color:var(--amb-ink) !important;
+  font-style:normal !important;
+}
+.wc-block-components-address-card__edit {
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:11px !important;
+  font-weight:600 !important;
+  letter-spacing:0.18em !important;
+  text-transform:uppercase !important;
+  color:var(--amb-ox) !important;
+  min-height:44px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+}
 
 /* ── order summary sidebar ──────────────────────────────────────────────── */
 .wc-block-components-sidebar,
@@ -168,11 +398,20 @@ input[type="checkbox"], input[type="radio"] { accent-color:var(--amb-ox) !import
   border-top:1px solid var(--amb-brown) !important;
   padding-top:18px !important;
 }
-.wc-block-components-totals-footer-item .wc-block-components-totals-item__label,
+.wc-block-components-totals-footer-item .wc-block-components-totals-item__label {
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:11px !important;
+  font-weight:600 !important;
+  letter-spacing:0.2em !important;
+  text-transform:uppercase !important;
+  color:var(--amb-brown) !important;
+}
 .wc-block-components-totals-footer-item .wc-block-components-totals-item__value {
-  font-family:'AmbCinzel', Georgia, serif !important;
-  font-size:18px !important;
-  letter-spacing:0.1em !important;
+  font-family:'AmbInstrument', Georgia, serif !important;
+  font-size:32px !important;
+  line-height:1 !important;
+  letter-spacing:0 !important;
+  color:var(--amb-ink) !important;
 }
 .wc-block-components-totals-discount__coupon-list-item,
 .wc-block-components-totals-discount .wc-block-components-totals-item__value { color:var(--amb-ox) !important; }

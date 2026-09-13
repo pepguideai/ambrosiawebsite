@@ -19,8 +19,8 @@
 
   <!-- ─── age / eligibility gate ───────────────────────────── -->
   <sc-if value="{{ gateOpen }}" hint-placeholder-val="{{ false }}">
-  <div style="position:fixed; inset:0; z-index:9999; background:rgba(36,28,25,0.94); display:flex; align-items:center; justify-content:center; padding:24px; overflow-y:auto">
-    <div style="background:#F0E9DC; width:100%; max-width:540px; padding:clamp(28px,5vw,54px); text-align:center">
+  <div style="position:fixed; inset:0; z-index:9999; background:rgba(36,28,25,0.94); display:flex; align-items:flex-start; justify-content:center; padding:24px; overflow-y:auto">
+    <div style="margin:auto; background:#F0E9DC; width:100%; max-width:540px; padding:clamp(28px,5vw,54px); text-align:center">
       <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:44px; height:44px; margin:0 auto; display:block">
         <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
         <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
@@ -56,6 +56,70 @@
         <div role="alert" style="font-size:13px; line-height:1.7; color:#6B1F28; margin:18px 0 0">Both statements must be confirmed to continue.</div>
       </sc-if>
       <p style="font-size:11.5px; line-height:1.7; color:#6E6055; margin:24px 0 0">For research use only. Not for human or animal use, clinical use, or consumer application.</p>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ─── mystery offer popup ──────────────────────────────── -->
+  <sc-if value="{{ offerOpen }}" hint-placeholder-val="{{ false }}">
+  <div role="dialog" aria-modal="true" aria-label="Your welcome offer" style="position:fixed; inset:0; z-index:9998; background:rgba(36,28,25,0.88); display:flex; align-items:flex-start; justify-content:center; padding:20px; overflow-y:auto">
+    <div style="position:relative; margin:auto; background:#3E1218; width:100%; max-width:480px; padding:clamp(30px,5vw,52px) clamp(24px,4.5vw,48px); text-align:center">
+      <button type="button" aria-label="Close" onClick="{{ closeOffer }}" style="position:absolute; top:12px; right:12px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; font-size:19px; line-height:1; color:#B08A8F; background:transparent; cursor:pointer; transition:color 300ms ease" style-hover="color:#F0E9DC">&times;</button>
+
+      <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:40px; height:40px; margin:0 auto; display:block">
+        <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#C9A227" stroke-width="2.6"></path>
+        <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#C9A227" stroke-width="2.6"></path>
+        <g stroke="#C9A227" stroke-width="3.4" fill="#3E1218">
+          <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+          <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+          <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+        </g>
+        <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#3E1218"></circle>
+      </svg>
+
+      <sc-if value="{{ offerAsking }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227; margin-top:18px">YOUR MYSTERY OFFER</div>
+        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(27px,3.6vw,36px); line-height:1.16; color:#F0E9DC; margin:16px 0 0">Something has been set aside for you.</h2>
+        <p style="font-size:15px; line-height:1.75; color:#E0CFC0; margin:14px auto 0; max-width:360px; text-wrap:pretty">Enter your email and we&rsquo;ll reveal your welcome discount code.</p>
+
+        <div style="margin-top:clamp(26px,4vw,36px); text-align:left">
+          <label for="pop-email" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#C9A227; margin-bottom:10px">EMAIL ADDRESS</label>
+          <input id="pop-email" type="email" inputmode="email" autocomplete="email" value="{{ offerEmail }}" onChange="{{ setOfferEmail }}" onKeyDown="{{ offerKey }}" style="width:100%; padding:13px 0; font-size:17px; color:#F0E9DC; background:transparent; border:none; border-bottom:1px solid #7A3A42">
+        </div>
+
+        <div style="display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:clamp(22px,3.2vw,32px)">
+          <button type="button" onClick="{{ submitOffer }}" aria-disabled="{{ offerBlocked }}" style="{{ offerBtn }}">{{ offerBtnLabel }}</button>
+          <sc-if value="{{ offerError }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="font-size:13px; line-height:1.7; color:#E0B977">{{ offerErrorText }}</div>
+          </sc-if>
+          <button type="button" onClick="{{ closeOffer }}" style="font-size:12px; letter-spacing:0.12em; color:#B08A8F; cursor:pointer; padding:6px 0; transition:color 400ms ease" style-hover="color:#F0E9DC">NO THANK YOU</button>
+        </div>
+
+        <p style="font-size:11.5px; line-height:1.7; color:#B08A8F; margin:clamp(22px,3vw,30px) auto 0; max-width:360px; text-wrap:pretty">One email with your code, plus new lots and certificates. Unsubscribe at any time. Qualified purchasers aged 21 or older only.</p>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ offerDone }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227; margin-top:18px">YOUR WELCOME OFFER</div>
+        <div style="font-family:'Instrument Serif', serif; font-size:clamp(56px,14vw,104px); line-height:0.92; letter-spacing:-0.02em; color:#F0E9DC; margin-top:16px">10%</div>
+        <div style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(13px,1.6vw,16px); letter-spacing:0.2em; color:#F0E9DC; margin-top:10px; padding-left:0.2em">OFF YOUR FIRST ORDER</div>
+
+        <div style="border-top:1px solid #7A3A42; border-bottom:1px solid #7A3A42; padding:22px 0; margin:clamp(24px,3.6vw,34px) 0">
+          <div style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#C9A227; margin-bottom:12px">YOUR CODE</div>
+          <div style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(20px,3vw,26px); letter-spacing:0.22em; color:#F0E9DC; padding-left:0.22em; word-break:break-all">{{ offerCode }}</div>
+        </div>
+
+        <p style="font-size:14.5px; line-height:1.75; color:#E0CFC0; margin:0 auto; max-width:360px; text-wrap:pretty">Sent to {{ offerEmailShown }}. Enter it at checkout.</p>
+
+        <div style="display:flex; justify-content:center; margin-top:clamp(24px,3.6vw,34px)">
+          <button type="button" onClick="{{ closeOffer }}" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#F0E9DC; color:#3E1218; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; cursor:pointer; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#E4D8C6">START BROWSING</button>
+        </div>
+
+        <p style="font-size:11.5px; line-height:1.7; color:#B08A8F; margin:clamp(22px,3vw,30px) auto 0; max-width:380px; text-wrap:pretty">Valid for 30 days from sign-up on your first qualifying order — any order verified under our Terms of Sale. One per account, not combinable with other offers.</p>
+      </div>
+      </sc-if>
     </div>
   </div>
   </sc-if>
@@ -109,7 +173,7 @@
         <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,7vw,86px); line-height:1.02; letter-spacing:-0.018em; color:#6B1F28; margin:22px auto 0; max-width:24ch; text-wrap:balance">Research, Refined.</h1>
 
         <div style="display:flex; flex-direction:column; align-items:center; gap:18px; margin-top:clamp(26px,3.4vw,44px)">
-          <a href="offer.html" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218">UNLOCK YOUR MYSTERY OFFER</a>
+          <a href="offer.html" onClick="{{ openOffer }}" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218">UNLOCK YOUR MYSTERY OFFER</a>
           <div style="font-size:13px; letter-spacing:0.04em; color:#6E6055">A welcome offer for your first qualifying order</div>
         </div>
       </div>
@@ -297,11 +361,11 @@
       </div>
         <div style="border-top:1px solid #241C19; padding:clamp(22px,2.6vw,32px) 0">
           <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">What payment methods do you accept?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Credit and debit cards, and USDT on the TRC-20 network. Card payments are processed through a third-party provider, so Ambrosia never stores or directly handles your card information. USDT orders are released for dispatch after two network confirmations.</p>
+          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Credit and debit cards, and USDC, BTC, ETH, SOL, XRP and LTC. Card payments are processed through a third-party provider, so Ambrosia never stores or directly handles your card information. Cryptocurrency orders are released for dispatch after two network confirmations.</p>
         </div>
         <div style="border-top:1px solid #D8C9B2; padding:clamp(22px,2.6vw,32px) 0">
           <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">What counts as a qualifying order?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">A single order of $200 or more, before shipping and tax, on any catalogued compound. Bacteriostatic water does not count toward the total. One welcome offer per account, valid for 30 days from the date you sign up, and not combinable with other offers.</p>
+          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Any order that has been properly verified under our Terms of Sale. Verification is the condition, not an order value — the $200 threshold applies to free shipping only. One welcome offer per account, valid for 30 days from the date you sign up, and not combinable with other offers.</p>
         </div>
         <div style="border-top:1px solid #D8C9B2; padding:clamp(22px,2.6vw,32px) 0">
           <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">How long does shipping take?</h2>
@@ -477,7 +541,7 @@ class Component extends DCLogic {
       { label: 'Returns & Documentation', href: 'returns-documentation.html' }
     ] }
   ];
-  state = { menuOpen: false, openGroup: null, openSub: null, gateOpen: false, ageOk: false, useOk: false, tried: false };
+  state = { menuOpen: false, openGroup: null, openSub: null, gateOpen: false, ageOk: false, useOk: false, tried: false, offerOpen: false, offerEmail: '', offerCode: '', offerSending: false, offerTried: false, offerFailed: false };
 
   scrollToHash() {
     const raw = (location.hash || '').slice(1);
@@ -507,11 +571,52 @@ class Component extends DCLogic {
     let acked = false;
     try { acked = localStorage.getItem('ambrosia-entry-ack') === 'yes'; } catch (e) {}
     if (!acked) this.setState({ gateOpen: true });
+    else this.maybeAutoOffer();
+  }
+
+  /* One automatic appearance per browser session, only once the entry gate has
+     been passed. Returning visitors clear the gate from localStorage, so the
+     session flag is what holds it to one showing. */
+  maybeAutoOffer() {
+    let seen = false, claimed = false;
+    try {
+      seen = sessionStorage.getItem('ambrosia-offer-shown') === 'yes';
+      claimed = localStorage.getItem('ambrosia-offer-email') !== null;
+    } catch (e) {}
+    if (seen || claimed) return;
+    try { sessionStorage.setItem('ambrosia-offer-shown', 'yes'); } catch (e) {}
+    setTimeout(() => this.setState({ offerOpen: true }), 700);
+  }
+
+  async sendOffer(email) {
+    const res = await fetch('/wp-json/ambrosia/v1/offer-signup', {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, source: 'homepage-popup' })
+    });
+    if (!res.ok) throw new Error('signup failed');
+    const data = await res.json();
+    return (data && data.code) || 'WELCOME10';
   }
 
   renderVals() {
     const { gateOpen, ageOk, useOk, tried } = this.state;
     const ready = ageOk && useOk;
+    const offerOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(this.state.offerEmail.trim());
+
+    const submitOffer = () => {
+      if (!offerOk || this.state.offerSending) { this.setState({ offerTried: true }); return; }
+      const email = this.state.offerEmail.trim();
+      this.setState({ offerSending: true, offerFailed: false });
+      this.sendOffer(email).then(code => {
+        try { localStorage.setItem('ambrosia-offer-email', email); } catch (e) {}
+        this.setState({ offerSending: false, offerCode: code });
+      }).catch(() => {
+        this.setState({ offerSending: false, offerFailed: true });
+      });
+    };
+
     return {
       menuOpen: this.state.menuOpen,
       stdOpen: !!this.state.stdOpen,
@@ -567,7 +672,34 @@ class Component extends DCLogic {
         if (!ready) { this.setState({ tried: true }); return; }
         try { localStorage.setItem('ambrosia-entry-ack', 'yes'); } catch (e) {}
         this.setState({ gateOpen: false });
+        this.maybeAutoOffer();
       },
+
+      offerOpen: this.state.offerOpen,
+      offerAsking: !this.state.offerCode,
+      offerDone: !!this.state.offerCode,
+      offerEmail: this.state.offerEmail,
+      offerEmailShown: this.state.offerEmail.trim() || 'your inbox',
+      offerCode: this.state.offerCode,
+      offerBlocked: !offerOk,
+      offerBtn: 'display:inline-flex; align-items:center; justify-content:center; height:58px;'
+        + ' padding:0 40px; font-size:12px; font-weight:600; letter-spacing:0.2em; cursor:pointer;'
+        + ' transition:background-color 400ms cubic-bezier(.2,.6,.2,1); background:'
+        + (offerOk ? '#F0E9DC' : '#7A3A42') + '; color:' + (offerOk ? '#3E1218' : '#E0CFC0'),
+      offerBtnLabel: this.state.offerSending ? 'SENDING\u2026' : 'REVEAL MY OFFER',
+      offerError: (this.state.offerTried && !offerOk) || this.state.offerFailed,
+      offerErrorText: this.state.offerFailed
+        ? 'That did not go through. Try again in a moment.'
+        : 'Enter a valid email address to continue.',
+      setOfferEmail: e => this.setState({ offerEmail: e.target.value, offerTried: false, offerFailed: false }),
+      offerKey: e => { if (e.key === 'Enter') submitOffer(); },
+      submitOffer: submitOffer,
+      openOffer: e => {
+        if (e && e.preventDefault) e.preventDefault();
+        this.setState({ offerOpen: true, offerTried: false, offerFailed: false });
+      },
+      closeOffer: () => this.setState({ offerOpen: false, offerTried: false, offerFailed: false }),
+
       cartCount: this._cartCount ?? 0,
       utilityNote: this.props.utilityNote ?? 'QUALIFIED PURCHASERS ONLY \u00B7 21+'
     };
