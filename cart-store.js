@@ -97,7 +97,6 @@
   var FALLBACK = {
     'glp-2':        { wooId: 20, name: 'GLP-2',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
     'glp-2-20':     { wooId: 22, name: 'GLP-2',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-2-30':     { wooId: 24, name: 'GLP-2',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-2.png',     href: 'glp-2.html' },
     'glp-3':        { wooId: 16, name: 'GLP-3',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-3.png',     href: 'glp-3.html' },
     'glp-3-20':     { wooId: 17, name: 'GLP-3',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-3.png',     href: 'glp-3.html' },
     'glp-3-30':     { wooId: 18, name: 'GLP-3',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-3.png',     href: 'glp-3.html' },
@@ -122,13 +121,48 @@
     { id: 'overnight', label: 'Overnight', detail: 'Next business day', price: 45 }
   ];
 
-  /* [SERVER] Coupon codes must be validated by Woo, never client-side. */
-  var DISCOUNTS = {
-    WELCOME10:    { label: 'Welcome', rate: 0.10 },
-    ROSE10:       { label: 'Rose', rate: 0.10 },
-    NICOLE15:     { label: 'Partner referral', rate: 0.15 },
-    ELANA15:      { label: 'Partner referral', rate: 0.15 }
-  };
+  /* Codes are stored as hashes, not as text.
+
+     This file is public — anyone can read it. It previously listed every
+     coupon code in plain sight, which made "unlocking" an offer meaningless
+     and gave away the partner referral codes for free. The cart only needs to
+     answer two questions: is this code real, and what is it worth. It never
+     needs to hold the code itself.
+
+     Do not name a live code anywhere in this file, comments included.
+
+     Woo remains the authority — it revalidates whatever is submitted at
+     checkout. This table only drives the estimate shown in the cart. */
+  function codeHash(str) {
+    var x = 5381;
+    for (var i = 0; i < str.length; i++) {
+      x = ((x * 33) ^ str.charCodeAt(i)) >>> 0;
+    }
+    return x.toString(16);
+  }
+
+  var DISCOUNTS = [
+    { hash: 'c2cf12cf', label: 'Rose', rate: 0.1 },
+    { hash: '9047e983', label: 'Partner referral', rate: 0.15 },
+    { hash: '4cd63c46', label: 'Partner referral', rate: 0.15 }
+  ];
+
+  function findDiscount(typed) {
+    var key = String(typed || '').trim().toUpperCase();
+    if (!key) return null;
+    var hash = codeHash(key);
+    for (var i = 0; i < DISCOUNTS.length; i++) {
+      if (DISCOUNTS[i].hash === hash) {
+        return { code: key, label: DISCOUNTS[i].label, rate: DISCOUNTS[i].rate };
+      }
+    }
+    return null;
+  }
+
+  /* The welcome offer carries NO code on the client at all. Consenting to
+     email sets a flag; the handoff snippet on WordPress holds the real coupon
+     and applies it server-side. Nothing to read, nothing to share. */
+  var WELCOME = { label: 'Welcome offer', rate: 0.10 };
 
   /* --------------------------------------------------------------------------
      Multi-vial pricing: two of any one vial 5% off, three 10%, ten 15%.
@@ -373,7 +407,7 @@
      The receiving end is the "Ambrosia cart handoff" WPCode snippet
      (woo-cart-handoff.php).
      -------------------------------------------------------------------------- */
-  async function handoff(couponCode) {
+  async function handoff(couponCode, opts) {
     /* The catalogue carries the Woo variation IDs. Without this await, a click
        that lands before the fetch settles sees every line as unwired. */
     try { await catalogReady; } catch (e) {}
@@ -406,9 +440,15 @@
       form.appendChild(i);
     }
 
+    var o = opts || {};
+
     field('ambrosia_handoff', '1');
     field('cart', JSON.stringify(lines));
     if (couponCode) field('coupon', couponCode);
+    /* The welcome coupon's code lives only in the WordPress snippet. Ask for it
+       by flag; never by name. */
+    if (o.welcome) field('welcome', '1');
+    if (o.optin) field('optin', '1');
 
     document.body.appendChild(form);
     form.submit();
@@ -434,7 +474,8 @@
     ready: catalogReady,
     STORE_API_URL: STORE_API_URL,
     WOO_PRODUCT_IDS: WOO_PRODUCT_IDS,
-    SHIPPING: SHIPPING, DISCOUNTS: DISCOUNTS, TIERS: TIERS,
+    SHIPPING: SHIPPING, WELCOME: WELCOME, TIERS: TIERS,
+    findDiscount: findDiscount,
     tierRate: tierRate, nextTier: nextTier,
     read: read, write: write, add: add, setQty: setQty, remove: remove, clear: clear,
     count: count, lines: lines, subtotal: subtotal, savings: savings,

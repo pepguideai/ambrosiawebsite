@@ -163,7 +163,22 @@
             </sc-for>
             <div style="font-size:11px; line-height:1.6; color:#3C312C; padding:12px 0 0">Flat-rate domestic shipping, free on orders over $200. Lyophilised material is stable in transit and ships at ambient temperature.</div>
 
-            <div style="padding:24px 0 10px; font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">DISCOUNT OR AFFILIATE CODE</div>
+            <div style="margin-top:24px; border:1px solid #7A5622; background:#F0E9DC; padding:20px">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">{{ welcomeKicker }}</div>
+              <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19; margin-top:8px">{{ welcomeHeadline }}</div>
+              <div onClick="{{ toggleOptin }}" style="display:grid; grid-template-columns:22px 1fr; gap:16px; align-items:start; margin-top:16px; min-height:44px; cursor:pointer">
+                <span style="width:22px; height:22px; margin-top:1px; display:flex; align-items:center; justify-content:center; border:1px solid #7A5622; background:#FFFFFF">
+                  <sc-if value="{{ optin }}" hint-placeholder-val="{{ false }}">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:14px; height:14px; display:block">
+                      <path d="M4 12.5 L9.5 18 L20 6.5" stroke="#6B1F28" stroke-width="3" stroke-linecap="square"></path>
+                    </svg>
+                  </sc-if>
+                </span>
+                <span style="font-size:14px; line-height:1.6; color:#3C312C; text-wrap:pretty">Email me new lots, certificates and restocks. Unsubscribe any time — every email carries a one-click opt-out.</span>
+              </div>
+            </div>
+
+            <div style="padding:24px 0 10px; font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">PARTNER OR AFFILIATE CODE</div>
             <div style="display:flex; gap:10px">
               <input type="text" value="{{ code }}" onChange="{{ setCode }}" placeholder="Enter code" aria-label="Discount or affiliate code" style="flex:1 1 auto; min-width:0; height:50px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:14px; letter-spacing:0.06em">
               <button type="button" onClick="{{ applyCode }}" style="flex:0 0 auto; height:50px; padding:0 24px; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; transition:background 380ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#241C19; color:#F0E9DC">APPLY</button>
@@ -284,7 +299,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;demoContents&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Cart&quot;},&quot;showUpsell&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Cart&quot;}}">
 class Component extends DCLogic {
-  state = { menuOpen: false, openGroup: null, openSub: null, lines: [], ship: 'standard', code: '', applied: null, codeErr: '', bacAdded: false, handingOff: false, handoffError: '' };
+  state = { menuOpen: false, openGroup: null, openSub: null, lines: [], ship: 'standard', code: '', applied: null, codeErr: '', optin: false, bacAdded: false, handingOff: false, handoffError: '' };
 
   static SUBMENUS = [
     { label: 'Compounds', links: [
@@ -329,6 +344,13 @@ class Component extends DCLogic {
 
   componentDidMount() {
     let tries = 0;
+    /* Prefs were being written but never read back, so a reload silently reset
+       the shipping choice and the email consent. */
+    let prefs = {};
+    try { prefs = JSON.parse(localStorage.getItem(Component.PREFS) || '{}') || {}; } catch (e) {}
+    if (prefs.ship) this.setState({ ship: prefs.ship });
+    if (prefs.optin) this.setState({ optin: true });
+
     const boot = () => {
       const C = window.AmbrosiaCart;
       if (!C) { if (tries++ < 120) requestAnimationFrame(boot); return; }
@@ -365,13 +387,18 @@ class Component extends DCLogic {
     const C = window.AmbrosiaCart;
     const money = C ? C.money : (n => '$' + Number(n || 0).toFixed(2));
     const shipOpts = C ? C.SHIPPING : [];
-    const discounts = C ? C.DISCOUNTS : {};
+    const welcome = (C && C.WELCOME) || { label: 'Welcome offer', rate: 0.10 };
+    /* Consenting to email unlocks the welcome rate. A typed partner code wins
+       if both are present, since it is worth more. */
+    const applied = s.applied;
+    const welcomeActive = s.optin && !applied;
 
     const lines = s.lines;
     const count = lines.reduce((a, l) => a + l.qty, 0);
     const subtotal = lines.reduce((a, l) => a + l.total, 0);
     const ship = shipOpts.find(o => o.id === s.ship) || shipOpts[0] || { price: 0 };
-    const disc = s.applied ? subtotal * discounts[s.applied].rate : 0;
+    const activeRate = applied ? applied.rate : (welcomeActive ? welcome.rate : 0);
+    const disc = subtotal * activeRate;
     const net = Math.max(0, subtotal - disc);
     /* Free standard shipping at $200 of PRODUCT value, before any discount
        code — the threshold basis must match AMBROSIA_FREE_SHIPPING_THRESHOLD in
@@ -472,7 +499,10 @@ class Component extends DCLogic {
         if (this.state.handingOff) return;
         this.setState({ handingOff: true, handoffError: '' });
         try {
-          await C.handoff(this.state.applied || null);
+          await C.handoff(
+            this.state.applied ? this.state.applied.code : null,
+            { welcome: welcomeActive, optin: this.state.optin }
+          );
         } catch (e) {
           this.setState({
             handingOff: false,
@@ -490,15 +520,25 @@ class Component extends DCLogic {
       applyCode: () => {
         const key = (s.code || '').trim().toUpperCase();
         if (!key) return;
-        if (discounts[key]) { this.setState({ applied: key, codeErr: '', code: key }); this.savePrefs({ applied: key }); }
+        const found = C && C.findDiscount ? C.findDiscount(key) : null;
+        if (found) { this.setState({ applied: found, codeErr: '', code: key }); this.savePrefs({ applied: key }); }
         else { this.setState({ applied: null, codeErr: 'That code is not recognised.' }); this.savePrefs({ applied: null }); }
       },
-      codeMessage: s.codeErr || (s.applied ? discounts[s.applied].label + ' code applied.' : ''),
+      codeMessage: s.codeErr || (applied ? applied.label + ' code applied.' : ''),
+
+      optin: s.optin,
+      toggleOptin: () => { const v = !this.state.optin; this.setState({ optin: v }); this.savePrefs({ optin: v }); },
+      welcomeKicker: welcomeActive ? 'OFFER UNLOCKED' : 'UNLOCK 10% OFF',
+      welcomeHeadline: welcomeActive
+        ? '10% off this order, applied at checkout.'
+        : (applied
+            ? 'Your partner code is already applied.'
+            : 'Consent to emails and take 10% off.'),
       codeMessageStyle: 'font-size:12.5px; line-height:1.6; padding-top:10px; color:'
         + (s.codeErr ? '#6B1F28' : '#3C312C'),
 
-      hasDiscount: !!s.applied && disc > 0,
-      discountLabel: s.applied ? 'Discount (' + s.applied + ')' : 'Discount',
+      hasDiscount: disc > 0,
+      discountLabel: applied ? 'Discount (' + applied.code + ')' : welcome.label,
       discountAmount: '\u2212' + money(disc),
       totalLabel: money(total)
     };
