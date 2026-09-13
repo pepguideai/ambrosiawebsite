@@ -409,8 +409,18 @@
      -------------------------------------------------------------------------- */
   async function handoff(couponCode, opts) {
     /* The catalogue carries the Woo variation IDs. Without this await, a click
-       that lands before the fetch settles sees every line as unwired. */
-    try { await catalogReady; } catch (e) {}
+       that lands before the fetch settles sees every line as unwired.
+
+       Bounded, though: a stalled Store API request used to leave this promise
+       pending forever, so the button sat on its pending label and the customer
+       never moved. After four seconds we go with whatever IDs we have — the
+       unwired guard below still refuses a cart we cannot submit. */
+    try {
+      await Promise.race([
+        catalogReady,
+        new Promise(function (r) { setTimeout(r, 4000); })
+      ]);
+    } catch (e) {}
 
     var payload = wooPayload();
     var blocked = payload.filter(function (l) { return !l.submittable; });
@@ -453,9 +463,15 @@
     document.body.appendChild(form);
     form.submit();
 
-    /* The navigation is underway; resolve so the button keeps its pending state
-       rather than flashing back to idle mid-transition. */
-    return new Promise(function () {});
+    /* The navigation is underway; keep the button in its pending state rather
+       than flashing back to idle mid-transition. If the navigation has not
+       happened after eight seconds it is not going to \u2014 surface an error
+       instead of leaving the customer looking at a dead button. */
+    return new Promise(function (_resolve, reject) {
+      setTimeout(function () {
+        reject(new Error('Checkout did not open. The handoff snippet may be inactive.'));
+      }, 8000);
+    });
   }
 
   function money(n) {
