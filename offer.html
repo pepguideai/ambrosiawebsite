@@ -37,46 +37,22 @@
         <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#3E1218"></circle>
       </svg>
 
-      <!-- ─── step one: email ──────────────────────────────── -->
-      <sc-if value="{{ onEmail }}" hint-placeholder-val="{{ true }}">
+      <sc-if value="{{ onConsent }}" hint-placeholder-val="{{ true }}">
       <div>
         <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(24px,3.4vw,38px); letter-spacing:0.16em; line-height:1.24; color:#F0E9DC; margin:0; padding-left:0.16em">YOUR OFFER AWAITS</h1>
-        <p style="font-size:16.5px; line-height:1.8; color:#E0CFC0; margin:26px auto 0; max-width:400px; text-wrap:pretty">Enter your email address to reveal what we&rsquo;ve prepared for you.</p>
+        <p style="font-size:16.5px; line-height:1.8; color:#E0CFC0; margin:26px auto 0; max-width:400px; text-wrap:pretty">Confirm below to reveal your welcome offer. It applies to a first order verified under our Terms of Sale.</p>
 
-        <div style="margin-top:clamp(31px,5vw,54px); text-align:left">
-          <label for="of-email" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#C9A227; margin-bottom:12px">EMAIL ADDRESS</label>
-          <input id="of-email" type="email" inputmode="email" autocomplete="email" value="{{ email }}" onChange="{{ setEmail }}" onKeyDown="{{ emailKey }}" style="width:100%; padding:14px 0; font-size:17px; color:#F0E9DC; background:transparent; border:none; border-bottom:1px solid #7A3A42; transition:border-color 300ms ease">
-        </div>
-
-        <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:clamp(28px,4vw,44px)">
-          <button type="button" onClick="{{ nextStep }}" aria-disabled="{{ emailBlocked }}" style="{{ emailBtn }}">CONTINUE<span style="font-size:14px; letter-spacing:0; margin-left:14px">&rarr;</span></button>
-          <sc-if value="{{ emailError }}" hint-placeholder-val="{{ false }}">
-            <div role="alert" style="font-size:13px; line-height:1.7; color:#E0B977">Enter a valid email address to continue.</div>
-          </sc-if>
-        </div>
-      </div>
-      </sc-if>
-
-      <!-- ─── step two: mobile ─────────────────────────────── -->
-      <sc-if value="{{ onPhone }}" hint-placeholder-val="{{ false }}">
-      <div>
-        <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(24px,3.4vw,38px); letter-spacing:0.16em; line-height:1.24; color:#F0E9DC; margin:0; padding-left:0.16em">THE FINAL DETAIL</h1>
-        <p style="font-size:16.5px; line-height:1.8; color:#E0CFC0; margin:26px auto 0; max-width:400px; text-wrap:pretty">Provide your mobile number to unlock your exclusive Ambrosia offer.</p>
-
-        <div style="margin-top:clamp(31px,5vw,54px); text-align:left">
-          <label for="of-phone" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#C9A227; margin-bottom:12px">MOBILE NUMBER</label>
-          <input id="of-phone" type="tel" inputmode="tel" autocomplete="tel" value="{{ phone }}" onChange="{{ setPhone }}" onKeyDown="{{ phoneKey }}" style="width:100%; padding:14px 0; font-size:17px; color:#F0E9DC; background:transparent; border:none; border-bottom:1px solid #7A3A42; transition:border-color 300ms ease">
-        </div>
+        <label style="margin-top:clamp(31px,5vw,54px); display:flex; gap:14px; align-items:flex-start; text-align:left; cursor:pointer">
+          <input type="checkbox" checked="{{ consent }}" onChange="{{ toggleConsent }}" style="flex:0 0 auto; width:20px; height:20px; margin:3px 0 0; accent-color:#C9A227; cursor:pointer">
+          <span style="font-size:15px; line-height:1.7; color:#E0CFC0; text-wrap:pretty">I confirm I am 21 or older and purchasing for research purposes only, and I accept the Terms of Sale.</span>
+        </label>
 
         <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:clamp(28px,4vw,44px)">
-          <button type="button" onClick="{{ reveal }}" aria-disabled="{{ phoneBlocked }}" style="{{ phoneBtn }}">REVEAL THE CODE<span style="font-size:14px; letter-spacing:0; margin-left:14px">&rarr;</span></button>
-          <sc-if value="{{ phoneError }}" hint-placeholder-val="{{ false }}">
-            <div role="alert" style="font-size:13px; line-height:1.7; color:#E0B977">Enter a valid mobile number to continue.</div>
+          <button type="button" onClick="{{ reveal }}" aria-disabled="{{ consentBlocked }}" style="{{ consentBtn }}">REVEAL THE OFFER<span style="font-size:14px; letter-spacing:0; margin-left:14px">&rarr;</span></button>
+          <sc-if value="{{ consentError }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="font-size:13px; line-height:1.7; color:#E0B977">Tick the confirmation to continue.</div>
           </sc-if>
-          <button type="button" onClick="{{ back }}" style="font-size:12px; letter-spacing:0.12em; color:#D8A9AE; cursor:pointer; padding:6px 0; transition:color 400ms ease" style-hover="color:#F0E9DC">BACK</button>
         </div>
-
-        <p style="font-size:12px; line-height:1.75; color:#B08A8F; margin:clamp(30px,4.5vw,48px) auto 0; max-width:400px; text-wrap:pretty">Message frequency varies; message and data rates may apply. Consent is not a condition of purchase. Reply STOP to unsubscribe or HELP for help. Carriers are not liable for delayed or undelivered messages.</p>
       </div>
       </sc-if>
 
@@ -92,7 +68,7 @@
           <div style="font-size:15px; line-height:1.8; color:#F0E9DC; margin:0 auto; max-width:420px; text-wrap:pretty">Tick the consent box in your cart and the discount applies itself at checkout.</div>
         </div>
 
-        <p style="font-size:15px; line-height:1.8; color:#E0CFC0; margin:0 auto; max-width:400px; text-wrap:pretty">Confirmed for {{ emailShown }}. It applies to your first qualifying order.</p>
+        <p style="font-size:15px; line-height:1.8; color:#E0CFC0; margin:0 auto; max-width:400px; text-wrap:pretty">It applies to your first qualifying order.</p>
 
         <div style="display:flex; justify-content:center; margin-top:clamp(30px,4.5vw,52px)">
           <a href="index.html#catalogue" style="display:inline-flex; align-items:center; height:58px; padding:0 44px; background:#F0E9DC; color:#3E1218; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#E4D8C6">BROWSE RESEARCH MATERIALS</a>
@@ -115,17 +91,10 @@
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;previewStep&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Live&quot;,&quot;Email&quot;,&quot;Mobile&quot;,&quot;Revealed&quot;],&quot;default&quot;:&quot;Live&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;State&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;previewStep&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Live&quot;,&quot;Consent&quot;,&quot;Revealed&quot;],&quot;default&quot;:&quot;Live&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;State&quot;}}">
 class Component extends DCLogic {
-  state = { step: 0, email: '', phone: '', tried: false };
+  state = { step: 0, consent: false, tried: false };
 
-  get emailOk() {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(this.state.email.trim());
-  }
-
-  get phoneOk() {
-    return this.state.phone.replace(/\D/g, '').length >= 10;
-  }
 
   btn(ready) {
     return 'display:inline-flex; align-items:center; justify-content:center; height:58px;'
@@ -155,37 +124,24 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const p = this.props.previewStep;
-    const forced = p === 'Email' ? 0 : p === 'Mobile' ? 1 : p === 'Revealed' ? 2 : null;
+    const forced = p === 'Consent' ? 0 : p === 'Revealed' ? 2 : null;
     const step = forced == null ? s.step : forced;
-    const eOk = this.emailOk, pOk = this.phoneOk;
-
-    const next = () => eOk ? this.setState({ step: 1, tried: false }) : this.setState({ tried: true });
-    const reveal = () => pOk ? this.setState({ step: 2, tried: false }) : this.setState({ tried: true });
-
+    const ok = !!s.consent;
+    const reveal = () => {
+      if (!ok) { this.setState({ tried: true }); return; }
+      try { localStorage.setItem('ambrosia-offer-consent', new Date().toISOString()); } catch (e) {}
+      this.setState({ step: 2, tried: false });
+    };
     return {
-      onEmail: step === 0,
-      onPhone: step === 1,
+      onConsent: step !== 2,
       onReveal: step === 2,
-      stepLabel: step === 2 ? 'UNLOCKED' : 'STEP ' + (step + 1) + ' OF 2',
-
-      email: s.email,
-      setEmail: e => this.setState({ email: e.target.value, tried: false }),
-      emailKey: e => { if (e.key === 'Enter') next(); },
-      emailBlocked: !eOk,
-      emailError: s.tried && !eOk,
-      emailBtn: this.btn(eOk),
-      nextStep: next,
-
-      phone: s.phone,
-      setPhone: e => this.setState({ phone: e.target.value, tried: false }),
-      phoneKey: e => { if (e.key === 'Enter') reveal(); },
-      phoneBlocked: !pOk,
-      phoneError: s.tried && !pOk,
-      phoneBtn: this.btn(pOk),
-      reveal: reveal,
-      back: () => this.setState({ step: 0, tried: false }),
-
-      emailShown: s.email.trim() || 'your inbox'
+      stepLabel: step === 2 ? 'UNLOCKED' : 'ONE STEP',
+      consent: ok,
+      toggleConsent: e => this.setState({ consent: e.target.checked, tried: false }),
+      consentBlocked: !ok,
+      consentError: s.tried && !ok,
+      consentBtn: this.btn(ok),
+      reveal: reveal
     };
   }
 }

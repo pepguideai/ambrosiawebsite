@@ -50,9 +50,9 @@
  * ---------------------------------------------------------------------------
  */
 
-/* [VERIFY] Terms of service permalink. Update if the page slug differs. */
+/* Terms of Sale on the Vercel storefront. */
 if ( ! defined( 'AMBROSIA_TERMS_URL' ) ) {
-	define( 'AMBROSIA_TERMS_URL', 'https://www.ambrosiastandard.com/terms-of-sale/' );
+	define( 'AMBROSIA_TERMS_URL', 'https://www.ambrosiastandard.com/terms-of-sale' );
 }
 
 /* ---------------------------------------------------------------------------

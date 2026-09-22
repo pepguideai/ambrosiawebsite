@@ -42,12 +42,12 @@
       <div>
         <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227; margin-top:18px">FIRST-ORDER OFFER</div>
         <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(27px,3.6vw,36px); line-height:1.16; color:#F0E9DC; margin:16px 0 0">A welcome code for your first research order.</h2>
-        <p style="font-size:15px; line-height:1.75; color:#E0CFC0; margin:14px auto 0; max-width:360px; text-wrap:pretty">Enter your email to reveal the code. It applies to a first order verified under our Terms of Sale.</p>
+        <p style="font-size:15px; line-height:1.75; color:#E0CFC0; margin:14px auto 0; max-width:360px; text-wrap:pretty">Confirm below to reveal the code. It applies to a first order verified under our Terms of Sale.</p>
 
-        <div style="margin-top:clamp(26px,4vw,36px); text-align:left">
-          <label for="pop-email" style="display:block; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#C9A227; margin-bottom:10px">EMAIL ADDRESS</label>
-          <input id="pop-email" type="email" inputmode="email" autocomplete="email" value="{{ offerEmail }}" onChange="{{ setOfferEmail }}" onKeyDown="{{ offerKey }}" style="width:100%; padding:13px 0; font-size:17px; color:#F0E9DC; background:transparent; border:none; border-bottom:1px solid #7A3A42">
-        </div>
+        <label style="margin-top:clamp(26px,4vw,36px); display:flex; gap:14px; align-items:flex-start; text-align:left; cursor:pointer">
+          <input type="checkbox" checked="{{ offerConsent }}" onChange="{{ toggleOfferConsent }}" style="flex:0 0 auto; width:20px; height:20px; margin:2px 0 0; accent-color:#C9A227; cursor:pointer">
+          <span style="font-size:14px; line-height:1.65; color:#E0CFC0; text-wrap:pretty">I confirm I am 21 or older and purchasing for research purposes only, and I accept the Terms of Sale.</span>
+        </label>
 
         <div style="display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:clamp(22px,3.2vw,32px)">
           <button type="button" onClick="{{ submitOffer }}" aria-disabled="{{ offerBlocked }}" style="{{ offerBtn }}">{{ offerBtnLabel }}</button>
@@ -97,10 +97,9 @@
   <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
     <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
 
-      <div class="hleft" style="order:1; justify-self:start; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:12px clamp(18px,2.4vw,34px)">
+      <div class="hleft" style="order:1; justify-self:start; display:flex; flex-wrap:nowrap; align-items:center; justify-content:center; gap:12px clamp(14px,1.8vw,34px)">
         <a href="index.html#catalogue" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">RESEARCH MATERIALS</a>
         <a href="#standard" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">STANDARD</a>
-        <a href="#faq" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
       </div>
 
       <a href="index.html" class="hmid" style="order:2; justify-self:center; display:flex; flex-direction:column; align-items:center; gap:12px">
@@ -118,6 +117,7 @@
       </a>
 
       <div class="hright" style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
+        <a href="#faq" class="hshop hfaq" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
         <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CART ({{ cartCount }})</a>
       </div>
     </div>
@@ -126,7 +126,7 @@
   <!-- ─── hero ─────────────────────────────────────────────── -->
   <div style="border-bottom:1px solid #D8C9B2">
     <div style="width:100%; height:clamp(230px,52vh,560px); background:#E4D8C6; overflow:hidden">
-      <img src="hero-vials.jpg" alt="GLP 2 (TZ), GLP 3 (RT) and Wolverine Blend vials lying on sand-toned stone with woven linen in raking light" style="width:100%; height:100%; object-fit:cover; object-position:center center; display:block">
+      <img src="hero-vials.jpg" alt="GLP 2 (TZ), GLP 3 (RT) and Wolverine (BPC-157 + TB-500) vials lying on sand-toned stone with woven linen in raking light" style="width:100%; height:100%; object-fit:cover; object-position:center center; display:block">
     </div>
 
     <div style="padding:clamp(26px,4vw,52px) clamp(20px,4vw,56px) clamp(34px,6vw,86px)">
@@ -134,10 +134,9 @@
         <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#7A5622">VERIFIED FROM SOURCE TO SEAL</div>
         <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,7vw,86px); line-height:1.02; letter-spacing:-0.018em; color:#6B1F28; margin:22px auto 0; max-width:24ch; text-wrap:balance">Research, Refined.</h1>
         <p style="font-size:clamp(15px,1.3vw,17px); line-height:1.75; color:#3C312C; margin:clamp(20px,2.6vw,30px) auto 0; max-width:640px; text-wrap:pretty">Ambrosia supplies research-grade peptide reference materials to laboratories and qualified researchers. Materials are supplied for research purposes only, and the certificate of analysis for every lot is published on this site.</p>
-        <p style="font-size:13.5px; line-height:1.7; color:#6E6055; margin:14px auto 0; max-width:640px; text-wrap:pretty">All materials are sold strictly for research use. They are not intended for human or animal consumption, therapeutic, clinical or diagnostic use, and are not for resale to consumers.</p>
 
         <div style="display:flex; flex-direction:column; align-items:center; gap:18px; margin-top:clamp(26px,3.4vw,44px)">
-          <a href="offer.html" onClick="{{ openOffer }}" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218">FIRST-ORDER OFFER</a>
+          <a href="offer.html" onClick="{{ openOffer }}" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218">UNLOCK WELCOME OFFER</a>
           <div style="font-size:13px; letter-spacing:0.04em; color:#6E6055">A welcome code for a first order verified under our Terms of Sale</div>
         </div>
       </div>
@@ -160,20 +159,10 @@
   </div>
 
   <!-- ─── catalogue index ──────────────────────────────────── -->
-  <div id="catalogue-top" style="padding:clamp(45px,9vw,132px) clamp(20px,4vw,56px) clamp(38px,7vw,96px)">
+  <div id="catalogue-top" style="padding:clamp(24px,3vw,40px) clamp(20px,4vw,56px) clamp(38px,7vw,96px)">
     <div style="max-width:1440px; margin:0 auto">
-      <div style="max-width:1000px; margin-inline:auto">
-        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,8vw,104px); line-height:0.95; letter-spacing:0.1em; color:#6B1F28; margin:0; text-align:center; text-transform:uppercase">Research Materials</h2>
-        <div style="font-size:12px; font-weight:600; letter-spacing:0.22em; color:#7A5622; margin-top:clamp(18px,2vw,26px); text-align:center; text-transform:uppercase">Selected with purpose. With the documentation to match.</div>
-        <div style="height:1px; background:#D8C9B2; margin:clamp(25px,3vw,40px) 0 clamp(33px,5vw,72px)"></div>
-      </div>
 
       <div style="max-width:1000px; margin-inline:auto">
-        <div style="display:flex; align-items:baseline; gap:18px; margin:0 0 clamp(24px,3vw,36px)">
-        <div style="font-family:Archivo, sans-serif; font-weight:600; font-size:clamp(17px,1.5vw,19px); letter-spacing:0.01em; line-height:1.3; color:#241C19">Research Materials</div>
-        <div style="flex:1 1 auto; height:1px; background:#D8C9B2"></div>
-        <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622; white-space:nowrap">SIX COMPOUNDS</div>
-      </div>
       <div id="catalogue" class="gcat" style="gap:clamp(20px,2.2vw,30px)">
         <a href="glp-2.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
           <div style="aspect-ratio:1/1; background:#E4D8C6; overflow:hidden">
@@ -204,39 +193,33 @@
         </a>
         <a href="glow.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
           <div style="aspect-ratio:1/1; background:#E4D8C6; overflow:hidden">
-            <img src="vial-glow.png" alt="Glow Blend vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+            <img src="vial-glow.png" alt="Glow (GHK-Cu + BPC-157 + TB-500) vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
           </div>
           <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
-            <div style="min-width:0">
-              <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Glow Blend</div>
-              <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px">GHK-Cu &middot; BPC-157 &middot; TB-500</div>
-            </div>
+            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Glow</div></div>
             <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$125 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
+          <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px; padding:0 2px; text-wrap:pretty">(GHK&#8209;Cu + BPC&#8209;157 + TB&#8209;500)</div>
         </a>
         <a href="klow.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
           <div style="aspect-ratio:1/1; background:#E4D8C6; overflow:hidden">
-            <img src="vial-klow.png" alt="Klow Blend vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+            <img src="vial-klow.png" alt="Klow (GHK-Cu + BPC-157 + TB-500 + KPV) vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
           </div>
           <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
-            <div style="min-width:0">
-              <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Klow Blend</div>
-              <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px">KPV &middot; BPC-157 &middot; TB-500 &middot; GHK-Cu</div>
-            </div>
+            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Klow</div></div>
             <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$180 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
+          <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px; padding:0 2px; text-wrap:pretty">(GHK&#8209;Cu + BPC&#8209;157 + TB&#8209;500 + KPV)</div>
         </a>
         <a href="wolverine.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
           <div style="aspect-ratio:1/1; background:#E4D8C6; overflow:hidden">
-            <img src="vial-wolverine.png" alt="Wolverine Blend vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+            <img src="vial-wolverine.png" alt="Wolverine (BPC-157 + TB-500) vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
           </div>
           <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
-            <div style="min-width:0">
-              <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Wolverine Blend</div>
-              <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px">BPC-157 &middot; TB-500</div>
-            </div>
+            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Wolverine</div></div>
             <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$120 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
+          <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px; padding:0 2px; text-wrap:pretty">(BPC&#8209;157 + TB&#8209;500)</div>
         </a>
       </div>
       </div>
@@ -253,7 +236,7 @@
     </div>
     <div class="stdband" style="max-width:1440px; margin:clamp(14px,1.8vw,26px) auto 0; gap:clamp(18px,2.4vw,40px); align-items:stretch">
       <div class="stdphoto" style="background:#E4D8C6; overflow:hidden">
-        <img src="standard-macro.png" alt="Sealed Glow Blend vial resting on weathered driftwood, its label and research-use statement legible" style="width:100%; height:100%; object-fit:cover; display:block">
+        <img src="standard-macro.png" alt="Sealed Glow (GHK-Cu + BPC-157 + TB-500) vial resting on weathered driftwood, its label and research-use statement legible" style="width:100%; height:100%; object-fit:cover; display:block">
       </div>
       <div>
           <div class="led" style="gap:clamp(12px,1.4vw,18px); align-items:baseline; padding:0 0 11px; border-top:none">
@@ -306,7 +289,7 @@
       </div>
         <div style="border-top:1px solid #241C19; padding:clamp(22px,2.6vw,32px) 0">
           <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">What payment methods do you accept?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Credit and debit cards, and USDC, BTC, ETH, SOL, XRP and LTC. Card payments are processed through a third-party provider, so Ambrosia never stores or directly handles your card information. Cryptocurrency orders are released for dispatch after two network confirmations.</p>
+          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Credit and debit cards, and USDC, BTC, ETH, SOL, XRP and LIT. Card payments are processed through a third-party provider, so Ambrosia never stores or directly handles your card information. Cryptocurrency orders are released for dispatch after two network confirmations.</p>
         </div>
         <div style="border-top:1px solid #D8C9B2; padding:clamp(22px,2.6vw,32px) 0">
           <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">What counts as a qualifying order?</h2>
@@ -371,7 +354,7 @@
   <!-- ─── footer ───────────────────────────────────────────── -->
   <div style="background:#3E1218; padding:clamp(38px,7vw,100px) clamp(20px,4vw,56px) 0">
     <div style="max-width:1440px; margin:0 auto">
-      <div class="g4" style="gap:clamp(28px,4vw,56px); padding-bottom:clamp(36px,6vw,80px)">
+      <div class="g3 fg3" style="gap:clamp(28px,4vw,56px); padding-bottom:clamp(36px,6vw,80px)">
         <div>
           <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px">
             <svg width="30" height="30" viewBox="0 0 100 100" fill="none" aria-hidden="true">
@@ -389,19 +372,6 @@
           <p style="font-size:13.5px; line-height:1.7; color:#A9A096; margin:0; max-width:250px">Research materials, held to a single standard.</p>
         </div>
 
-        <div>
-          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">RESEARCH MATERIALS</div>
-          <div class="fcol" style="display:flex; flex-direction:column; gap:12px">
-            <a href="index.html#catalogue" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">All compounds</a>
-            <a href="glp-2.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">GLP 2 (TZ)</a>
-            <a href="glp-3.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">GLP 3 (RT)</a>
-            <a href="ghk-cu.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">GHK-Cu</a>
-            <a href="glow.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Glow Blend</a>
-            <a href="klow.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Klow Blend</a>
-            <a href="wolverine.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Wolverine Blend</a>
-            <a href="cart.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Cart</a>
-          </div>
-        </div>
 
         <div>
           <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">SUPPORT</div>
@@ -415,7 +385,7 @@
           <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">LEGAL</div>
           <div class="fcol" style="display:flex; flex-direction:column; gap:12px">
             <a href="standard.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">The Ambrosia Standard</a>
-            <a href="standard.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Certificates of Analysis</a>
+            <a href="standard.html#coa" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Certificates of Analysis</a>
             <a href="research-use-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Research Use Policy</a>
             <a href="terms-of-sale.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Terms of Sale</a>
             <a href="privacy-policy.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Privacy Policy</a>
@@ -450,9 +420,9 @@ class Component extends DCLogic {
       { label: 'GLP 2 (TZ)', href: 'glp-2.html' },
       { label: 'GLP 3 (RT)', href: 'glp-3.html' },
       { label: 'GHK-Cu', href: 'ghk-cu.html' },
-      { label: 'Glow Blend', href: 'glow.html' },
-      { label: 'Klow Blend', href: 'klow.html' },
-      { label: 'Wolverine Blend', href: 'wolverine.html' }
+      { label: 'Glow (GHK-Cu + BPC-157 + TB-500)', href: 'glow.html' },
+      { label: 'Klow (GHK-Cu + BPC-157 + TB-500 + KPV)', href: 'klow.html' },
+      { label: 'Wolverine (BPC-157 + TB-500)', href: 'wolverine.html' }
     ] }
   ];
 
@@ -461,9 +431,9 @@ class Component extends DCLogic {
       { label: 'GLP 2 (TZ)', href: 'glp-2.html' },
       { label: 'GLP 3 (RT)', href: 'glp-3.html' },
       { label: 'GHK-Cu', href: 'ghk-cu.html' },
-      { label: 'Glow Blend', href: 'glow.html' },
-      { label: 'Klow Blend', href: 'klow.html' },
-      { label: 'Wolverine Blend', href: 'wolverine.html' }
+      { label: 'Glow (GHK-Cu + BPC-157 + TB-500)', href: 'glow.html' },
+      { label: 'Klow (GHK-Cu + BPC-157 + TB-500 + KPV)', href: 'klow.html' },
+      { label: 'Wolverine (BPC-157 + TB-500)', href: 'wolverine.html' }
     ] },
     { label: 'Support', items: [
       { label: 'FAQ', href: 'faq.html' },
@@ -478,7 +448,7 @@ class Component extends DCLogic {
       { label: 'Returns & Documentation', href: 'returns-documentation.html' }
     ] }
   ];
-  state = { menuOpen: false, openGroup: null, openSub: null, offerOpen: false, offerEmail: '', offerCode: '', offerTried: false };
+  state = { menuOpen: false, openGroup: null, openSub: null, offerOpen: false, offerConsent: false, offerCode: '', offerTried: false };
 
   scrollToHash() {
     const raw = (location.hash || '').slice(1);
@@ -521,7 +491,7 @@ class Component extends DCLogic {
     let seen = false, claimed = false;
     try {
       seen = sessionStorage.getItem('ambrosia-offer-shown') === 'yes';
-      claimed = localStorage.getItem('ambrosia-offer-email') !== null;
+      claimed = (localStorage.getItem('ambrosia-offer-consent') || localStorage.getItem('ambrosia-offer-email')) !== null;
     } catch (e) {}
     if (seen || claimed) return;
     try { sessionStorage.setItem('ambrosia-offer-shown', 'yes'); } catch (e) {}
@@ -530,14 +500,11 @@ class Component extends DCLogic {
 
 
   renderVals() {
-    const offerOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(this.state.offerEmail.trim());
+    const offerOk = !!this.state.offerConsent;
 
     const submitOffer = () => {
       if (!offerOk) { this.setState({ offerTried: true }); return; }
-      const email = this.state.offerEmail.trim();
-      /* The code is the same for everyone, so it is revealed here rather than
-         fetched. The address is recorded at checkout when the code is used. */
-      try { localStorage.setItem('ambrosia-offer-email', email); } catch (e) {}
+      try { localStorage.setItem('ambrosia-offer-consent', new Date().toISOString()); } catch (e) {}
       this.setState({ offerCode: 'WELCOME10' });
     };
 
@@ -585,7 +552,7 @@ class Component extends DCLogic {
       offerOpen: this.state.offerOpen,
       offerAsking: !this.state.offerCode,
       offerDone: !!this.state.offerCode,
-      offerEmail: this.state.offerEmail,
+      offerConsent: !!this.state.offerConsent,
       offerCode: this.state.offerCode,
       offerBlocked: !offerOk,
       offerBtn: 'display:inline-flex; align-items:center; justify-content:center; height:58px;'
@@ -594,9 +561,8 @@ class Component extends DCLogic {
         + (offerOk ? '#F0E9DC' : '#7A3A42') + '; color:' + (offerOk ? '#3E1218' : '#E0CFC0'),
       offerBtnLabel: 'REVEAL THE CODE',
       offerError: this.state.offerTried && !offerOk,
-      offerErrorText: 'Enter a valid email address to continue.',
-      setOfferEmail: e => this.setState({ offerEmail: e.target.value, offerTried: false }),
-      offerKey: e => { if (e.key === 'Enter') submitOffer(); },
+      offerErrorText: 'Tick the confirmation to continue.',
+      toggleOfferConsent: e => this.setState({ offerConsent: e.target.checked, offerTried: false }),
       submitOffer: submitOffer,
       openOffer: e => {
         if (e && e.preventDefault) e.preventDefault();
