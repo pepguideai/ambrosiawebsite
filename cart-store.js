@@ -355,33 +355,6 @@
 
   function remove(id) { id = String(id); return write(read().filter(function (l) { return l.id !== id; })); }
   function clear() { return write([]); }
-
-  /* The order is placed on WordPress, so this cart never hears about it and the
-     customer lands back on a storefront still holding what they just bought.
-     Two signals, either is enough: the return URL carries an order flag, or the
-     referrer was the order-received page. Redirects drop the referrer on some
-     browsers, which is why the flag exists as well.
-
-     [SERVER] For the flag, the "Order Confirmation Redirect" snippet should
-     send them to https://www.ambrosiastandard.com/?order=complete */
-  function clearAfterOrder() {
-    try {
-      var q = new URLSearchParams(location.search);
-      var flagged = q.has('order') || q.has('ambrosia_order') || q.has('order_complete');
-      var cameFromReceipt = /order-received|order_received/i.test(document.referrer || '');
-      if (!flagged && !cameFromReceipt) return;
-
-      if (read().length) clear();
-
-      /* Take the flag out of the address bar so a reload or a shared link does
-         not read as another completed order. */
-      if (flagged && history.replaceState) {
-        ['order', 'ambrosia_order', 'order_complete'].forEach(function (k) { q.delete(k); });
-        var s = q.toString();
-        history.replaceState(null, '', location.pathname + (s ? '?' + s : '') + location.hash);
-      }
-    } catch (e) {}
-  }
   function count() { return read().reduce(function (a, l) { return a + l.qty; }, 0); }
 
   function lines() {
@@ -511,8 +484,6 @@
     window.addEventListener('storage', h);
     return function () { window.removeEventListener(EVT, h); window.removeEventListener('storage', h); };
   }
-
-  clearAfterOrder();
 
   window.AmbrosiaCart = {
     get CATALOG() { return CATALOG; },
