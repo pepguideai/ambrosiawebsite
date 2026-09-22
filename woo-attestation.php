@@ -10,15 +10,18 @@
  * ---------------------------------------------------------------------------
  * WHAT IT DOES
  *
- * Two unticked checkboxes sit directly above the place order button:
+ * Three unticked checkboxes sit directly above the place order button:
  *
  *   1. age      — "I confirm that I am over twenty one years of age."
  *   2. research — "I confirm that these products are for research use only,
  *                  and I agree to the terms of service."  (terms links out,
  *                  new tab)
+ *   3. noadmin  — "I confirm that I will not administer these materials to
+ *                  any human or animal, and I have read the research-use-only
+ *                  labelling."
  *
- * The place order button is disabled, greyed and non-clickable until both are
- * ticked. Both reset unticked on every page load, including back-button /
+ * The place order button is disabled, greyed and non-clickable until all three
+ * are ticked. Records are retained with the order for at least two years. Both reset unticked on every page load, including back-button /
  * bfcache restores, so a session cannot be resumed with them pre-ticked.
  *
  * Three layers of enforcement, because the front end is only a convenience:
@@ -34,6 +37,7 @@
  *
  *   _ambrosia_attestation_age       yes
  *   _ambrosia_attestation_research  yes
+ *   _ambrosia_attestation_noadmin   yes
  *   _ambrosia_attestation_time      2026-09-12T14:03:11+00:00  (UTC, ISO 8601)
  *   _ambrosia_attestation_ip        203.0.113.9
  *   _ambrosia_attestation_terms     the exact terms URL shown at the time
@@ -182,6 +186,7 @@ function ambrosia_attestation_js() {
 	$age      = esc_js( 'I confirm that I am over twenty one years of age.' );
 	$research = esc_js( 'I confirm that these products are for research use only, and I agree to the ' );
 	$link     = esc_js( 'terms of service' );
+	$noadmin  = esc_js( 'I confirm that I will not administer these materials to any human or animal, and I have read the research-use-only labelling.' );
 
 	return <<<JS
 ( function () {
@@ -205,6 +210,8 @@ function ambrosia_attestation_js() {
 		text.appendChild( a );
 		text.appendChild( document.createTextNode( '.' ) );
 		wrap.appendChild( research );
+
+		wrap.appendChild( row( 'amb-attest-noadmin', '{$noadmin}' ) );
 
 		return wrap;
 	}
@@ -235,7 +242,8 @@ function ambrosia_attestation_js() {
 	function both() {
 		var a = document.getElementById( 'amb-attest-age' );
 		var b = document.getElementById( 'amb-attest-research' );
-		return !! ( a && b && a.checked && b.checked );
+		var c = document.getElementById( 'amb-attest-noadmin' );
+		return !! ( a && b && c && a.checked && b.checked && c.checked );
 	}
 
 	function sync() {
@@ -305,7 +313,7 @@ function ambrosia_attestation_js() {
 
 	/* Never restore a ticked state: fresh load and bfcache restore both clear. */
 	window.addEventListener( 'pageshow', function () {
-		[ 'amb-attest-age', 'amb-attest-research' ].forEach( function ( id ) {
+		[ 'amb-attest-age', 'amb-attest-research', 'amb-attest-noadmin' ].forEach( function ( id ) {
 			var el = document.getElementById( id );
 			if ( el ) { el.checked = false; }
 		} );
@@ -341,6 +349,7 @@ function ambrosia_attestation_capture() {
 		array(
 			'age'      => 'yes',
 			'research' => 'yes',
+			'noadmin'  => 'yes',
 			'time'     => gmdate( 'c' ),
 			'ip'       => ambrosia_attestation_ip(),
 			'terms'    => AMBROSIA_TERMS_URL,
@@ -362,7 +371,7 @@ function ambrosia_attestation_session() {
 		return null;
 	}
 	$data = WC()->session->get( 'ambrosia_attestation' );
-	return ( is_array( $data ) && 'yes' === ( $data['age'] ?? '' ) && 'yes' === ( $data['research'] ?? '' ) ) ? $data : null;
+	return ( is_array( $data ) && 'yes' === ( $data['age'] ?? '' ) && 'yes' === ( $data['research'] ?? '' ) && 'yes' === ( $data['noadmin'] ?? '' ) ) ? $data : null;
 }
 
 /* ---------------------------------------------------------------------------
@@ -403,6 +412,7 @@ add_action( 'woocommerce_checkout_create_order', function ( $order ) {
 function ambrosia_attestation_write( $order, $data ) {
 	$order->update_meta_data( '_ambrosia_attestation_age', 'yes' );
 	$order->update_meta_data( '_ambrosia_attestation_research', 'yes' );
+	$order->update_meta_data( '_ambrosia_attestation_noadmin', 'yes' );
 	$order->update_meta_data( '_ambrosia_attestation_time', $data['time'] );
 	$order->update_meta_data( '_ambrosia_attestation_ip', $data['ip'] );
 	$order->update_meta_data( '_ambrosia_attestation_terms', $data['terms'] );
@@ -433,7 +443,7 @@ add_action( 'woocommerce_admin_order_data_after_billing_address', function ( $or
 	}
 
 	printf(
-		'<p><strong>Attestations</strong><br>Over 21: yes<br>Research use only + terms: yes<br>Confirmed: %s UTC<br>IP: %s</p>',
+		'<p><strong>Attestations</strong><br>Over 21: yes<br>Research use only + terms: yes<br>No administration to any human or animal + RUO labelling read: yes<br>Confirmed: %s UTC<br>IP: %s</p>',
 		esc_html( $time ),
 		esc_html( $order->get_meta( '_ambrosia_attestation_ip' ) )
 	);

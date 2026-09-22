@@ -10,7 +10,6 @@
    Cart keys are SLUGS ('glp-3-30'), not Woo IDs. Every catalogue entry carries a
    `wooId` once live data matches it, so checkout can translate slug -> Woo ID.
    Keeping slugs as the key is what lets the product pages, the multi-vial tiers
-   and the bacteriostatic-water prompt work identically before and after the
    fetch lands.
 
    [SERVER] markers flag everything that needs a real backend before launch.
@@ -68,8 +67,7 @@
     'ghk-cu':    27,
     'glow':      32,
     'klow':      31,
-    'wolverine': 30,
-    'bac-water': 47
+    'wolverine': 30
   };
 
   /* --------------------------------------------------------------------------
@@ -95,17 +93,16 @@
        Bac water simple  47
      -------------------------------------------------------------------------- */
   var FALLBACK = {
-    'glp-2':        { wooId: 20, name: 'GLP-2',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-2-20':     { wooId: 22, name: 'GLP-2',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-3':        { wooId: 16, name: 'GLP-3',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-3.png',     href: 'glp-3.html' },
-    'glp-3-20':     { wooId: 17, name: 'GLP-3',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-3.png',     href: 'glp-3.html' },
-    'glp-3-30':     { wooId: 18, name: 'GLP-3',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'glp-2':        { wooId: 20, name: 'GLP 2 (TZ)',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
+    'glp-2-20':     { wooId: 22, name: 'GLP 2 (TZ)',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-2.png',     href: 'glp-2.html' },
+    'glp-3':        { wooId: 16, name: 'GLP 3 (RT)',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'glp-3-20':     { wooId: 17, name: 'GLP 3 (RT)',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'glp-3-30':     { wooId: 18, name: 'GLP 3 (RT)',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-3.png',     href: 'glp-3.html' },
     'ghk-cu':       { wooId: 28, name: 'GHK-Cu',                mass: '50 mg per vial',  price: 35,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
     'ghk-cu-100':   { wooId: 29, name: 'GHK-Cu',                mass: '100 mg per vial', price: 50,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
     'glow':         { wooId: 32, name: 'Glow',                  mass: '70 mg per vial',  price: 125, img: 'vial-glow.png',      href: 'glow.html' },
     'klow':         { wooId: 31, name: 'Klow',                  mass: '80 mg per vial',  price: 180, img: 'vial-klow.png',      href: 'klow.html' },
-    'wolverine':    { wooId: 30, name: 'Wolverine',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' },
-    'bac-water':    { wooId: 47, name: 'Bacteriostatic Water',  mass: '10 mL',           price: 20,  img: 'vial-bac-water.png', href: 'bacteriostatic-water.html' }
+    'wolverine':    { wooId: 30, name: 'Wolverine',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' }
   };
 
   var CATALOG = {};
@@ -125,7 +122,7 @@
 
      This file is public — anyone can read it. It previously listed every
      coupon code in plain sight, which made "unlocking" an offer meaningless
-     and gave away the partner referral codes for free. The cart only needs to
+     and gave away the referral codes for free. The cart only needs to
      answer two questions: is this code real, and what is it worth. It never
      needs to hold the code itself.
 
@@ -143,8 +140,8 @@
 
   var DISCOUNTS = [
     { hash: 'c2cf12cf', label: 'Rose', rate: 0.1 },
-    { hash: '9047e983', label: 'Partner referral', rate: 0.15 },
-    { hash: '4cd63c46', label: 'Partner referral', rate: 0.15 }
+    { hash: '9047e983', label: 'Referral', rate: 0.15 },
+    { hash: '4cd63c46', label: 'Referral', rate: 0.15 }
   ];
 
   function findDiscount(typed) {
@@ -165,23 +162,21 @@
   var WELCOME = { label: 'Welcome offer', rate: 0.10 };
 
   /* --------------------------------------------------------------------------
-     Multi-vial pricing: two of any one vial 5% off, three 10%, ten 15%.
-     Applies per line item. Bacteriostatic water is flat $20 and excluded.
+     Multi-vial pricing: retired. TIERS is empty so every helper below
+     resolves to a flat price; kept so the call sites stay valid.
 
      [SERVER] This is presentational only. Woo must enforce the same rule with a
      `woocommerce_before_calculate_totals` hook or a bulk-pricing plugin,
      otherwise a modified request pays the discounted price without the tier.
      -------------------------------------------------------------------------- */
-  var TIERS = [{ qty: 10, rate: 0.15 }, { qty: 3, rate: 0.10 }, { qty: 2, rate: 0.05 }];
+  var TIERS = []; /* multi-vial tiers retired 2026-09-22; flat price per size, matching Woo */
 
   function tierRate(id, qty) {
-    if (id === 'bac-water') return 0;
     for (var i = 0; i < TIERS.length; i++) if (qty >= TIERS[i].qty) return TIERS[i].rate;
     return 0;
   }
 
   function nextTier(id, qty) {
-    if (id === 'bac-water') return null;
     for (var i = TIERS.length - 1; i >= 0; i--) if (qty < TIERS[i].qty) return TIERS[i];
     return null;
   }
@@ -355,6 +350,33 @@
 
   function remove(id) { id = String(id); return write(read().filter(function (l) { return l.id !== id; })); }
   function clear() { return write([]); }
+
+  /* The order is placed on WordPress, so this cart never hears about it and the
+     customer lands back on a storefront still holding what they just bought.
+     Two signals, either is enough: the return URL carries an order flag, or the
+     referrer was the order-received page. Redirects drop the referrer on some
+     browsers, which is why the flag exists as well.
+
+     [SERVER] For the flag, the "Order Confirmation Redirect" snippet should
+     send them to https://www.ambrosiastandard.com/?order=complete */
+  function clearAfterOrder() {
+    try {
+      var q = new URLSearchParams(location.search);
+      var flagged = q.has('order') || q.has('ambrosia_order') || q.has('order_complete');
+      var cameFromReceipt = /order-received|order_received/i.test(document.referrer || '');
+      if (!flagged && !cameFromReceipt) return;
+
+      if (read().length) clear();
+
+      /* Take the flag out of the address bar so a reload or a shared link does
+         not read as another completed order. */
+      if (flagged && history.replaceState) {
+        ['order', 'ambrosia_order', 'order_complete'].forEach(function (k) { q.delete(k); });
+        var s = q.toString();
+        history.replaceState(null, '', location.pathname + (s ? '?' + s : '') + location.hash);
+      }
+    } catch (e) {}
+  }
   function count() { return read().reduce(function (a, l) { return a + l.qty; }, 0); }
 
   function lines() {
@@ -484,6 +506,8 @@
     window.addEventListener('storage', h);
     return function () { window.removeEventListener(EVT, h); window.removeEventListener('storage', h); };
   }
+
+  clearAfterOrder();
 
   window.AmbrosiaCart = {
     get CATALOG() { return CATALOG; },

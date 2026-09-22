@@ -12,6 +12,7 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=4"></script>
+<script src="entry-gate.js?v=1"></script>
 <link rel="stylesheet" href="ambrosia.css?v=4">
 </helmet>
 
@@ -68,7 +69,7 @@
         </div>
 
         <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:clamp(28px,4vw,44px)">
-          <button type="button" onClick="{{ reveal }}" aria-disabled="{{ phoneBlocked }}" style="{{ phoneBtn }}">UNLOCK MY OFFER<span style="font-size:14px; letter-spacing:0; margin-left:14px">&rarr;</span></button>
+          <button type="button" onClick="{{ reveal }}" aria-disabled="{{ phoneBlocked }}" style="{{ phoneBtn }}">REVEAL THE CODE<span style="font-size:14px; letter-spacing:0; margin-left:14px">&rarr;</span></button>
           <sc-if value="{{ phoneError }}" hint-placeholder-val="{{ false }}">
             <div role="alert" style="font-size:13px; line-height:1.7; color:#E0B977">Enter a valid mobile number to continue.</div>
           </sc-if>
@@ -107,7 +108,7 @@
   <div style="border-top:1px solid #7A3A42; padding:22px clamp(20px,4vw,56px) clamp(25px,3.5vw,40px)">
     <div style="max-width:1000px; margin:0 auto; text-align:center">
       <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; margin-bottom:14px">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
-      <p style="font-size:12px; line-height:1.75; color:#B08A8F; margin:0">Ambrosia supplies research materials to qualified purchasers aged 21 or older for laboratory research only. &copy; 2026 Ambrosia LLC</p>
+      <p style="font-size:12px; line-height:1.75; color:#B08A8F; margin:0">Ambrosia supplies research materials to qualified purchasers aged 21 or older for laboratory research only. &copy; 2026 Ambrosia Research Supply Company, LLC</p>
     </div>
   </div>
 

@@ -138,11 +138,6 @@ textarea:focus-visible, select:focus-visible { outline:2px solid #7A5622; outlin
   .hdr .hmid { min-height:44px !important; }
 }
 
-/* ── ticker ── */
-@keyframes amb-ticker-scroll { from { transform:translateX(0) } to { transform:translateX(-50%) } }
-.amb-ticker-track { animation:amb-ticker-scroll 53s linear infinite; }
-.amb-ticker:hover .amb-ticker-track { animation-play-state:paused; }
-@media (prefers-reduced-motion: reduce) { .amb-ticker-track { animation:none; } }
 
 /* ── certificate rows on the Standard page ── */
 .coarow { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(0,0.7fr) minmax(0,1fr) auto; }

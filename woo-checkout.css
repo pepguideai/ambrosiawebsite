@@ -515,6 +515,38 @@ body.woocommerce-order-received .woocommerce-order::before {
   padding-bottom:20px;
 }
 
+/* ── "return to Ambrosia" button on the thank-you page ──────────────────────
+   The theme paints its buttons near-black; oxblood is the brand's action
+   colour. Covers the block button, the classic .button and the Woo blocks
+   button, since which one renders depends on how the page was built. */
+body.woocommerce-order-received .wp-block-button__link,
+body.woocommerce-order-received .wp-element-button,
+body.woocommerce-order-received a.button,
+body.woocommerce-order-received .woocommerce a.button,
+body.woocommerce-order-received .wc-block-components-button:not(.wc-block-components-panel__button) {
+  background-color:var(--amb-ox) !important;
+  background-image:none !important;
+  border:none !important;
+  border-radius:0 !important;
+  color:#F0E9DC !important;
+  font-family:'AmbArchivo', sans-serif !important;
+  font-size:12px !important;
+  font-weight:600 !important;
+  letter-spacing:0.2em !important;
+  text-transform:uppercase !important;
+  text-decoration:none !important;
+  padding:20px 42px !important;
+  transition:background-color 400ms cubic-bezier(.2,.6,.2,1) !important;
+}
+body.woocommerce-order-received .wp-block-button__link:hover,
+body.woocommerce-order-received .wp-element-button:hover,
+body.woocommerce-order-received a.button:hover,
+body.woocommerce-order-received .woocommerce a.button:hover,
+body.woocommerce-order-received .wc-block-components-button:not(.wc-block-components-panel__button):hover {
+  background-color:var(--amb-deep) !important;
+  color:#F0E9DC !important;
+}
+
 /* ── links ──────────────────────────────────────────────────────────────── */
 .woocommerce a, .wc-block-components-checkout-step a { color:var(--amb-ox) !important; }
 .woocommerce a:hover, .wc-block-components-checkout-step a:hover { color:var(--amb-deep) !important; }

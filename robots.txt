@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /cart
+Disallow: /checkout
+Disallow: /affiliate
+Disallow: /affiliate-agreement
+Sitemap: https://www.ambrosiastandard.com/sitemap.xml
