@@ -5,7 +5,7 @@
 (function () {
   if (window.__ambrosiaGate) return;
   window.__ambrosiaGate = true;
-  var KEY = 'ambrosia-entry-ack', AT = 'ambrosia-entry-ack-at', DAYS = 30;
+  var KEY = 'ambrosia-entry-ack-v2', AT = 'ambrosia-entry-ack-at-v2', ROLE = 'ambrosia-entry-role', DAYS = 30;
   function acked() {
     try {
       var ts = Number(localStorage.getItem(AT) || 0);
@@ -14,7 +14,7 @@
   }
   if (acked()) return;
 
-  var ageOk = false, useOk = false, tried = false;
+  var ageOk = false, useOk = false, role = '', tried = false;
   var root = document.createElement('div');
   root.id = 'ambrosia-gate';
   root.setAttribute('role', 'dialog');
@@ -33,8 +33,17 @@
       mark +
       '<div style="font-family:Cinzel, serif; font-weight:600; font-size:19px; letter-spacing:0.32em; color:#6B1F28; margin-top:16px; padding-left:0.32em">AMBROSIA</div>' +
       '<h2 style="font-family:\'Instrument Serif\', serif; font-weight:400; font-size:clamp(26px,3.4vw,34px); line-height:1.16; color:#241C19; margin:28px 0 0">Before you enter.</h2>' +
-      '<p style="font-size:14.5px; line-height:1.7; color:#3C312C; margin:16px 0 0">Ambrosia supplies research materials to laboratories and qualified purchasers only. Confirm both statements to continue.</p>' +
+      '<p style="font-size:14.5px; line-height:1.7; color:#3C312C; margin:16px 0 0">Ambrosia supplies research materials to laboratories and qualified purchasers only. Confirm your researcher status and both statements to continue.</p>' +
       '<div style="display:flex; flex-direction:column; gap:12px; margin-top:32px; text-align:left">' +
+        '<label for="amb-gate-role" style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">I AM PURCHASING AS A</label>' +
+        '<select id="amb-gate-role" style="width:100%; height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-family:inherit; font-size:14px; border-radius:0; cursor:pointer; margin-bottom:8px">' +
+          '<option value="">Select researcher type</option>' +
+          '<option value="independent">Independent researcher</option>' +
+          '<option value="academic">Academic or university researcher</option>' +
+          '<option value="industry">Commercial or industry laboratory</option>' +
+          '<option value="cro">Contract research organization</option>' +
+          '<option value="none">None of the above</option>' +
+        '</select>' +
         '<label style="' + box + '"><input id="amb-gate-age" type="checkbox" style="' + cb + '"><span style="' + txt + '">I am 21 years of age or older.</span></label>' +
         '<label style="' + box + '"><input id="amb-gate-use" type="checkbox" style="' + cb + '"><span style="' + txt + '">I am acquiring these materials for laboratory research only, not for human or animal use, and I agree to the <a href="research-use-policy.html" style="' + link + '">Research Use Policy</a> and <a href="terms-of-sale.html" style="' + link + '">Terms of Sale</a>.</span></label>' +
       '</div>' +
@@ -42,17 +51,19 @@
         '<button id="amb-gate-go" type="button" style="display:inline-flex; align-items:center; justify-content:center; height:52px; padding:0 34px; font-size:12px; font-weight:600; letter-spacing:0.18em; border:none; cursor:pointer; background:#D8C9B2; color:#8C8377; transition:background-color 300ms ease, color 300ms ease">CONFIRM &amp; ENTER</button>' +
         '<a href="https://www.google.com" style="display:inline-flex; align-items:center; justify-content:center; height:52px; padding:0 30px; border:1px solid #D8C9B2; color:#241C19; font-size:12px; font-weight:600; letter-spacing:0.18em; text-decoration:none">EXIT</a>' +
       '</div>' +
-      '<div id="amb-gate-err" role="alert" style="display:none; font-size:13px; line-height:1.7; color:#6B1F28; margin:18px 0 0">Both statements must be confirmed to continue.</div>' +
+      '<div id="amb-gate-err" role="alert" style="display:none; font-size:13px; line-height:1.7; color:#6B1F28; margin:18px 0 0">Select your researcher type and confirm both statements to continue.</div>' +
       '<p style="font-size:11.5px; line-height:1.7; color:#6E6055; margin:24px 0 0">For Research Use Only &mdash; Not for Human Use. Not for human or animal consumption, therapeutic, clinical or diagnostic use.</p>' +
     '</div>';
 
   function paint() {
     var go = root.querySelector('#amb-gate-go');
-    var ready = ageOk && useOk;
+    var ready = ageOk && useOk && role && role !== 'none';
     go.style.background = ready ? '#6B1F28' : '#D8C9B2';
     go.style.color = ready ? '#F0E9DC' : '#8C8377';
     go.setAttribute('aria-disabled', ready ? 'false' : 'true');
-    root.querySelector('#amb-gate-err').style.display = (tried && !ready) ? 'block' : 'none';
+    var err = root.querySelector('#amb-gate-err');
+    err.textContent = role === 'none' ? 'Ambrosia supplies materials to researchers only. Entry is not available.' : 'Select your researcher type and confirm both statements to continue.';
+    err.style.display = ((tried && !ready) || role === 'none') ? 'block' : 'none';
   }
 
   function mount() {
@@ -61,9 +72,10 @@
     document.body.style.overflow = 'hidden';
     root.querySelector('#amb-gate-age').addEventListener('change', function (e) { ageOk = e.target.checked; paint(); });
     root.querySelector('#amb-gate-use').addEventListener('change', function (e) { useOk = e.target.checked; paint(); });
+    root.querySelector('#amb-gate-role').addEventListener('change', function (e) { role = e.target.value; paint(); });
     root.querySelector('#amb-gate-go').addEventListener('click', function () {
-      if (!(ageOk && useOk)) { tried = true; paint(); return; }
-      try { localStorage.setItem(KEY, 'yes'); localStorage.setItem(AT, String(Date.now())); } catch (e) {}
+      if (!(ageOk && useOk && role && role !== 'none')) { tried = true; paint(); return; }
+      try { localStorage.setItem(KEY, 'yes'); localStorage.setItem(AT, String(Date.now())); localStorage.setItem(ROLE, role); } catch (e) {}
       root.remove();
       document.body.style.overflow = prevOverflow;
       document.dispatchEvent(new CustomEvent('ambrosia:gate-confirmed'));

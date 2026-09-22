@@ -14,7 +14,7 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=4"></script>
-<script src="entry-gate.js?v=1"></script>
+<script src="entry-gate.js?v=2"></script>
 <link rel="stylesheet" href="ambrosia.css?v=4">
 </helmet>
 
@@ -75,7 +75,7 @@
         <p style="font-size:14.5px; line-height:1.75; color:#E0CFC0; margin:0 auto; max-width:360px; text-wrap:pretty">Enter this code at checkout to claim your discount.</p>
 
         <div style="display:flex; justify-content:center; margin-top:clamp(24px,3.6vw,34px)">
-          <button type="button" onClick="{{ closeOffer }}" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#F0E9DC; color:#3E1218; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; cursor:pointer; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#E4D8C6">VIEW THE CATALOGUE</button>
+          <button type="button" onClick="{{ closeOffer }}" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#F0E9DC; color:#3E1218; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; cursor:pointer; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#E4D8C6">VIEW RESEARCH MATERIALS</button>
         </div>
 
         <p style="font-size:11.5px; line-height:1.7; color:#B08A8F; margin:clamp(22px,3vw,30px) auto 0; max-width:380px; text-wrap:pretty">Valid for 30 days from sign-up on your first qualifying order — any order verified under our Terms of Sale. One per account, not combinable with other offers.</p>
@@ -98,7 +98,7 @@
     <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
 
       <div class="hleft" style="order:1; justify-self:start; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:12px clamp(18px,2.4vw,34px)">
-        <a href="index.html#catalogue" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CATALOGUE</a>
+        <a href="index.html#catalogue" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">RESEARCH MATERIALS</a>
         <a href="#standard" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">STANDARD</a>
         <a href="#faq" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
       </div>
@@ -163,14 +163,14 @@
   <div id="catalogue-top" style="padding:clamp(45px,9vw,132px) clamp(20px,4vw,56px) clamp(38px,7vw,96px)">
     <div style="max-width:1440px; margin:0 auto">
       <div style="max-width:1000px; margin-inline:auto">
-        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,8vw,104px); line-height:0.95; letter-spacing:0.1em; color:#6B1F28; margin:0; text-align:center; text-transform:uppercase">Catalogue</h2>
+        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,8vw,104px); line-height:0.95; letter-spacing:0.1em; color:#6B1F28; margin:0; text-align:center; text-transform:uppercase">Research Materials</h2>
         <div style="font-size:12px; font-weight:600; letter-spacing:0.22em; color:#7A5622; margin-top:clamp(18px,2vw,26px); text-align:center; text-transform:uppercase">Selected with purpose. With the documentation to match.</div>
         <div style="height:1px; background:#D8C9B2; margin:clamp(25px,3vw,40px) 0 clamp(33px,5vw,72px)"></div>
       </div>
 
       <div style="max-width:1000px; margin-inline:auto">
         <div style="display:flex; align-items:baseline; gap:18px; margin:0 0 clamp(24px,3vw,36px)">
-        <div style="font-family:Archivo, sans-serif; font-weight:600; font-size:clamp(17px,1.5vw,19px); letter-spacing:0.01em; line-height:1.3; color:#241C19">The Catalogue</div>
+        <div style="font-family:Archivo, sans-serif; font-weight:600; font-size:clamp(17px,1.5vw,19px); letter-spacing:0.01em; line-height:1.3; color:#241C19">Research Materials</div>
         <div style="flex:1 1 auto; height:1px; background:#D8C9B2"></div>
         <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622; white-space:nowrap">SIX COMPOUNDS</div>
       </div>
@@ -289,7 +289,7 @@
       </div>
     </div>
     <div style="max-width:1440px; margin:clamp(14px,1.8vw,24px) auto 0; border-top:1px solid #7A3540; padding-top:clamp(14px,1.6vw,22px); display:flex; flex-wrap:wrap; gap:20px 40px; align-items:center; justify-content:space-between">
-      <p style="font-size:14.5px; line-height:1.7; color:#A9A096; margin:0; max-width:52ch; text-wrap:pretty">Every lot in the catalogue was independently tested and reported in September 2026. Each certificate is published in full against its lot number.</p>
+      <p style="font-size:14.5px; line-height:1.7; color:#A9A096; margin:0; max-width:52ch; text-wrap:pretty">Every lot we offer was independently tested and reported in September 2026. Each certificate is published in full against its lot number.</p>
       <a href="standard.html#coa" style="display:inline-flex; align-items:center; height:52px; padding:0 34px; background:#C9A227; color:#2A0C11; font-size:12px; font-weight:600; letter-spacing:0.18em; white-space:nowrap; transition:background-color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#E9CDA0; color:#2A0C11">VIEW CERTIFICATES</a>
     </div>
   </div>
@@ -390,7 +390,7 @@
         </div>
 
         <div>
-          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">CATALOGUE</div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">RESEARCH MATERIALS</div>
           <div class="fcol" style="display:flex; flex-direction:column; gap:12px">
             <a href="index.html#catalogue" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">All compounds</a>
             <a href="glp-2.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">GLP 2 (TZ)</a>
@@ -457,7 +457,7 @@ class Component extends DCLogic {
   ];
 
   static GROUPS = [
-    { label: 'Catalogue', items: [
+    { label: 'Research Materials', items: [
       { label: 'GLP 2 (TZ)', href: 'glp-2.html' },
       { label: 'GLP 3 (RT)', href: 'glp-3.html' },
       { label: 'GHK-Cu', href: 'ghk-cu.html' },

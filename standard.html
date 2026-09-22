@@ -12,7 +12,7 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=4"></script>
-<script src="entry-gate.js?v=1"></script>
+<script src="entry-gate.js?v=2"></script>
 <link rel="stylesheet" href="ambrosia.css?v=4">
 </helmet>
 
@@ -28,7 +28,7 @@
   <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px); position:relative; z-index:20">
     <div class="hdr" style="max-width:1440px; margin:0 auto; min-height:112px; display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); align-items:center; gap:16px clamp(20px,3vw,52px); padding:20px 0">
       <div class="hleft" style="order:1; justify-self:start; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:12px clamp(18px,2.4vw,34px)">
-        <a href="index.html#catalogue" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CATALOGUE</a>
+        <a href="index.html#catalogue" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">RESEARCH MATERIALS</a>
         <a href="standard.html" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">STANDARD</a>
         <a href="faq.html" class="hshop" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
       </div>
@@ -115,7 +115,7 @@
       <div style="max-width:1440px; margin:0 auto">
         <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227">CERTIFICATES OF ANALYSIS</div>
         <div style="display:flex; flex-wrap:wrap; gap:clamp(18px,3vw,28px) clamp(32px,5vw,72px); margin-top:clamp(18px,2.4vw,26px); padding-bottom:clamp(24px,3.4vw,40px)">
-          <p style="font-family:'Instrument Serif', serif; font-size:clamp(24px,2.6vw,34px); line-height:1.2; color:#F0E9DC; margin:0; flex:1 1 320px; max-width:26ch; text-wrap:pretty">Every lot in the catalogue, tested and published.</p>
+          <p style="font-family:'Instrument Serif', serif; font-size:clamp(24px,2.6vw,34px); line-height:1.2; color:#F0E9DC; margin:0; flex:1 1 320px; max-width:26ch; text-wrap:pretty">Every lot we offer, tested and published.</p>
           <p style="font-size:15.5px; line-height:1.75; color:#A9A096; margin:0; flex:1 1 300px; max-width:48ch; text-wrap:pretty">Independently tested and reported in September 2026. Each certificate is published in full below, and on the product page it belongs to.</p>
         </div>
         <div class="coarow" style="align-items:baseline; gap:clamp(14px,2vw,28px); padding:clamp(20px,2.4vw,28px) 0; border-top:1px solid #7A3540">
@@ -326,7 +326,7 @@
         </div>
 
         <div>
-          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">CATALOGUE</div>
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">RESEARCH MATERIALS</div>
           <div class="fcol" style="display:flex; flex-direction:column; gap:12px">
             <a href="index.html#catalogue" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">All compounds</a>
             <a href="glp-2.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">GLP 2 (TZ)</a>
@@ -393,7 +393,7 @@ class Component extends DCLogic {
   ];
 
   static GROUPS = [
-    { label: 'Catalogue', items: [
+    { label: 'Research Materials', items: [
       { label: 'GLP 2 (TZ)', href: 'glp-2.html' },
       { label: 'GLP 3 (RT)', href: 'glp-3.html' },
       { label: 'GHK-Cu', href: 'ghk-cu.html' },
