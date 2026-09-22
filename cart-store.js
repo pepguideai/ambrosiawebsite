@@ -87,9 +87,9 @@
        GLP-2     parent 19   10MG/1 vial 20 · 20MG 22 · 30MG 24
                              (10-vial kits: 21 / 26 / 25 — not sold here yet)
        GHK-Cu    parent 27   50MG 28 · 100MG 29
-       Wolverine simple  30
-       Klow      simple  31
-       Glow      simple  32
+       Wolverine Blend simple  30
+       Klow Blend      simple  31
+       Glow Blend      simple  32
        Bac water simple  47
      -------------------------------------------------------------------------- */
   var FALLBACK = {
@@ -100,9 +100,9 @@
     'glp-3-30':     { wooId: 18, name: 'GLP 3 (RT)',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-3.png',     href: 'glp-3.html' },
     'ghk-cu':       { wooId: 28, name: 'GHK-Cu',                mass: '50 mg per vial',  price: 35,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
     'ghk-cu-100':   { wooId: 29, name: 'GHK-Cu',                mass: '100 mg per vial', price: 50,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
-    'glow':         { wooId: 32, name: 'Glow',                  mass: '70 mg per vial',  price: 125, img: 'vial-glow.png',      href: 'glow.html' },
-    'klow':         { wooId: 31, name: 'Klow',                  mass: '80 mg per vial',  price: 180, img: 'vial-klow.png',      href: 'klow.html' },
-    'wolverine':    { wooId: 30, name: 'Wolverine',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' }
+    'glow':         { wooId: 32, name: 'Glow Blend',                  mass: '70 mg per vial',  price: 125, img: 'vial-glow.png',      href: 'glow.html' },
+    'klow':         { wooId: 31, name: 'Klow Blend',                  mass: '80 mg per vial',  price: 180, img: 'vial-klow.png',      href: 'klow.html' },
+    'wolverine':    { wooId: 30, name: 'Wolverine Blend',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' }
   };
 
   var CATALOG = {};
