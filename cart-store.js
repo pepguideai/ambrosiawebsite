@@ -141,7 +141,11 @@
   var DISCOUNTS = [
     { hash: 'c2cf12cf', label: 'Rose', rate: 0.1 },
     { hash: '9047e983', label: 'Referral', rate: 0.15 },
-    { hash: '4cd63c46', label: 'Referral', rate: 0.15 }
+    { hash: '4cd63c46', label: 'Referral', rate: 0.15 },
+    { hash: 'c99cceaa', label: 'Referral', rate: 0.15 },
+    { hash: '983110dd', label: 'Referral', rate: 0.15 },
+    { hash: '1e5139ca', label: 'Referral', rate: 0.15 },
+    { hash: 'abd987d7', label: 'Referral', rate: 0.15 }
   ];
 
   function findDiscount(typed) {
