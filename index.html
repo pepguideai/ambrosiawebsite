@@ -14,7 +14,7 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=4"></script>
-<script src="entry-gate.js?v=2"></script>
+<script src="entry-gate.js?v=3"></script>
 <link rel="stylesheet" href="ambrosia.css?v=4">
 </helmet>
 
@@ -40,13 +40,13 @@
 
       <sc-if value="{{ offerAsking }}" hint-placeholder-val="{{ true }}">
       <div>
-        <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227; margin-top:18px">FIRST-ORDER OFFER</div>
-        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(27px,3.6vw,36px); line-height:1.16; color:#F0E9DC; margin:16px 0 0">A welcome code for your first research order.</h2>
-        <p style="font-size:15px; line-height:1.75; color:#E0CFC0; margin:14px auto 0; max-width:360px; text-wrap:pretty">Confirm below to reveal the code. It applies to a first order verified under our Terms of Sale.</p>
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227; margin-top:18px">WELCOME OFFER</div>
+        <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(27px,3.6vw,36px); line-height:1.16; color:#F0E9DC; margin:16px 0 0">Unlock your mystery offer.</h2>
+        <p style="font-size:15px; line-height:1.75; color:#E0CFC0; margin:14px auto 0; max-width:360px; text-wrap:pretty">A welcome code for your first research order, applied under our Terms of Sale.</p>
 
         <label style="margin-top:clamp(26px,4vw,36px); display:flex; gap:14px; align-items:flex-start; text-align:left; cursor:pointer">
           <input type="checkbox" checked="{{ offerConsent }}" onChange="{{ toggleOfferConsent }}" style="flex:0 0 auto; width:20px; height:20px; margin:2px 0 0; accent-color:#C9A227; cursor:pointer">
-          <span style="font-size:14px; line-height:1.65; color:#E0CFC0; text-wrap:pretty">I confirm I am 21 or older and purchasing for research purposes only, and I accept the Terms of Sale.</span>
+          <span style="font-size:14px; line-height:1.65; color:#E0CFC0; text-wrap:pretty">Apply this offer to my first order under the Terms of Sale.</span>
         </label>
 
         <div style="display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:clamp(22px,3.2vw,32px)">
@@ -57,7 +57,7 @@
           <button type="button" onClick="{{ closeOffer }}" style="font-size:12px; letter-spacing:0.12em; color:#B08A8F; cursor:pointer; padding:6px 0; transition:color 400ms ease" style-hover="color:#F0E9DC">NO THANK YOU</button>
         </div>
 
-        <p style="font-size:11.5px; line-height:1.7; color:#B08A8F; margin:clamp(22px,3vw,30px) auto 0; max-width:360px; text-wrap:pretty">Your code appears on the next screen. Qualified purchasers aged 21 or older only.</p>
+        <p style="font-size:11.5px; line-height:1.7; color:#B08A8F; margin:clamp(22px,3vw,30px) auto 0; max-width:360px; text-wrap:pretty">Your code appears on the next screen. One use per verified first order.</p>
       </div>
       </sc-if>
 
@@ -117,7 +117,7 @@
       </a>
 
       <div class="hright" style="order:3; justify-self:end; display:flex; align-items:center; gap:clamp(18px,2.4vw,30px)">
-        <a href="#faq" class="hshop hfaq" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQ</a>
+        <a href="faq.html" class="hshop hfaq" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">FAQs</a>
         <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#241C19; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">CART ({{ cartCount }})</a>
       </div>
     </div>
@@ -179,7 +179,7 @@
           </div>
           <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
             <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">GLP 3 (RT)</div>
-            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$70+ <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$80+ <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
         </a>
         <a href="ghk-cu.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
@@ -188,7 +188,7 @@
           </div>
           <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
             <div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">GHK-Cu</div>
-            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$35+ <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$45+ <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
         </a>
         <a href="glow.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
@@ -277,43 +277,6 @@
     </div>
   </div>
 
-  <!-- ─── frequently asked ─────────────────────────────────── -->
-  <div id="faq" style="scroll-margin-top:12px; padding:clamp(42px,7vw,96px) clamp(20px,4vw,56px) clamp(30px,4vw,56px)">
-    <div style="max-width:1440px; margin:0 auto">
-      <div style="display:flex; flex-wrap:wrap; gap:18px 40px; align-items:baseline; justify-content:space-between; margin-bottom:clamp(22px,3vw,38px)">
-        <div>
-          <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">FREQUENTLY ASKED</div>
-          <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(26px,3vw,34px); line-height:1.1; color:#241C19; margin:14px 0 0; text-wrap:balance">Before you order</h2>
-        </div>
-        <a href="faq.html" class="minilink" style="display:inline-flex; align-items:center; gap:10px; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6B1F28; white-space:nowrap; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">ALL QUESTIONS <span style="font-size:13px; letter-spacing:0">&rarr;</span></a>
-      </div>
-        <div style="border-top:1px solid #241C19; padding:clamp(22px,2.6vw,32px) 0">
-          <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">What payment methods do you accept?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Credit and debit cards, and USDC, BTC, ETH, SOL, XRP and LIT. Card payments are processed through a third-party provider, so Ambrosia never stores or directly handles your card information. Cryptocurrency orders are released for dispatch after two network confirmations.</p>
-        </div>
-        <div style="border-top:1px solid #D8C9B2; padding:clamp(22px,2.6vw,32px) 0">
-          <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">What counts as a qualifying order?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Any order that has been properly verified under our Terms of Sale. Verification is the condition, not an order value — the $200 threshold applies to free shipping only. One welcome offer per account, valid for 30 days from the date you sign up, and not combinable with other offers.</p>
-        </div>
-        <div style="border-top:1px solid #D8C9B2; padding:clamp(22px,2.6vw,32px) 0">
-          <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">How long does shipping take?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Orders are generally processed within 2&ndash;3 business days. Once a package leaves our facility we are not responsible for delays caused by couriers or by an incorrect address supplied at checkout. Estimated domestic delivery is a further 2&ndash;5 business days after dispatch.</p>
-        </div>
-        <div style="border-top:1px solid #D8C9B2; padding:clamp(22px,2.6vw,32px) 0">
-          <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">Do you offer refunds or returns?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">Given the nature of the materials, all sales are final. Refunds are issued at our discretion and only where material arrives incorrect, damaged, or is shown to be defective. Issues must be reported within 7 calendar days of receipt, by email to info@ambrosiastandard.com.</p>
-        </div>
-        <div style="border-top:1px solid #D8C9B2; padding:clamp(22px,2.6vw,32px) 0">
-          <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">Where can I find the certificate of analysis?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">On the product page for each compound, and on the certificates page, published in full against its lot number. Certificates are available on the site rather than included in the package.</p>
-        </div>
-        <div style="border-top:1px solid #D8C9B2; padding:clamp(22px,2.6vw,32px) 0">
-          <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(21px,2.2vw,27px); line-height:1.2; color:#241C19; margin:0 0 12px; text-wrap:pretty">Will you ask me to prove it?</h2>
-          <p style="font-size:15.5px; line-height:1.75; color:#3C312C; margin:0; max-width:74ch; text-wrap:pretty">We may. Ambrosia reserves the right to request proof of qualifications, to decline any order, and to cancel an order at our discretion at any point before dispatch.</p>
-        </div>
-    </div>
-  </div>
-
   <!-- ─── contact ──────────────────────────────────────────── -->
   <div id="contact" style="scroll-margin-top:12px; padding:0 clamp(20px,4vw,56px) clamp(42px,7vw,96px)">
     <div class="g2" style="max-width:1440px; margin:0 auto; background:#E4D8C6; padding:clamp(30px,4.5vw,64px); gap:clamp(28px,4vw,72px); align-items:center">
@@ -334,6 +297,14 @@
           <a href="contact.html" style="display:inline-flex; align-items:center; height:52px; padding:0 30px; background:#6B1F28; color:#F0E9DC; font-size:11.5px; font-weight:600; letter-spacing:0.18em; white-space:nowrap; transition:background-color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218; color:#F0E9DC">CONTACT US</a>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ─── browse cta ───────────────────────────────────────── -->
+  <div id="browse-cta" style="padding:clamp(40px,6vw,88px) clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:clamp(22px,3vw,32px); text-align:center">
+      <h2 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(28px,3.6vw,46px); line-height:1.12; color:#241C19; margin:0; max-width:20ch; text-wrap:balance">Six compounds, each with its Certificate of Analysis.</h2>
+      <a href="index.html#catalogue" style="display:inline-flex; align-items:center; gap:14px; height:56px; padding:0 36px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; white-space:nowrap; transition:background-color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218; color:#F0E9DC">BROWSE OUR RESEARCH COLLECTION<span style="font-size:14px; letter-spacing:0">&rarr;</span></a>
     </div>
   </div>
 
@@ -376,7 +347,7 @@
         <div>
           <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#C9A227; margin-bottom:20px">SUPPORT</div>
           <div class="fcol" style="display:flex; flex-direction:column; gap:12px">
-            <a href="faq.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">FAQ</a>
+            <a href="faq.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">FAQs</a>
             <a href="contact.html" style="font-size:13.5px; color:#D8C9B2; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">Contact</a>
           </div>
         </div>
@@ -475,18 +446,51 @@ class Component extends DCLogic {
     };
     requestAnimationFrame(_bootCart);
     this.scrollToHash();
+    this._onProductClick = e => this.secondChance(e);
+    document.addEventListener('click', this._onProductClick, true);
     /* entry-gate.js owns the gate on every page; it fires this once passed. */
-    if (document.getElementById('ambrosia-gate')) {
+    /* Offer waits for the gate: read the stored confirmation directly rather than
+       the gate's DOM, which may not have mounted yet. */
+    let _passed = false;
+    try {
+      const ts = Number(localStorage.getItem('ambrosia-entry-ack-at-v2') || 0);
+      _passed = localStorage.getItem('ambrosia-entry-ack-v2') === 'yes' && ts > 0 && Date.now() - ts < 30 * 86400000;
+    } catch (e) {}
+    if (_passed) this.maybeAutoOffer();
+    else {
       this._onGate = () => this.maybeAutoOffer();
       document.addEventListener('ambrosia:gate-confirmed', this._onGate, { once: true });
-    } else {
-      this.maybeAutoOffer();
     }
   }
 
   /* One automatic appearance per browser session, only once the entry gate has
      been passed. Returning visitors clear the gate from localStorage, so the
      session flag is what holds it to one showing. */
+  /* Second chance: if the offer was dismissed without being claimed, the next
+     product click in this session shows it once more, then continues to the
+     product when closed. */
+  secondChance(e) {
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    if (!/^(?:\.\/)?(glp-2|glp-3|ghk-cu|glow|klow|wolverine)\.html(?:[?#].*)?$/.test(a.getAttribute('href'))) return;
+    if (this.state.offerOpen || document.getElementById('ambrosia-gate')) return;
+    try {
+      if (localStorage.getItem('ambrosia-offer-consent') !== null || localStorage.getItem('ambrosia-offer-email') !== null) return;
+      if (sessionStorage.getItem('ambrosia-offer-dismissed') !== 'yes') return;
+      if (sessionStorage.getItem('ambrosia-offer-second') === 'yes') return;
+      sessionStorage.setItem('ambrosia-offer-second', 'yes');
+    } catch (err) { return; }
+    e.preventDefault();
+    e.stopPropagation();
+    this._pendingHref = a.href;
+    this.setState({ offerOpen: true, offerTried: false, menuOpen: false });
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this._offerTimer);
+    document.removeEventListener('click', this._onProductClick, true);
+  }
+
   maybeAutoOffer() {
     let seen = false, claimed = false;
     try {
@@ -495,7 +499,7 @@ class Component extends DCLogic {
     } catch (e) {}
     if (seen || claimed) return;
     try { sessionStorage.setItem('ambrosia-offer-shown', 'yes'); } catch (e) {}
-    setTimeout(() => this.setState({ offerOpen: true }), 700);
+    this._offerTimer = setTimeout(() => { if (!document.getElementById('ambrosia-gate')) this.setState({ offerOpen: true }); }, 10000);
   }
 
 
@@ -568,7 +572,17 @@ class Component extends DCLogic {
         if (e && e.preventDefault) e.preventDefault();
         this.setState({ offerOpen: true, offerTried: false });
       },
-      closeOffer: () => this.setState({ offerOpen: false, offerTried: false }),
+      closeOffer: () => {
+        let claimed = false;
+        try {
+          claimed = localStorage.getItem('ambrosia-offer-consent') !== null;
+          if (!claimed) sessionStorage.setItem('ambrosia-offer-dismissed', 'yes');
+        } catch (e) {}
+        this.setState({ offerOpen: false, offerTried: false });
+        const go = this._pendingHref;
+        this._pendingHref = null;
+        if (go) window.location.href = go;
+      },
 
       cartCount: this._cartCount ?? 0,
       utilityNote: this.props.utilityNote ?? 'QUALIFIED PURCHASERS ONLY \u00B7 21+'

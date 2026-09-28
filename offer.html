@@ -12,7 +12,7 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=4"></script>
-<script src="entry-gate.js?v=2"></script>
+<script src="entry-gate.js?v=3"></script>
 <link rel="stylesheet" href="ambrosia.css?v=4">
 </helmet>
 
@@ -39,12 +39,12 @@
 
       <sc-if value="{{ onConsent }}" hint-placeholder-val="{{ true }}">
       <div>
-        <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(24px,3.4vw,38px); letter-spacing:0.16em; line-height:1.24; color:#F0E9DC; margin:0; padding-left:0.16em">YOUR OFFER AWAITS</h1>
+        <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(24px,3.4vw,38px); letter-spacing:0.16em; line-height:1.24; color:#F0E9DC; margin:0; padding-left:0.16em">UNLOCK YOUR MYSTERY OFFER</h1>
         <p style="font-size:16.5px; line-height:1.8; color:#E0CFC0; margin:26px auto 0; max-width:400px; text-wrap:pretty">Confirm below to reveal your welcome offer. It applies to a first order verified under our Terms of Sale.</p>
 
         <label style="margin-top:clamp(31px,5vw,54px); display:flex; gap:14px; align-items:flex-start; text-align:left; cursor:pointer">
           <input type="checkbox" checked="{{ consent }}" onChange="{{ toggleConsent }}" style="flex:0 0 auto; width:20px; height:20px; margin:3px 0 0; accent-color:#C9A227; cursor:pointer">
-          <span style="font-size:15px; line-height:1.7; color:#E0CFC0; text-wrap:pretty">I confirm I am 21 or older and purchasing for research purposes only, and I accept the Terms of Sale.</span>
+          <span style="font-size:15px; line-height:1.7; color:#E0CFC0; text-wrap:pretty">Apply this offer to my first order under the Terms of Sale.</span>
         </label>
 
         <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:clamp(28px,4vw,44px)">

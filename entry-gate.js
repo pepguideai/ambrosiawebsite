@@ -12,6 +12,7 @@
       return localStorage.getItem(KEY) === 'yes' && ts > 0 && Date.now() - ts < DAYS * 86400000;
     } catch (e) { return false; }
   }
+  window.AmbrosiaGate = { passed: acked };
   if (acked()) return;
 
   var ageOk = false, useOk = false, role = '', tried = false;
