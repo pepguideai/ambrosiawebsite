@@ -26,11 +26,12 @@ async function readItem(key) {
   } finally { clearTimeout(t); }
 }
 
-/* Fail-safe: anything but a clean read of "zelle" means WooCommerce. */
+/* Reads live-checkout.json at the site root (edit it on GitHub to switch).
+   Anything but "zelle" means WooCommerce. */
 async function readMode() {
   try {
-    const v = await readItem(KEY);
-    return v && v.mode === 'zelle' ? 'zelle' : 'woocommerce';
+    const v = require('../../live-checkout.json');
+    return v && String(v.mode).trim().toLowerCase() === 'zelle' ? 'zelle' : 'woocommerce';
   } catch (e) {
     console.error('[checkout-mode] read failed, defaulting to woocommerce:', e && e.message);
     return 'woocommerce';
