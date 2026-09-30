@@ -35,7 +35,7 @@
     },
     {
       "source": "/checkout",
-      "destination": "https://admin.ambrosiastandard.com/checkout"
+      "destination": "/order.dc"
     },
     {
       "source": "/checkout/:path*",
