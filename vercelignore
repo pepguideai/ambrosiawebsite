@@ -1,0 +1,5 @@
+*.php
+*.md
+archive/
+apps-script/
+scripts/
