@@ -26,6 +26,14 @@
   ],
   "rewrites": [
     {
+      "source": "/order",
+      "destination": "/order.dc"
+    },
+    {
+      "source": "/admin-checkout",
+      "destination": "/admin-checkout.dc"
+    },
+    {
       "source": "/checkout",
       "destination": "https://admin.ambrosiastandard.com/checkout"
     },
@@ -95,6 +103,37 @@
         {
           "key": "Permissions-Policy",
           "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/(order|admin-checkout)(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/checkout",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/config/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     }

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="robots" content="noindex, nofollow">
+<title>Checkout · Ambrosia</title>
+<link rel="preload" href="fonts/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<script src="cart-store.js?v=5"></script>
+<script src="entry-gate.js?v=3"></script>
+<script src="checkout-mode.js?v=1"></script>
+<script src="zelle-pricing.js?v=1"></script>
+<link rel="stylesheet" href="ambrosia.css?v=4">
+</helmet>
+
+<div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column">
+
+  <div style="background:#3E1218; padding:12px clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px clamp(22px,3vw,44px); text-align:center">
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:nowrap">FOR RESEARCH USE ONLY &mdash; NOT FOR HUMAN USE</span>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096; white-space:nowrap">QUALIFIED PURCHASERS ONLY &nbsp;&middot;&nbsp; 21+</span>
+    </div>
+  </div>
+
+  <div style="background:#F0E9DC; border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; min-height:96px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 0">
+      <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap; min-height:44px; display:flex; align-items:center; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#6B1F28">&larr; CART</a>
+      <a href="index.html" style="display:flex; align-items:center; gap:12px; min-height:44px">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:26px; height:26px">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+        <span style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(16px,2vw,24px); letter-spacing:0.3em; color:#6B1F28; white-space:nowrap; padding-left:0.3em">AMBROSIA</span>
+      </a>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6E6055; white-space:nowrap">SECURE CHECKOUT</span>
+    </div>
+  </div>
+
+  <div style="flex:1 0 auto">
+
+  <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:clamp(60px,10vw,140px) clamp(20px,4vw,56px); max-width:1440px; margin:0 auto; font-size:12px; font-weight:600; letter-spacing:0.18em; color:#7A5622">PREPARING CHECKOUT&hellip;</div>
+  </sc-if>
+
+  <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:clamp(60px,10vw,140px) clamp(20px,4vw,56px); max-width:1440px; margin:0 auto; display:flex; flex-direction:column; align-items:flex-start; gap:22px">
+      <div style="font-family:'Instrument Serif', serif; font-size:clamp(26px,3vw,36px); line-height:1.2; color:#241C19; max-width:620px; text-wrap:pretty">{{ loadError }}</div>
+      <div style="display:flex; flex-wrap:wrap; gap:14px 28px">
+        <button type="button" onClick="{{ reload }}" style="display:inline-flex; align-items:center; height:56px; padding:0 36px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">TRY AGAIN</button>
+        <a href="contact.html" style="display:inline-flex; align-items:center; min-height:56px; font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6B1F28">CONTACT US</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isCheckout }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="Checkout" style="padding:clamp(25px,3.5vw,44px) clamp(20px,4vw,56px) clamp(45px,9vw,120px)">
+    <div style="max-width:1440px; margin:0 auto">
+
+      <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 22px; padding-bottom:clamp(24px,3vw,36px); border-bottom:1px solid #D8C9B2">
+        <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,5.2vw,66px); line-height:1; letter-spacing:-0.012em; color:#6B1F28; margin:0">Checkout</h1>
+        <div style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#7A5622">{{ countLabel }}</div>
+      </div>
+
+      <div class="csplit" style="gap:clamp(33px,5vw,84px); align-items:start; padding-top:clamp(25px,3.5vw,44px)">
+
+        <div style="display:flex; flex-direction:column; gap:clamp(34px,4vw,48px); min-width:0">
+
+          <div style="display:flex; flex-direction:column; gap:18px">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">CONTACT</div>
+            <div class="f2" style="gap:18px">
+              <label style="display:flex; flex-direction:column; gap:8px; min-width:0">
+                <span style="font-size:13px; color:#3C312C">Email</span>
+                <input type="email" autocomplete="email" inputmode="email" value="{{ f.email }}" onChange="{{ on.email }}" style="height:52px; padding:0 16px; border:1px solid {{ bd.email }}; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+                <sc-if value="{{ err.email }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px; line-height:1.5; color:#6B1F28">{{ err.email }}</span></sc-if>
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px; min-width:0">
+                <span style="font-size:13px; color:#3C312C">Phone</span>
+                <input type="tel" autocomplete="tel" inputmode="tel" value="{{ f.phone }}" onChange="{{ on.phone }}" style="height:52px; padding:0 16px; border:1px solid {{ bd.phone }}; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+                <sc-if value="{{ err.phone }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px; line-height:1.5; color:#6B1F28">{{ err.phone }}</span></sc-if>
+              </label>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:18px">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">SHIPPING ADDRESS</div>
+            <label style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:13px; color:#3C312C">Full name</span>
+              <input type="text" autocomplete="name" value="{{ f.name }}" onChange="{{ on.name }}" style="height:52px; padding:0 16px; border:1px solid {{ bd.name }}; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+              <sc-if value="{{ err.name }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px; line-height:1.5; color:#6B1F28">{{ err.name }}</span></sc-if>
+            </label>
+            <div class="f2" style="gap:18px">
+              <label style="display:flex; flex-direction:column; gap:8px; min-width:0">
+                <span style="font-size:13px; color:#3C312C">Street address</span>
+                <input type="text" autocomplete="address-line1" value="{{ f.street }}" onChange="{{ on.street }}" style="height:52px; padding:0 16px; border:1px solid {{ bd.street }}; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+                <sc-if value="{{ err.street }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px; line-height:1.5; color:#6B1F28">{{ err.street }}</span></sc-if>
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px; min-width:0">
+                <span style="font-size:13px; color:#3C312C">Apt, suite <span style="color:#6E6055">(optional)</span></span>
+                <input type="text" autocomplete="address-line2" value="{{ f.apt }}" onChange="{{ on.apt }}" style="height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+              </label>
+            </div>
+            <div class="f3" style="gap:18px">
+              <label style="display:flex; flex-direction:column; gap:8px; min-width:0">
+                <span style="font-size:13px; color:#3C312C">City</span>
+                <input type="text" autocomplete="address-level2" value="{{ f.city }}" onChange="{{ on.city }}" style="height:52px; padding:0 16px; border:1px solid {{ bd.city }}; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+                <sc-if value="{{ err.city }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px; line-height:1.5; color:#6B1F28">{{ err.city }}</span></sc-if>
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px; min-width:0">
+                <span style="font-size:13px; color:#3C312C">State</span>
+                <select autocomplete="address-level1" value="{{ f.state }}" onChange="{{ on.state }}" style="height:52px; padding:0 12px; border:1px solid {{ bd.state }}; background:#F0E9DC; color:#241C19; font-size:16px; font-family:Archivo, sans-serif; border-radius:0; width:100%">
+                  <option value="">Select</option>
+                  <sc-for list="{{ states }}" as="s" hint-placeholder-count="0"><option value="{{ s.code }}">{{ s.name }}</option></sc-for>
+                </select>
+                <sc-if value="{{ err.state }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px; line-height:1.5; color:#6B1F28">{{ err.state }}</span></sc-if>
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px; min-width:0">
+                <span style="font-size:13px; color:#3C312C">ZIP</span>
+                <input type="text" autocomplete="postal-code" inputmode="numeric" value="{{ f.zip }}" onChange="{{ on.zip }}" style="height:52px; padding:0 16px; border:1px solid {{ bd.zip }}; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+                <sc-if value="{{ err.zip }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px; line-height:1.5; color:#6B1F28">{{ err.zip }}</span></sc-if>
+              </label>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-bottom:6px">SHIPPING METHOD</div>
+            <sc-for list="{{ shipping }}" as="s" hint-placeholder-count="3">
+              <button type="button" onClick="{{ s.select }}" aria-pressed="{{ s.on }}" style="{{ s.style }}">
+                <span style="display:flex; align-items:center; gap:12px; min-width:0">
+                  <span style="{{ s.dotStyle }}"></span>
+                  <span style="display:flex; flex-direction:column; gap:3px; text-align:left; min-width:0">
+                    <span style="font-size:14.5px; color:#241C19">{{ s.label }}</span>
+                    <span style="font-size:12.5px; line-height:1.5; color:#6E6055">{{ s.detail }}</span>
+                  </span>
+                </span>
+                <span style="font-size:14.5px; color:#241C19; white-space:nowrap">{{ s.priceLabel }}</span>
+              </button>
+            </sc-for>
+            <div style="font-size:12px; line-height:1.6; color:#3C312C; padding-top:12px; border-top:1px solid #D8C9B2">Flat-rate domestic shipping, free on orders over $200.</div>
+          </div>
+
+          <label style="display:flex; flex-direction:column; gap:10px">
+            <span style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">ORDER NOTES <span style="letter-spacing:0.08em; font-weight:400; color:#6E6055">(OPTIONAL)</span></span>
+            <textarea rows="3" value="{{ f.notes }}" onChange="{{ on.notes }}" maxlength="1000" style="padding:14px 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:16px; line-height:1.6; resize:vertical; border-radius:0; width:100%"></textarea>
+          </label>
+
+          <div style="display:flex; flex-direction:column; gap:14px">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">PAYMENT</div>
+            <div role="radio" aria-checked="true" style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; border:1px solid #6B1F28; background:#F0E9DC">
+              <span style="display:flex; align-items:center; gap:14px">
+                <span style="flex:0 0 auto; width:13px; height:13px; border-radius:50%; border:1px solid #6B1F28; background:#6B1F28; box-shadow:inset 0 0 0 2.5px #F0E9DC"></span>
+                <span style="display:flex; flex-direction:column; gap:3px">
+                  <span style="font-size:15px; color:#241C19">Zelle</span>
+                  <span style="font-size:12.5px; line-height:1.5; color:#6E6055">Payment instructions appear on the next step.</span>
+                </span>
+              </span>
+              <img src="zelle-mark.svg" alt="Zelle" style="width:28px; height:28px; display:block; flex:0 0 auto">
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:20px; padding-top:4px">
+            <div style="padding:12px 14px; border:1px solid #6B1F28; font-size:12px; font-weight:600; letter-spacing:0.12em; line-height:1.5; color:#6B1F28">FOR RESEARCH USE ONLY &mdash; NOT FOR HUMAN USE</div>
+
+            <div onClick="{{ toggleAge }}" role="checkbox" aria-checked="{{ ageOk }}" tabindex="0" onKeyDown="{{ keyAge }}" style="display:grid; grid-template-columns:22px 1fr; gap:16px; align-items:start; min-height:44px; cursor:pointer">
+              <span style="width:22px; height:22px; margin-top:1px; display:flex; align-items:center; justify-content:center; border:1px solid {{ bd.age }}; background:#FFFFFF">
+                <sc-if value="{{ ageOk }}" hint-placeholder-val="{{ false }}">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:14px; height:14px; display:block"><path d="M4 12.5 L9.5 18 L20 6.5" stroke="#6B1F28" stroke-width="3" stroke-linecap="square"></path></svg>
+                </sc-if>
+              </span>
+              <span style="font-size:14.5px; line-height:1.6; color:#241C19">I confirm I am 21 or older.</span>
+            </div>
+
+            <div onClick="{{ toggleTerms }}" role="checkbox" aria-checked="{{ termsOk }}" tabindex="0" onKeyDown="{{ keyTerms }}" style="display:grid; grid-template-columns:22px 1fr; gap:16px; align-items:start; min-height:44px; cursor:pointer">
+              <span style="width:22px; height:22px; margin-top:1px; display:flex; align-items:center; justify-content:center; border:1px solid {{ bd.terms }}; background:#FFFFFF">
+                <sc-if value="{{ termsOk }}" hint-placeholder-val="{{ false }}">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:14px; height:14px; display:block"><path d="M4 12.5 L9.5 18 L20 6.5" stroke="#6B1F28" stroke-width="3" stroke-linecap="square"></path></svg>
+                </sc-if>
+              </span>
+              <span style="font-size:14.5px; line-height:1.6; color:#241C19; text-wrap:pretty">I agree to the <a href="terms-of-sale.html" target="_blank" rel="noopener" onClick="{{ stop }}" style="color:#6B1F28; text-decoration:underline; text-underline-offset:3px">Terms of Service</a> and confirm these products are for research use only.</span>
+            </div>
+
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; border-top:1px solid #241C19; padding-top:18px">
+              <span style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#241C19">TOTAL DUE BY ZELLE</span>
+              <span style="font-family:'Instrument Serif', serif; font-size:clamp(28px,3.4vw,40px); line-height:1; color:#241C19">{{ sum.total }}</span>
+            </div>
+
+            <button type="button" onClick="{{ submit }}" disabled="{{ cantSubmit }}" style="display:flex; align-items:center; justify-content:center; width:100%; height:60px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:{{ btnCursor }}; opacity:{{ btnOpacity }}; transition:background 400ms cubic-bezier(.2,.6,.2,1), opacity 300ms ease" style-hover="background:#8E2C36">{{ submitLabel }}</button>
+
+            <sc-if value="{{ formError }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="display:flex; flex-direction:column; gap:10px; font-size:13px; line-height:1.6; color:#6B1F28">
+                <span>{{ formError }}</span>
+                <sc-if value="{{ modeOff }}" hint-placeholder-val="{{ false }}">
+                  <a href="cart.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#6B1F28; min-height:44px; display:flex; align-items:center">RETURN TO CART &rarr;</a>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+
+        <div class="stick">
+          <div style="background:#E4D8C6; padding:clamp(26px,3vw,36px)">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">ORDER SUMMARY</div>
+            <div style="display:flex; flex-direction:column; margin-top:14px">
+              <sc-for list="{{ sum.items }}" as="it" hint-placeholder-count="2">
+                <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:14px 0; border-bottom:1px solid #D8C9B2">
+                  <div style="display:flex; flex-direction:column; gap:4px; min-width:0">
+                    <span style="font-family:'Instrument Serif', serif; font-size:20px; line-height:1.2; color:#241C19">{{ it.name }}</span>
+                    <span style="font-size:12.5px; color:#6E6055">{{ it.meta }}</span>
+                  </div>
+                  <span style="font-size:14.5px; color:#241C19; white-space:nowrap">{{ it.amount }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:12px; padding-top:20px">
+              <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Subtotal</span><span style="color:#241C19">{{ sum.subtotal }}</span></div>
+              <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">{{ sum.discountLabel }}</span><span style="color:#6B1F28">&minus;{{ sum.discount }}</span></div>
+              <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Shipping</span><span style="color:#241C19">{{ sum.shipping }}</span></div>
+              <sc-if value="{{ sum.hasTax }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Tax</span><span style="color:#241C19">{{ sum.tax }}</span></div>
+              </sc-if>
+            </div>
+            <div style="margin-top:20px; border-top:1px solid #241C19; padding-top:20px; display:flex; align-items:baseline; justify-content:space-between; gap:20px">
+              <div style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#241C19">TOTAL</div>
+              <div style="font-family:'Instrument Serif', serif; font-size:clamp(30px,3.4vw,42px); line-height:1; color:#241C19">{{ sum.total }}</div>
+            </div>
+            <p style="font-size:12px; line-height:1.7; color:#6E6055; margin:18px 0 0; text-wrap:pretty">A certificate of analysis for each lot is attached to your order confirmation. Orders ship to qualified purchasers aged 21 or older.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isPay }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Zelle payment" style="padding:clamp(30px,5vw,72px) clamp(16px,4vw,56px) clamp(45px,9vw,120px)">
+    <div style="max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:clamp(28px,4vw,40px)">
+
+      <div style="border:1px solid #C9A227; background:#F0E9DC; padding:clamp(24px,5vw,48px); display:flex; flex-direction:column; gap:clamp(24px,3.5vw,32px)">
+        <div style="display:flex; flex-direction:column; gap:14px">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:16px">
+            <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(30px,4.4vw,44px); line-height:1.05; color:#6B1F28; margin:0">Complete your payment.</h1>
+            <img src="zelle-mark.svg" alt="Zelle" style="width:32px; height:32px; display:block; flex:0 0 auto">
+          </div>
+          <div style="font-family:'Instrument Serif', serif; font-size:clamp(28px,5.6vw,48px); line-height:1.1; color:#241C19">Send <span style="color:#6B1F28; white-space:nowrap">{{ order.totalL }}</span> via Zelle.</div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; border-top:1px solid #D8C9B2">
+          <sc-for list="{{ payRows }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px solid #D8C9B2">
+              <div style="display:flex; flex-direction:column; gap:5px; min-width:0">
+                <span style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">{{ r.label }}</span>
+                <span style="{{ r.valueStyle }}">{{ r.value }}</span>
+              </div>
+              <button type="button" onClick="{{ r.copy }}" aria-label="{{ r.aria }}" style="flex:0 0 auto; min-width:92px; height:44px; padding:0 18px; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; transition:background 380ms cubic-bezier(.2,.6,.2,1), color 380ms" style-hover="background:#241C19; color:#F0E9DC">{{ r.btn }}</button>
+            </div>
+          </sc-for>
+        </div>
+
+        <ol style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:12px">
+          <li style="display:grid; grid-template-columns:28px 1fr; gap:10px; font-size:15px; line-height:1.6; color:#241C19"><span style="font-family:'Instrument Serif', serif; font-size:20px; line-height:1.2; color:#7A5622">1</span><span>Open your banking app and choose Zelle.</span></li>
+          <li style="display:grid; grid-template-columns:28px 1fr; gap:10px; font-size:15px; line-height:1.6; color:#241C19"><span style="font-family:'Instrument Serif', serif; font-size:20px; line-height:1.2; color:#7A5622">2</span><span>Send the exact amount to the email above.</span></li>
+          <li style="display:grid; grid-template-columns:28px 1fr; gap:10px; font-size:15px; line-height:1.6; color:#241C19"><span style="font-family:'Instrument Serif', serif; font-size:20px; line-height:1.2; color:#7A5622">3</span><span>Type your order number in the memo or note field.</span></li>
+          <li style="display:grid; grid-template-columns:28px 1fr; gap:10px; font-size:15px; line-height:1.6; color:#241C19"><span style="font-family:'Instrument Serif', serif; font-size:20px; line-height:1.2; color:#7A5622">4</span><span>Come back here and tap &ldquo;I&rsquo;ve sent my payment.&rdquo;</span></li>
+        </ol>
+
+        <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0; text-wrap:pretty">Your order ships after payment is confirmed. Include your order number so we can match your payment.</p>
+
+        <div style="display:flex; flex-direction:column; gap:10px">
+          <button type="button" onClick="{{ markSent }}" style="display:flex; align-items:center; justify-content:center; width:100%; height:60px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">I&rsquo;VE SENT MY PAYMENT</button>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-bottom:4px">ORDER {{ order.number }}</div>
+        <sc-for list="{{ order.items }}" as="it" hint-placeholder-count="2">
+          <div style="display:flex; justify-content:space-between; gap:16px; font-size:14px"><span style="color:#3C312C">{{ it.label }}</span><span style="color:#241C19; white-space:nowrap">{{ it.amount }}</span></div>
+        </sc-for>
+        <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px; border-top:1px solid #D8C9B2; padding-top:12px"><span style="color:#3C312C">Subtotal</span><span style="color:#241C19">{{ order.subtotalL }}</span></div>
+        <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">{{ order.discountLabel }}</span><span style="color:#6B1F28">&minus;{{ order.discountL }}</span></div>
+        <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Shipping ({{ order.shipLabel }})</span><span style="color:#241C19">{{ order.shippingL }}</span></div>
+        <sc-if value="{{ order.hasTax }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Tax</span><span style="color:#241C19">{{ order.taxL }}</span></div>
+        </sc-if>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:20px; border-top:1px solid #241C19; padding-top:14px"><span style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#241C19">TOTAL</span><span style="font-family:'Instrument Serif', serif; font-size:28px; line-height:1; color:#241C19">{{ order.totalL }}</span></div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Order confirmation" style="padding:clamp(30px,5vw,72px) clamp(16px,4vw,56px) clamp(45px,9vw,120px)">
+    <div style="max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:clamp(28px,4vw,44px)">
+
+      <div style="display:flex; flex-direction:column; gap:18px">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">ORDER {{ order.number }}</div>
+        <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,5.2vw,60px); line-height:1.05; letter-spacing:-0.01em; color:#6B1F28; margin:0; text-wrap:pretty">Thank you. Your order is received.</h1>
+        <p style="font-size:15.5px; line-height:1.75; color:#241C19; margin:0; max-width:560px; text-wrap:pretty">Payment pending verification. We&rsquo;ll email you once your Zelle payment is confirmed.</p>
+      </div>
+
+      <sc-if value="{{ counting }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 24px; padding:16px 20px; border:1px solid #D8C9B2">
+          <span style="font-size:13.5px; color:#3C312C">Returning to the homepage in {{ count }}s</span>
+          <span style="display:flex; gap:22px">
+            <button type="button" onClick="{{ goHome }}" style="min-height:44px; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; cursor:pointer">RETURN NOW</button>
+            <button type="button" onClick="{{ stay }}" style="min-height:44px; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6E6055; cursor:pointer">STAY ON THIS PAGE</button>
+          </span>
+        </div>
+      </sc-if>
+
+      <div class="g2" style="gap:clamp(24px,4vw,56px); border-top:1px solid #D8C9B2; padding-top:clamp(24px,3vw,32px)">
+        <div style="display:flex; flex-direction:column; gap:10px">
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">AMOUNT SENT</div>
+          <div style="font-family:'Instrument Serif', serif; font-size:clamp(30px,3.6vw,42px); line-height:1; color:#241C19">{{ order.totalL }}</div>
+          <div style="font-size:13px; color:#6E6055">via Zelle to {{ zelleEmail }}</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px">
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">SHIPPING TO</div>
+          <div style="font-size:14.5px; line-height:1.7; color:#241C19">{{ order.shipName }}<br>{{ order.shipLine1 }}<br>{{ order.shipLine2 }}</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:12px; background:#E4D8C6; padding:clamp(22px,3vw,32px)">
+        <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-bottom:4px">ORDER SUMMARY</div>
+        <sc-for list="{{ order.items }}" as="it" hint-placeholder-count="2">
+          <div style="display:flex; justify-content:space-between; gap:16px; font-size:14px"><span style="color:#3C312C">{{ it.label }}</span><span style="color:#241C19; white-space:nowrap">{{ it.amount }}</span></div>
+        </sc-for>
+        <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px; border-top:1px solid #D8C9B2; padding-top:12px"><span style="color:#3C312C">Subtotal</span><span style="color:#241C19">{{ order.subtotalL }}</span></div>
+        <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">{{ order.discountLabel }}</span><span style="color:#6B1F28">&minus;{{ order.discountL }}</span></div>
+        <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Shipping ({{ order.shipLabel }})</span><span style="color:#241C19">{{ order.shippingL }}</span></div>
+        <sc-if value="{{ order.hasTax }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Tax</span><span style="color:#241C19">{{ order.taxL }}</span></div>
+        </sc-if>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:20px; border-top:1px solid #241C19; padding-top:14px"><span style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#241C19">TOTAL</span><span style="font-family:'Instrument Serif', serif; font-size:28px; line-height:1; color:#241C19">{{ order.totalL }}</span></div>
+      </div>
+
+      <p style="font-size:13.5px; line-height:1.7; color:#3C312C; margin:0">Questions about your order? Email <a href="mailto:{{ supportEmail }}" style="color:#6B1F28; text-decoration:underline; text-underline-offset:3px">{{ supportEmail }}</a> or call {{ supportPhone }}. Quote {{ order.number }}.</p>
+
+      <a href="index.html" style="align-self:flex-start; display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36; color:#F0E9DC">RETURN TO AMBROSIA</a>
+    </div>
+  </div>
+  </sc-if>
+
+  </div>
+
+  <div style="background:#3E1218; padding:26px clamp(20px,4vw,56px) 36px">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-direction:column; gap:14px">
+      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR RESEARCH USE ONLY &nbsp;&middot;&nbsp; NOT FOR HUMAN CONSUMPTION</div>
+      <div style="display:flex; flex-wrap:wrap; gap:10px 28px; font-size:12px; color:#A9A096">
+        <a href="terms-of-sale.html" style="color:#D8C9B2" style-hover="color:#F0E9DC">Terms of Sale</a>
+        <a href="research-use-policy.html" style="color:#D8C9B2" style-hover="color:#F0E9DC">Research Use Policy</a>
+        <a href="privacy-policy.html" style="color:#D8C9B2" style-hover="color:#F0E9DC">Privacy Policy</a>
+        <a href="shipping-restrictions.html" style="color:#D8C9B2" style-hover="color:#F0E9DC">Shipping &amp; Restrictions</a>
+        <span>&copy; 2026 Ambrosia Research Supply Company, LLC</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;demoStep&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;checkout&quot;,&quot;payment&quot;,&quot;confirmation&quot;],&quot;default&quot;:&quot;checkout&quot;,&quot;tsType&quot;:&quot;'checkout'|'payment'|'confirmation'&quot;,&quot;section&quot;:&quot;Preview (off-site only)&quot;}}">
+class Component extends DCLogic {
+  static KEY = 'ambrosia-zelle-order';
+  static IDEM = 'ambrosia-zelle-idem';
+  static DEMO_CART = [{ id: 'glp-3-20', qty: 1 }, { id: 'ghk-cu', qty: 2 }];
+  static STATES = 'AL Alabama|AK Alaska|AZ Arizona|AR Arkansas|CA California|CO Colorado|CT Connecticut|DE Delaware|DC District of Columbia|FL Florida|GA Georgia|HI Hawaii|ID Idaho|IL Illinois|IN Indiana|IA Iowa|KS Kansas|KY Kentucky|LA Louisiana|ME Maine|MD Maryland|MA Massachusetts|MI Michigan|MN Minnesota|MS Mississippi|MO Missouri|MT Montana|NE Nebraska|NV Nevada|NH New Hampshire|NJ New Jersey|NM New Mexico|NY New York|NC North Carolina|ND North Dakota|OH Ohio|OK Oklahoma|OR Oregon|PA Pennsylvania|RI Rhode Island|SC South Carolina|SD South Dakota|TN Tennessee|TX Texas|UT Utah|VT Vermont|VA Virginia|WA Washington|WV West Virginia|WI Wisconsin|WY Wyoming'
+    .split('|').map(s => ({ code: s.slice(0, 2), name: s.slice(3) }));
+  static EMPTY = { email: '', phone: '', name: '', street: '', apt: '', city: '', state: '', zip: '', notes: '' };
+
+  state = {
+    step: 'loading', cfg: null, cart: [], f: { ...Component.EMPTY }, errors: {}, shipId: 'standard',
+    ageOk: false, termsOk: false, ageAt: null, termsAt: null, submitting: false, formError: '', modeOff: false,
+    order: null, copied: '', emailState: '', count: null, counting: false, loadError: ''
+  };
+
+  /* Off the live domains (design preview, local files) the page runs on sample
+     data and never calls the API. */
+  get demo() { return !/(^|\.)ambrosiastandard\.com$|\.vercel\.app$/.test(location.hostname); }
+
+  async componentDidMount() {
+    this._pageshow = e => { if (e.persisted) this.setState({ ageOk: false, termsOk: false, ageAt: null, termsAt: null }); };
+    window.addEventListener('pageshow', this._pageshow);
+    let cfg;
+    try { cfg = await (await fetch('config/zelle.config.json', { cache: 'no-store' })).json(); }
+    catch (e) { this.setState({ step: 'error', loadError: 'Checkout could not load. Please try again.' }); return; }
+    for (let i = 0; i < 60 && !window.ZellePricing; i++) await new Promise(r => setTimeout(r, 50));
+    let ship = 'standard';
+    try { ship = (JSON.parse(localStorage.getItem('ambrosia-checkout-v1') || '{}') || {}).ship || ship; } catch (e) {}
+    this.setState({ cfg, shipId: cfg.shipping.options.some(o => o.id === ship) ? ship : 'standard' });
+    if (this.demo) this.bootDemo(cfg); else await this.bootLive(cfg);
+  }
+
+  componentDidUpdate(prev) {
+    if (this.demo && this.state.cfg && prev.demoStep !== this.props.demoStep) this.bootDemo(this.state.cfg);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('pageshow', this._pageshow);
+    this.stopCountdown();
+    clearTimeout(this._copyT);
+  }
+
+  bootDemo(cfg) {
+    const step = { payment: 'pay', confirmation: 'done' }[this.props.demoStep] || 'checkout';
+    this.stopCountdown();
+    this.setState({ cart: Component.DEMO_CART, step, counting: false }, () => {
+      this.setState({ order: step === 'checkout' ? null : this.demoOrder(cfg) }, () => { if (step === 'done') this.startCountdown(); });
+    });
+  }
+
+  demoOrder(cfg) {
+    cfg = cfg || this.state.cfg;
+    const c = { email: 'researcher@lab.org', phone: '(615) 555-0142', name: 'Dana Whitfield', street: '1200 Broadway', apt: 'Suite 4', city: 'Nashville', state: 'TN', zip: '37203', ...this.filled() };
+    const q = window.ZellePricing.quote({ lines: this.state.cart.length ? this.state.cart : Component.DEMO_CART, shipId: this.state.shipId, state: c.state, zip: c.zip }, cfg);
+    return { number: 'AMB-7KQ4RX', token: 'demo', customer: c, ...q };
+  }
+
+  filled() {
+    const out = {};
+    Object.keys(this.state.f).forEach(k => { if (this.state.f[k]) out[k] = this.state.f[k]; });
+    return out;
+  }
+
+  async readCart(cfg) {
+    for (let i = 0; i < 60 && !window.AmbrosiaCart; i++) await new Promise(r => setTimeout(r, 50));
+    const C = window.AmbrosiaCart;
+    return C ? C.read().filter(l => cfg.catalog[l.id]) : [];
+  }
+
+  stored() {
+    try {
+      const s = JSON.parse(localStorage.getItem(Component.KEY) || 'null');
+      return s && s.n && s.t && Date.now() - s.at < 7 * 864e5 ? s : null;
+    } catch (e) { return null; }
+  }
+  store(order, step) {
+    try { localStorage.setItem(Component.KEY, JSON.stringify({ n: order.number, t: order.token, step, at: Date.now() })); } catch (e) {}
+  }
+  forget() { try { localStorage.removeItem(Component.KEY); } catch (e) {} }
+
+  async bootLive(cfg) {
+    const q = new URLSearchParams(location.search);
+    const cart = await this.readCart(cfg);
+    let ref = q.get('order') ? { n: q.get('order'), t: q.get('t') } : null;
+    if (!ref) { const s = this.stored(); if (s && !cart.length) ref = s; }
+
+    if (ref && ref.t) {
+      try {
+        const r = await fetch('/api/zelle/order?n=' + encodeURIComponent(ref.n) + '&t=' + encodeURIComponent(ref.t), { cache: 'no-store' });
+        if (r.ok) {
+          const d = await r.json();
+          const s = this.stored();
+          const done = !!d.order.customerSentAt || !!(s && s.n === d.order.number && s.step === 'done');
+          this.store(d.order, done ? 'done' : 'pay');
+          if (!q.get('order')) history.replaceState(null, '', location.pathname + '?order=' + d.order.number + '&t=' + d.order.token);
+          this.setState({ order: d.order, step: done ? 'done' : 'pay' }, () => { if (done) this.startCountdown(); });
+          return;
+        }
+        if (r.status === 404) this.forget(); else throw new Error('HTTP ' + r.status);
+      } catch (e) {
+        if (!cart.length) { this.setState({ step: 'error', loadError: 'We could not load your order just now. Your payment details are also in your confirmation email.' }); return; }
+      }
+    }
+
+    if (!cart.length) { location.replace('/#catalogue'); return; }
+    let mode = 'woocommerce';
+    try { mode = (await (await fetch('/api/checkout-mode', { cache: 'no-store' })).json()).mode; } catch (e) {}
+    if (mode !== 'zelle') { location.replace('/cart'); return; }
+    this.setState({ cart, step: 'checkout' });
+  }
+
+  validate() {
+    const f = this.state.f, e = {};
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) e.email = 'Enter a valid email address.';
+    if (f.phone.replace(/\D/g, '').length < 10) e.phone = 'Enter a phone number with area code.';
+    if (f.name.trim().length < 2) e.name = 'Enter your full name.';
+    if (f.street.trim().length < 3) e.street = 'Enter a street address.';
+    if (f.city.trim().length < 2) e.city = 'Enter a city.';
+    if (!f.state) e.state = 'Choose a state.';
+    if (!/^\d{5}(-\d{4})?$/.test(f.zip.trim())) e.zip = 'Enter a 5-digit ZIP.';
+    return e;
+  }
+
+  idemKey() {
+    let k = null;
+    try { k = sessionStorage.getItem(Component.IDEM); } catch (e) {}
+    if (!k) {
+      k = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2));
+      try { sessionStorage.setItem(Component.IDEM, k); } catch (e) {}
+    }
+    return k;
+  }
+
+  async submit() {
+    const s = this.state;
+    if (this._busy || !s.ageOk || !s.termsOk) return;
+    const errs = this.validate();
+    if (Object.keys(errs).length) { this.setState({ errors: errs, formError: 'Please check the highlighted fields.' }); return; }
+    this._busy = true;
+    this.setState({ submitting: true, formError: '', errors: {}, modeOff: false });
+
+    if (this.demo) {
+      await new Promise(r => setTimeout(r, 600));
+      this._busy = false;
+      this.setState({ submitting: false, order: this.demoOrder(), step: 'pay' });
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    try {
+      const f = s.f;
+      const r = await fetch('/api/zelle/order', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          idempotencyKey: this.idemKey(),
+          customer: { email: f.email, phone: f.phone, name: f.name, street: f.street, apt: f.apt, city: f.city, state: f.state, zip: f.zip },
+          notes: f.notes, lines: s.cart, shipId: s.shipId,
+          attest: { age: true, ageAt: s.ageAt, terms: true, termsAt: s.termsAt }
+        })
+      });
+      const d = await r.json().catch(() => ({}));
+      if (r.ok && d.ok) {
+        try { sessionStorage.removeItem(Component.IDEM); } catch (e) {}
+        this.store(d.order, 'pay');
+        try { window.AmbrosiaCart && window.AmbrosiaCart.clear(); } catch (e) {}
+        history.replaceState(null, '', location.pathname + '?order=' + d.order.number + '&t=' + d.order.token);
+        this.setState({ order: d.order, step: 'pay' });
+        window.scrollTo(0, 0);
+      } else if (d.code === 'MODE_OFF') {
+        this.setState({ modeOff: true, formError: d.error });
+      } else if (d.code === 'INVALID') {
+        this.setState({ errors: d.errors || {}, formError: (d.errors && d.errors.form) || 'Please check the highlighted fields.' });
+      } else {
+        this.setState({ formError: d.error || 'We could not place your order just now. Your cart is saved. Please try again in a moment.' });
+      }
+    } catch (e) {
+      this.setState({ formError: 'We could not reach checkout. Check your connection and try again. Your cart is saved.' });
+    } finally {
+      this._busy = false;
+      this.setState({ submitting: false });
+    }
+  }
+
+  copy(key, val) {
+    const done = () => { this.setState({ copied: key }); clearTimeout(this._copyT); this._copyT = setTimeout(() => this.setState({ copied: '' }), 2000); };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(val).then(done, () => this.copyFallback(val, done));
+    else this.copyFallback(val, done);
+  }
+  copyFallback(val, done) {
+    const t = document.createElement('textarea');
+    t.value = val; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(t);
+  }
+
+  notify(action) {
+    const o = this.state.order;
+    return fetch('/api/zelle/notify', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ n: o.number, t: o.token, action }) });
+  }
+
+  markSent() {
+    if (!this.demo) { this.notify('sent').catch(() => {}); this.store(this.state.order, 'done'); }
+    this.setState({ step: 'done' }, () => { window.scrollTo(0, 0); this.startCountdown(); });
+  }
+
+  async emailMe() {
+    if (this.state.emailState === 'sending') return;
+    this.setState({ emailState: 'sending' });
+    if (this.demo) { await new Promise(r => setTimeout(r, 500)); this.setState({ emailState: 'sent' }); return; }
+    try { const r = await this.notify('email'); this.setState({ emailState: r.ok ? 'sent' : 'error' }); }
+    catch (e) { this.setState({ emailState: 'error' }); }
+  }
+
+  startCountdown() {
+    this.stopCountdown();
+    const secs = (this.state.cfg && this.state.cfg.confirmationRedirectSeconds) || 30;
+    this.setState({ count: secs, counting: true });
+    this._iv = setInterval(() => {
+      const n = this.state.count - 1;
+      if (n <= 0) { this.stopCountdown(); this.setState({ counting: false }); this.goHome(); return; }
+      this.setState({ count: n });
+    }, 1000);
+    /* Armed after a beat so the scroll-to-top that brings this screen in
+       doesn't count as the customer interrupting. */
+    this._armT = setTimeout(() => {
+      if (!this._iv) return;
+      this._halt = () => { this.stopCountdown(); this.setState({ counting: false }); };
+      ['pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach(ev => window.addEventListener(ev, this._halt, { passive: true }));
+    }, 400);
+  }
+  stopCountdown() {
+    clearInterval(this._iv); this._iv = null; clearTimeout(this._armT);
+    if (this._halt) { ['pointerdown', 'keydown', 'wheel', 'touchstart', 'scroll'].forEach(ev => window.removeEventListener(ev, this._halt)); this._halt = null; }
+  }
+  goHome() { if (!this.demo) location.href = '/'; }
+
+  renderVals() {
+    const s = this.state, cfg = s.cfg;
+    const P = window.ZellePricing;
+    const money = P ? P.money : (c => '$' + (Number(c || 0) / 100).toFixed(2));
+    const f = s.f;
+    const q = cfg && P ? P.quote({ lines: s.cart, shipId: s.shipId, state: f.state, zip: f.zip }, cfg) : null;
+    const count = s.cart.reduce((a, l) => a + l.qty, 0);
+    const bad = k => (s.errors[k] ? '#6B1F28' : '#D8C9B2');
+    const on = {};
+    Object.keys(Component.EMPTY).forEach(k => {
+      on[k] = e => { const v = e.target.value; this.setState(p => ({ f: { ...p.f, [k]: v }, errors: { ...p.errors, [k]: '' } })); };
+    });
+    const setAge = () => this.setState(p => ({ ageOk: !p.ageOk, ageAt: !p.ageOk ? new Date().toISOString() : null }));
+    const setTerms = () => this.setState(p => ({ termsOk: !p.termsOk, termsAt: !p.termsOk ? new Date().toISOString() : null }));
+    const key = fn => e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); fn(); } };
+    const cant = !s.ageOk || !s.termsOk || s.submitting;
+
+    const o = s.order;
+    const zelle = (cfg && cfg.zelle) || { email: '', name: '' };
+    const oc = (o && o.customer) || {};
+
+    return {
+      isLoading: s.step === 'loading', isError: s.step === 'error', isCheckout: s.step === 'checkout',
+      isPay: s.step === 'pay', isDone: s.step === 'done',
+      loadError: s.loadError, reload: () => location.reload(),
+
+      countLabel: count === 1 ? '1 ITEM' : count + ' ITEMS',
+      f, on, err: s.errors,
+      bd: { email: bad('email'), phone: bad('phone'), name: bad('name'), street: bad('street'), city: bad('city'), state: bad('state'), zip: bad('zip'), age: '#7A5622', terms: '#7A5622' },
+      states: Component.STATES,
+
+      shipping: (cfg ? cfg.shipping.options : []).map(opt => {
+        const sel = s.shipId === opt.id;
+        const free = q && opt.id === cfg.shipping.freeOptionId && q.subtotal >= cfg.shipping.freeThreshold * 100;
+        return {
+          label: opt.label, detail: opt.detail, on: sel,
+          priceLabel: free ? 'FREE' : money(opt.price * 100),
+          select: () => this.setState({ shipId: opt.id }),
+          style: 'width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:56px;'
+            + ' padding:14px 2px; cursor:pointer; text-align:left; border-top:1px solid #D8C9B2;'
+            + ' transition:opacity 300ms ease; opacity:' + (sel ? '1' : '0.72'),
+          dotStyle: 'flex:0 0 auto; width:13px; height:13px; border-radius:50%; display:inline-block;'
+            + ' border:1px solid ' + (sel ? '#6B1F28' : '#A9A096') + '; background:' + (sel ? '#6B1F28' : 'transparent')
+            + '; box-shadow:' + (sel ? 'inset 0 0 0 2.5px #F0E9DC' : 'none')
+        };
+      }),
+
+      ageOk: s.ageOk, termsOk: s.termsOk,
+      toggleAge: setAge, toggleTerms: setTerms, keyAge: key(setAge), keyTerms: key(setTerms),
+      stop: e => e.stopPropagation(),
+      cantSubmit: cant, btnOpacity: cant ? '0.45' : '1', btnCursor: cant ? 'not-allowed' : 'pointer',
+      submitLabel: s.submitting ? 'PLACING ORDER\u2026' : 'CONTINUE TO PAYMENT',
+      submit: () => this.submit(),
+      formError: s.formError, modeOff: s.modeOff,
+
+      sum: q ? {
+        items: q.items.map(i => ({ name: i.name, meta: i.mass + ' \u00b7 Qty ' + i.qty, amount: money(i.line) })),
+        subtotal: money(q.subtotal), discountLabel: q.discountLabel, discount: money(q.discount),
+        shipping: q.shipping ? money(q.shipping) : 'Free', hasTax: q.taxCharged > 0, tax: money(q.taxCharged),
+        total: money(q.total)
+      } : { items: [], subtotal: '', discountLabel: '', discount: '', shipping: '', hasTax: false, tax: '', total: '' },
+
+      order: o ? {
+        number: o.number,
+        items: (o.items || []).map(i => ({ label: i.name + ' \u00b7 ' + i.mass + ' \u00d7 ' + i.qty, amount: money(i.line) })),
+        subtotalL: money(o.subtotal), discountLabel: o.discountLabel, discountL: money(o.discount),
+        shipLabel: o.shipLabel, shippingL: o.shipping ? money(o.shipping) : 'Free',
+        hasTax: o.taxCharged > 0, taxL: money(o.taxCharged), totalL: money(o.total),
+        shipName: oc.name || '', shipLine1: [oc.street, oc.apt].filter(Boolean).join(', '),
+        shipLine2: oc.city ? oc.city + ', ' + oc.state + ' ' + oc.zip : ''
+      } : { number: '', items: [], hasTax: false },
+
+      payRows: o ? [
+        { k: 'email', label: 'ZELLE EMAIL', value: zelle.email, style: 'font-size:16px; color:#241C19; word-break:break-all' },
+        { k: 'name', label: 'ZELLE NAME', value: zelle.name, style: 'font-size:16px; color:#241C19' },
+        { k: 'memo', label: 'ORDER NUMBER', value: o.number, style: "font-family:'Instrument Serif', serif; font-size:28px; line-height:1.1; letter-spacing:0.02em; color:#6B1F28" },
+        { k: 'amount', label: 'AMOUNT', value: money(o.total), copyVal: (o.total / 100).toFixed(2), style: 'font-size:16px; color:#241C19' }
+      ].map(r => ({
+        label: r.label, value: r.value, valueStyle: r.style,
+        btn: s.copied === r.k ? 'COPIED' : 'COPY', aria: 'Copy ' + r.label.toLowerCase(),
+        copy: () => this.copy(r.k, r.copyVal || r.value)
+      })) : [],
+
+      markSent: () => this.markSent(),
+      emailMe: () => this.emailMe(),
+      emailBusy: s.emailState === 'sending',
+      emailMsg: s.emailState === 'sent' ? 'Instructions sent to ' + (oc.email || 'your email') + '.'
+        : s.emailState === 'error' ? 'That did not send. Your confirmation email already has these details.'
+        : s.emailState === 'sending' ? 'Sending\u2026' : '',
+
+      counting: s.counting, count: s.count,
+      goHome: () => { this.stopCountdown(); this.setState({ counting: false }); this.goHome(); },
+      stay: () => { this.stopCountdown(); this.setState({ counting: false }); },
+      zelleEmail: zelle.email,
+      supportEmail: (cfg && cfg.support.email) || '', supportPhone: (cfg && cfg.support.phone) || ''
+    };
+  }
+}
+</script>
+</body>
+</html>

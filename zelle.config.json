@@ -1,0 +1,47 @@
+{
+  "zelle": {
+    "email": "info@ambrosiastandard.com",
+    "name": "Ambrosia LLC"
+  },
+  "support": {
+    "email": "info@ambrosiastandard.com",
+    "phone": "+1 (615) 207-8043"
+  },
+  "discount": {
+    "rate": 0.25,
+    "label": "Zelle saving (25%)"
+  },
+  "promo": {
+    "ticker": "LIMITED TIME \u00b7 25% OFF EVERY ORDER PAID BY ZELLE"
+  },
+  "shipping": {
+    "freeThreshold": 200,
+    "freeOptionId": "standard",
+    "thresholdBasis": "subtotal before discount",
+    "options": [
+      { "id": "standard",  "label": "Standard",  "detail": "3\u20135 business days", "price": 12 },
+      { "id": "expedited", "label": "Expedited", "detail": "2 business days",        "price": 28 },
+      { "id": "overnight", "label": "Overnight", "detail": "Next business day",      "price": 45 }
+    ]
+  },
+  "tax": {
+    "mode": "absorb",
+    "taxShipping": true,
+    "states": {
+      "TN": { "default": 0.0925, "zip": {} }
+    }
+  },
+  "confirmationRedirectSeconds": 30,
+  "catalog": {
+    "glp-2":      { "name": "GLP 2 (TZ)", "mass": "10 mg per vial", "price": 70 },
+    "glp-2-20":   { "name": "GLP 2 (TZ)", "mass": "20 mg per vial", "price": 120 },
+    "glp-3":      { "name": "GLP 3 (RT)", "mass": "10 mg per vial", "price": 80 },
+    "glp-3-20":   { "name": "GLP 3 (RT)", "mass": "20 mg per vial", "price": 130 },
+    "glp-3-30":   { "name": "GLP 3 (RT)", "mass": "30 mg per vial", "price": 170 },
+    "ghk-cu":     { "name": "GHK-Cu", "mass": "50 mg per vial", "price": 45 },
+    "ghk-cu-100": { "name": "GHK-Cu", "mass": "100 mg per vial", "price": 70 },
+    "glow":       { "name": "Glow (GHK-Cu + BPC-157 + TB-500)", "mass": "70 mg per vial", "price": 125 },
+    "klow":       { "name": "Klow (GHK-Cu + BPC-157 + TB-500 + KPV)", "mass": "80 mg per vial", "price": 180 },
+    "wolverine":  { "name": "Wolverine (BPC-157 + TB-500)", "mass": "20 mg per vial", "price": 120 }
+  }
+}

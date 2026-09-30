@@ -145,7 +145,8 @@
     { hash: 'c99cceaa', label: 'Referral', rate: 0.15 },
     { hash: '983110dd', label: 'Referral', rate: 0.15 },
     { hash: '1e5139ca', label: 'Referral', rate: 0.15 },
-    { hash: 'abd987d7', label: 'Referral', rate: 0.15 }
+    { hash: 'abd987d7', label: 'Referral', rate: 0.15 },
+    { hash: 'd9b59cf', label: 'Offer', rate: 0.2 }
   ];
 
   function findDiscount(typed) {
@@ -512,6 +513,26 @@
   }
 
   clearAfterOrder();
+
+  /* Ad landing page: ?offer=CODE applies a valid code once and strips it from
+     the address bar. The cart restores it from the saved checkout prefs. */
+  (function pickUpOffer() {
+    try {
+      var q = new URLSearchParams(location.search);
+      var raw = q.get('offer');
+      if (!raw) return;
+      var found = findDiscount(raw);
+      if (found) {
+        var k = 'ambrosia-checkout-v1', p = {};
+        try { p = JSON.parse(localStorage.getItem(k) || '{}') || {}; } catch (e) {}
+        p.applied = found.code;
+        localStorage.setItem(k, JSON.stringify(p));
+      }
+      q.delete('offer');
+      var rest = q.toString();
+      history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+    } catch (e) {}
+  })();
 
   window.AmbrosiaCart = {
     get CATALOG() { return CATALOG; },

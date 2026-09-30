@@ -13,8 +13,9 @@
 <link rel="preload" href="fonts/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
-<script src="cart-store.js?v=4"></script>
+<script src="cart-store.js?v=5"></script>
 <script src="entry-gate.js?v=3"></script>
+<script src="checkout-mode.js?v=1"></script>
 <link rel="stylesheet" href="ambrosia.css?v=4">
 </helmet>
 
@@ -155,6 +156,7 @@
             </sc-for>
             <div style="font-size:11px; line-height:1.6; color:#3C312C; padding:12px 0 0">Flat-rate domestic shipping, free on orders over $200.</div>
 
+            <sc-if value="{{ notZelle }}" hint-placeholder-val="{{ true }}">
             <div style="margin-top:24px; border:1px solid #7A5622; background:#F0E9DC; padding:20px">
               <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">{{ welcomeKicker }}</div>
               <div style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.2; color:#241C19; margin-top:8px">{{ welcomeHeadline }}</div>
@@ -177,6 +179,7 @@
             </div>
             <sc-if value="{{ codeMessage }}" hint-placeholder-val="{{ false }}">
               <div style="{{ codeMessageStyle }}">{{ codeMessage }}</div>
+            </sc-if>
             </sc-if>
 
             <div style="margin-top:26px; border-top:1px solid #D8C9B2; padding-top:20px; display:flex; flex-direction:column; gap:12px">
@@ -276,7 +279,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;demoContents&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Cart&quot;},&quot;showUpsell&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Cart&quot;}}">
 class Component extends DCLogic {
-  state = { menuOpen: false, openGroup: null, openSub: null, lines: [], ship: 'standard', code: '', applied: null, codeErr: '', optin: false, bacAdded: false, handingOff: false, handoffError: '' };
+  state = { menuOpen: false, openGroup: null, openSub: null, lines: [], ship: 'standard', code: '', applied: null, codeErr: '', optin: false, bacAdded: false, handingOff: false, handoffError: '', zelle: window.AmbrosiaCheckoutMode === 'zelle' };
 
   static SUBMENUS = [
     { label: 'Compounds', links: [
@@ -327,16 +330,20 @@ class Component extends DCLogic {
       const C = window.AmbrosiaCart;
       if (!C) { if (tries++ < 120) requestAnimationFrame(boot); return; }
       if (!C.read().length && (this.props.demoContents ?? true)) C.write(Component.DEMO.slice());
+      if (prefs.applied && C.findDiscount) { const f = C.findDiscount(prefs.applied); if (f) this.setState({ applied: f, code: f.code }); }
       this.sync();
       this._off = C.on(() => this.sync());
     };
     requestAnimationFrame(boot);
+    this._mode = e => this.setState({ zelle: e.detail === 'zelle' });
+    window.addEventListener('ambrosia:checkout-mode', this._mode);
     this._esc = e => { if (e.key === 'Escape') this.setState({ menuOpen: false, stdOpen: false }); };
     document.addEventListener('keydown', this._esc);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this._esc);
+    window.removeEventListener('ambrosia:checkout-mode', this._mode);
     if (this._off) this._off();
   }
 
@@ -362,14 +369,17 @@ class Component extends DCLogic {
     const welcome = (C && C.WELCOME) || { label: 'Welcome offer', rate: 0.10 };
     /* Consenting to email unlocks the welcome rate. A typed discount code wins
        if both are present, since it is worth more. */
-    const applied = s.applied;
-    const welcomeActive = s.optin && !applied;
+    /* Zelle mode: a flat 25% replaces every other discount, matching what the
+       Zelle checkout charges. */
+    const zelle = !!s.zelle;
+    const applied = zelle ? null : s.applied;
+    const welcomeActive = !zelle && s.optin && !applied;
 
     const lines = s.lines;
     const count = lines.reduce((a, l) => a + l.qty, 0);
     const subtotal = lines.reduce((a, l) => a + l.total, 0);
     const ship = shipOpts.find(o => o.id === s.ship) || shipOpts[0] || { price: 0 };
-    const activeRate = applied ? applied.rate : (welcomeActive ? welcome.rate : 0);
+    const activeRate = zelle ? 0.25 : (applied ? applied.rate : (welcomeActive ? welcome.rate : 0));
     const disc = subtotal * activeRate;
     const net = Math.max(0, subtotal - disc);
     /* Free standard shipping at $200 of PRODUCT value, before any discount
@@ -466,6 +476,10 @@ class Component extends DCLogic {
       goCheckout: async () => {
         if (this.state.handingOff) return;
         this.setState({ handingOff: true, handoffError: '' });
+        let mode = 'woocommerce';
+        try { if (window.AmbrosiaCheckout) mode = await window.AmbrosiaCheckout.current(); } catch (e) {}
+        if (mode === 'zelle') { location.href = '/checkout'; return; }
+        if (this.state.zelle) this.setState({ zelle: false });
         try {
           await C.handoff(
             this.state.applied ? this.state.applied.code : null,
@@ -506,7 +520,8 @@ class Component extends DCLogic {
         + (s.codeErr ? '#6B1F28' : '#3C312C'),
 
       hasDiscount: disc > 0,
-      discountLabel: applied ? 'Discount (' + applied.code + ')' : welcome.label,
+      discountLabel: zelle ? 'Zelle saving (25%)' : (applied ? 'Discount (' + applied.code + ')' : welcome.label),
+      notZelle: !zelle,
       discountAmount: '\u2212' + money(disc),
       totalLabel: money(total)
     };

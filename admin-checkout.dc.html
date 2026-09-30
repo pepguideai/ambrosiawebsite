@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Ambrosia</title>
+<link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="ambrosia.css?v=4">
+</helmet>
+
+<div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh">
+
+  <div style="border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px)">
+    <div style="max-width:880px; margin:0 auto; min-height:80px; display:flex; align-items:center; justify-content:space-between; gap:16px">
+      <div style="display:flex; align-items:center; gap:12px">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:24px; height:24px">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+        <span style="font-family:Cinzel, serif; font-weight:600; font-size:18px; letter-spacing:0.3em; color:#6B1F28">AMBROSIA</span>
+        <span style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-left:6px">ADMIN</span>
+      </div>
+      <sc-if value="{{ isPanel }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; align-items:center; gap:18px">
+          <span style="font-size:13px; color:#6E6055">{{ user }}</span>
+          <button type="button" onClick="{{ logout }}" style="min-height:44px; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; cursor:pointer">SIGN OUT</button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <div style="padding:clamp(32px,6vw,72px) clamp(20px,4vw,56px) 80px">
+    <div style="max-width:880px; margin:0 auto">
+
+      <sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:12px; font-weight:600; letter-spacing:0.18em; color:#7A5622">LOADING&hellip;</div>
+      </sc-if>
+
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ login }}" data-screen-label="Admin sign in" style="max-width:420px; display:flex; flex-direction:column; gap:22px">
+          <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(32px,4vw,44px); line-height:1.05; color:#6B1F28; margin:0">Sign in</h1>
+          <div style="display:flex; flex-direction:column; gap:8px">
+            <span style="font-size:13px; color:#3C312C">Who&rsquo;s signing in <span style="color:#6E6055">(for the change log)</span></span>
+            <div style="display:grid; grid-template-columns:1fr 1fr; border:1px solid #D8C9B2">
+              <sc-for list="{{ people }}" as="p" hint-placeholder-count="2">
+                <button type="button" onClick="{{ p.pick }}" aria-pressed="{{ p.on }}" style="{{ p.style }}">{{ p.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <label style="display:flex; flex-direction:column; gap:8px">
+            <span style="font-size:13px; color:#3C312C">Password</span>
+            <input type="password" autocomplete="current-password" value="{{ password }}" onChange="{{ setPassword }}" style="height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+          </label>
+          <button type="submit" disabled="{{ busy }}" style="display:flex; align-items:center; justify-content:center; width:100%; height:56px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">{{ loginLabel }}</button>
+          <sc-if value="{{ loginErr }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="font-size:13px; line-height:1.6; color:#6B1F28">{{ loginErr }}</div>
+          </sc-if>
+        </form>
+      </sc-if>
+
+      <sc-if value="{{ isPanel }}" hint-placeholder-val="{{ false }}">
+        <div data-screen-label="Checkout mode" style="display:flex; flex-direction:column; gap:clamp(36px,5vw,56px)">
+
+          <div style="display:flex; flex-direction:column; gap:22px">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">CHECKOUT MODE</div>
+            <div role="radiogroup" aria-label="Checkout mode" style="display:grid; grid-template-columns:1fr 1fr; border:1px solid #241C19">
+              <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+                <button type="button" role="radio" aria-checked="{{ m.on }}" onClick="{{ m.pick }}" disabled="{{ busy }}" style="{{ m.style }}">
+                  <span style="font-family:'Instrument Serif', serif; font-size:clamp(22px,2.6vw,28px); line-height:1.1">{{ m.label }}</span>
+                  <span style="font-size:12.5px; line-height:1.5; opacity:0.8">{{ m.detail }}</span>
+                </button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ pending }}" hint-placeholder-val="{{ false }}">
+              <div role="alertdialog" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px 24px; padding:18px 20px; border:1px solid #6B1F28">
+                <span style="font-size:14.5px; line-height:1.6; color:#241C19; max-width:460px">{{ pendingText }}</span>
+                <span style="display:flex; gap:12px">
+                  <button type="button" onClick="{{ confirm }}" style="height:48px; padding:0 26px; background:#6B1F28; color:#F0E9DC; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer" style-hover="background:#8E2C36">{{ confirmLabel }}</button>
+                  <button type="button" onClick="{{ cancel }}" style="height:48px; padding:0 20px; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer">CANCEL</button>
+                </span>
+              </div>
+            </sc-if>
+
+            <div style="display:flex; flex-wrap:wrap; gap:8px 28px; font-size:13.5px; line-height:1.6; color:#3C312C">
+              <span>Now: <strong style="color:#241C19; font-weight:600">{{ currentLabel }}</strong></span>
+              <span>{{ lastChanged }}</span>
+            </div>
+            <sc-if value="{{ panelErr }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="font-size:13px; line-height:1.6; color:#6B1F28">{{ panelErr }}</div>
+            </sc-if>
+            <p style="font-size:12.5px; line-height:1.7; color:#6E6055; margin:0; max-width:600px">Changes reach the storefront within about ten seconds. Customers already on the Zelle payment or confirmation screen can always finish their order.</p>
+          </div>
+
+          <div style="display:flex; flex-direction:column">
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-bottom:12px">LAST 20 CHANGES</div>
+            <sc-if value="{{ noLog }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13.5px; color:#6E6055; padding:14px 0; border-top:1px solid #D8C9B2">No changes yet.</div>
+            </sc-if>
+            <sc-for list="{{ log }}" as="e" hint-placeholder-count="3">
+              <div style="display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,0.6fr) minmax(0,1.4fr); gap:12px; padding:13px 0; border-top:1px solid #D8C9B2; font-size:13.5px; line-height:1.5">
+                <span style="color:#6E6055">{{ e.when }}</span>
+                <span style="color:#241C19">{{ e.by }}</span>
+                <span style="color:#241C19">{{ e.change }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200},&quot;demoSignedIn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Preview (off-site only)&quot;}}">
+class Component extends DCLogic {
+  state = { phase: 'loading', who: 'philip', password: '', loginErr: '', busy: false, user: '', current: null, log: [], pending: null, panelErr: '' };
+
+  get demo() { return !/(^|\.)ambrosiastandard\.com$|\.vercel\.app$/.test(location.hostname); }
+
+  componentDidMount() {
+    if (this.demo) {
+      const at = h => new Date(Date.now() - h * 36e5).toISOString();
+      this.setState({ phase: this.props.demoSignedIn === false ? 'login' : 'panel', user: 'Philip',
+        current: { mode: 'woocommerce', by: 'Brittney', at: at(26) },
+        log: [{ mode: 'woocommerce', from: 'zelle', by: 'Brittney', at: at(26) }, { mode: 'zelle', from: 'woocommerce', by: 'Philip', at: at(31) }] });
+      return;
+    }
+    this.load();
+  }
+
+  componentDidUpdate(prev) {
+    if (this.demo && prev.demoSignedIn !== this.props.demoSignedIn) this.setState({ phase: this.props.demoSignedIn === false ? 'login' : 'panel' });
+  }
+
+  async load() {
+    try {
+      const r = await fetch('/api/admin/mode', { cache: 'no-store', credentials: 'same-origin' });
+      if (r.status === 401) return this.setState({ phase: 'login' });
+      const d = await r.json();
+      if (!r.ok) return this.setState({ phase: 'panel', panelErr: d.error || 'Could not read the current mode.' });
+      this.setState({ phase: 'panel', user: d.user, current: d.current, log: d.log, panelErr: '' });
+    } catch (e) { this.setState({ phase: 'login', loginErr: 'Could not reach the server.' }); }
+  }
+
+  async login(e) {
+    e.preventDefault();
+    if (this.state.busy) return;
+    this.setState({ busy: true, loginErr: '' });
+    if (this.demo) { this.setState({ busy: false, phase: 'panel', password: '' }); return; }
+    try {
+      const r = await fetch('/api/admin/login', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user: this.state.who, password: this.state.password }) });
+      const d = await r.json().catch(() => ({}));
+      this.setState({ busy: false, password: '' });
+      if (!r.ok) return this.setState({ loginErr: d.error || 'Sign in failed.' });
+      this.load();
+    } catch (x) { this.setState({ busy: false, loginErr: 'Could not reach the server.' }); }
+  }
+
+  async logout() {
+    if (!this.demo) await fetch('/api/admin/logout', { method: 'POST', credentials: 'same-origin' }).catch(() => {});
+    this.setState({ phase: 'login', user: '', current: null, log: [] });
+  }
+
+  async flip(mode) {
+    this.setState({ busy: true, panelErr: '' });
+    if (this.demo) {
+      const at = new Date().toISOString();
+      this.setState(p => ({ busy: false, pending: null, current: { mode, by: p.user, at }, log: [{ mode, from: p.current.mode, by: p.user, at }, ...p.log].slice(0, 20) }));
+      return;
+    }
+    try {
+      const r = await fetch('/api/admin/mode', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode }) });
+      const d = await r.json().catch(() => ({}));
+      if (r.status === 401) return this.setState({ busy: false, pending: null, phase: 'login', loginErr: 'Your session ended. Sign in again.' });
+      if (!r.ok) return this.setState({ busy: false, pending: null, panelErr: d.error || 'Nothing was changed.' });
+      this.setState({ busy: false, pending: null, current: d.current, log: d.log });
+    } catch (x) { this.setState({ busy: false, pending: null, panelErr: 'Could not reach the server. Nothing was changed.' }); }
+  }
+
+  renderVals() {
+    const s = this.state;
+    const cur = (s.current && s.current.mode) || 'woocommerce';
+    const NAMES = { woocommerce: 'WooCommerce (default)', zelle: 'Zelle fallback' };
+    const fmt = iso => iso ? new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
+    return {
+      isLoading: s.phase === 'loading', isLogin: s.phase === 'login', isPanel: s.phase === 'panel',
+      user: s.user, logout: () => this.logout(),
+
+      people: ['philip', 'brittney'].map(u => ({
+        label: u.charAt(0).toUpperCase() + u.slice(1), on: s.who === u,
+        pick: () => this.setState({ who: u }),
+        style: 'height:50px; font-size:14px; cursor:pointer; transition:background 300ms ease;'
+          + (s.who === u ? ' background:#241C19; color:#F0E9DC' : ' background:transparent; color:#241C19')
+      })),
+      password: s.password, setPassword: e => this.setState({ password: e.target.value }),
+      login: e => this.login(e), busy: s.busy,
+      loginLabel: s.busy ? 'SIGNING IN\u2026' : 'SIGN IN', loginErr: s.loginErr,
+
+      modes: ['woocommerce', 'zelle'].map(m => {
+        const on = cur === m;
+        return {
+          label: NAMES[m], on,
+          detail: m === 'woocommerce' ? 'Normal card checkout on WordPress.' : 'On-site Zelle checkout, 25% off, offer shown in the top strip.',
+          pick: () => { if (!on) this.setState({ pending: m, panelErr: '' }); },
+          style: 'display:flex; flex-direction:column; align-items:flex-start; gap:8px; text-align:left; padding:clamp(18px,2.4vw,26px); min-height:120px; cursor:pointer; transition:background 300ms ease;'
+            + (on ? ' background:#6B1F28; color:#F0E9DC' : ' background:transparent; color:#241C19')
+        };
+      }),
+      pending: !!s.pending,
+      pendingText: s.pending === 'zelle'
+        ? 'Switch checkout to Zelle fallback? New orders will go through the Zelle flow and the 25% offer appears site-wide.'
+        : 'Switch checkout back to WooCommerce? New Zelle orders will be blocked; customers mid-payment can still finish.',
+      confirmLabel: s.busy ? 'SWITCHING\u2026' : 'SWITCH',
+      confirm: () => this.flip(s.pending), cancel: () => this.setState({ pending: null }),
+      currentLabel: NAMES[cur],
+      lastChanged: s.current && s.current.by ? 'Changed by ' + s.current.by + ', ' + fmt(s.current.at) : 'Never changed',
+      panelErr: s.panelErr,
+      noLog: !s.log.length,
+      log: s.log.map(e => ({ when: fmt(e.at), by: e.by, change: (NAMES[e.from] || '\u2014') + ' \u2192 ' + NAMES[e.mode] }))
+    };
+  }
+}
+</script>
+</body>
+</html>
