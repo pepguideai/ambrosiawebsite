@@ -22,6 +22,7 @@ module.exports = async (req, res) => {
     }
     res.status(405).json({ error: 'Method not allowed' });
   } catch (e) {
+    if (e.code === 'USE_GITHUB') return res.status(409).json({ error: e.message });
     console.error('[admin/mode]', e.message);
     res.status(502).json({ error: 'The mode store could not be reached. Nothing was changed.' });
   }

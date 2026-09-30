@@ -1,4 +1,5 @@
-/* Checkout mode, stored in Vercel Edge Config.
+/* Checkout mode. The live switch is live-checkout.json (readMode).
+   The Edge Config helpers below are unused, kept for reference.
    Read:  EDGE_CONFIG connection string (added automatically when the store is
           connected to the project).
    Write: Vercel REST API with VERCEL_API_TOKEN (Edge Config is read-only from
@@ -38,15 +39,19 @@ async function readMode() {
   }
 }
 
+/* The admin page shows the same mode the site uses: live-checkout.json. */
 async function readStatus() {
-  const [cur, log] = await Promise.all([readItem(KEY), readItem(LOG)]);
-  return {
-    current: cur && MODES.includes(cur.mode) ? cur : { mode: 'woocommerce', by: null, at: null },
-    log: Array.isArray(log) ? log : []
-  };
+  return { current: { mode: await readMode(), by: null, at: null }, log: [] };
 }
 
+/* Switching happens by editing live-checkout.json on GitHub, not from here. */
 async function writeMode(mode, by) {
+  const e = new Error('To switch, edit live-checkout.json on GitHub. The site updates in about a minute.');
+  e.code = 'USE_GITHUB';
+  throw e;
+}
+
+async function writeModeEdgeConfig(mode, by) {
   if (!MODES.includes(mode)) throw new Error('Unknown mode');
   if (!process.env.VERCEL_API_TOKEN) throw new Error('VERCEL_API_TOKEN is not set');
   const status = await readStatus();
