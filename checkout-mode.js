@@ -1,9 +1,9 @@
 /* Ambrosia — checkout mode on the storefront.
-   Asks /api/checkout-mode once per page (never cached). In Zelle mode it adds
-   the offer line to the top oxblood strip and tells the cart. Anything short of
-   a clean "zelle" answer leaves the site in its normal WooCommerce state. */
+   Asks /api/checkout-mode once per page (never cached). A clean "zelle"
+   answer sets data-checkout-mode on <html>, which hides [data-promo] and
+   shows the homepage's [data-zelle-copy] banner. Anything short of that
+   leaves the site in its normal WooCommerce state. */
 (function () {
-  var PROMO = 'LIMITED TIME \u00b7 25% OFF EVERY ORDER PAID BY ZELLE';
   var live = /(^|\.)ambrosiastandard\.com$|\.vercel\.app$/.test(location.hostname);
   window.AmbrosiaCheckoutMode = 'woocommerce';
 
@@ -18,39 +18,20 @@
       .finally(function () { clearTimeout(t); });
   }
 
-  function strip() {
-    var els = document.querySelectorAll('div[style*="#3E1218"]');
-    for (var i = 0; i < els.length; i++) {
-      var inner = els[i].firstElementChild;
-      if (inner && /RESEARCH USE ONLY/.test(inner.textContent) && inner.children.length <= 4) return inner;
-    }
-    return null;
-  }
-
-  function showPromo() {
-    var tries = 0;
-    (function place() {
-      var s = strip();
-      if (!s) { if (tries++ < 150) setTimeout(place, 60); return; }
-      if (s.querySelector('[data-zelle-promo]')) return;
-      var el = document.createElement('span');
-      el.setAttribute('data-zelle-promo', '');
-      el.textContent = PROMO;
-      el.style.cssText = 'font-size:11px; font-weight:600; letter-spacing:0.18em; color:#F0E9DC; white-space:normal';
-      s.insertBefore(el, s.firstChild);
-    })();
+  function apply(mode) {
+    window.AmbrosiaCheckoutMode = mode;
+    try { document.documentElement.setAttribute('data-checkout-mode', mode); } catch (e) {}
+    try { window.dispatchEvent(new CustomEvent('ambrosia:checkout-mode', { detail: mode })); } catch (e) {}
   }
 
   var ready = fetchMode().then(function (mode) {
-    window.AmbrosiaCheckoutMode = mode;
-    if (mode === 'zelle') showPromo();
-    try { window.dispatchEvent(new CustomEvent('ambrosia:checkout-mode', { detail: mode })); } catch (e) {}
+    apply(mode);
     return mode;
   });
 
   /* Fresh read at the moment of checkout, so a flip takes effect without a reload. */
   window.AmbrosiaCheckout = {
     ready: ready,
-    current: function () { return fetchMode().then(function (m) { window.AmbrosiaCheckoutMode = m; return m; }); }
+    current: function () { return fetchMode().then(function (m) { apply(m); return m; }); }
   };
 })();
