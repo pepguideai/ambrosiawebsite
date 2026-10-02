@@ -318,7 +318,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
 class Component extends DCLogic {
-  state = { menuOpen: false, openGroup: null, openSub: null, size: 0, qty: 1, cart: 0, added: false };
+  state = { menuOpen: false, openGroup: null, openSub: null, size: 0, qty: 1, cart: 0, added: false, zelle: window.AmbrosiaCheckoutMode === 'zelle' };
 
   static SUBMENUS = [
     { label: 'Compounds', links: [
@@ -497,11 +497,14 @@ class Component extends DCLogic {
     this.scrollToHash();
     this._esc = e => { if (e.key === 'Escape') this.setState({ menuOpen: false, waterModal: false, bulkModal: false, tierModal: false, stdOpen: false }); };
     document.addEventListener('keydown', this._esc);
+    this._mode = e => this.setState({ zelle: e.detail === 'zelle' });
+    window.addEventListener('ambrosia:checkout-mode', this._mode);
   }
 
   componentWillUnmount() {
     if (this._offCart) this._offCart();
     document.removeEventListener('keydown', this._esc);
+    window.removeEventListener('ambrosia:checkout-mode', this._mode);
   }
 
   renderVals() {
@@ -554,15 +557,15 @@ class Component extends DCLogic {
 
       priceLabel: (() => {
         const q = s.qty || 1;
-        const r = q >= 10 ? 0.15 : (q >= 3 ? 0.10 : (q >= 2 ? 0.05 : 0));
+        const r = s.zelle ? 0 : (q >= 10 ? 0.15 : (q >= 3 ? 0.10 : (q >= 2 ? 0.05 : 0)));
         return C.money(Math.round((size.price ?? 0) * q * (1 - r) * 100) / 100);
       })(),
-      priceDiscounted: (s.qty || 1) >= 2,
+      priceDiscounted: !s.zelle && (s.qty || 1) >= 2,
       priceGrossLabel: C.money((size.price ?? 0) * (s.qty || 1)),
       rangeLabel: C.rangeLabel(),
       selectedLabel: (() => {
         const q = s.qty || 1;
-        const r = q >= 10 ? 15 : (q >= 3 ? 10 : (q >= 2 ? 5 : 0));
+        const r = s.zelle ? 0 : (q >= 10 ? 15 : (q >= 3 ? 10 : (q >= 2 ? 5 : 0)));
         const base = size.label ? size.label : '';
         const vials = q === 1 ? '1 vial' : q + ' vials';
         return (base ? base + ' \u00B7 ' : '') + vials + (r ? ' \u00B7 ' + r + '% off' : '');

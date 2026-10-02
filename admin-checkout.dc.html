@@ -214,7 +214,7 @@ class Component extends DCLogic {
         const on = cur === m;
         return {
           label: NAMES[m], on,
-          detail: m === 'woocommerce' ? 'Normal card checkout on WordPress.' : 'On-site Zelle checkout, 25% off, offer shown in the top strip.',
+          detail: m === 'woocommerce' ? 'Normal card checkout on WordPress.' : 'On-site Zelle checkout. 25% off is noted on the homepage only; other discount messaging is hidden.',
           pick: () => { if (!on) this.setState({ pending: m, panelErr: '' }); },
           style: 'display:flex; flex-direction:column; align-items:flex-start; gap:8px; text-align:left; padding:clamp(18px,2.4vw,26px); min-height:120px; cursor:pointer; transition:background 300ms ease;'
             + (on ? ' background:#6B1F28; color:#F0E9DC' : ' background:transparent; color:#241C19')
@@ -222,7 +222,7 @@ class Component extends DCLogic {
       }),
       pending: !!s.pending,
       pendingText: s.pending === 'zelle'
-        ? 'Switch checkout to Zelle fallback? New orders will go through the Zelle flow and the 25% offer appears site-wide.'
+        ? 'Switch checkout to Zelle fallback? New orders will go through the Zelle flow. A 25% notice appears on the homepage, and other discount messaging is hidden.'
         : 'Switch checkout back to WooCommerce? New Zelle orders will be blocked; customers mid-payment can still finish.',
       confirmLabel: s.busy ? 'SWITCHING\u2026' : 'SWITCH',
       confirm: () => this.flip(s.pending), cancel: () => this.setState({ pending: null }),
