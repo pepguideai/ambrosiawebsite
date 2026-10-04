@@ -1,0 +1,12 @@
+{
+  "_comment": "Vanity paths on the offer site. Add an affiliate by appending one object: slug (single URL segment, matched case-insensitively, so /Nicole and /nicole are the same), name (greeting on the offer screen), id (AffiliateWP affiliate ID). Do not reuse an existing page slug such as cart, offer, or checkout. cookieDays is 30 to match the live AffiliateWP cookie (AffiliateWP → Settings shows 30, even though the affiliate agreement says 60).",
+  "tracking": {
+    "cookieDays": 30,
+    "refCookie": "affwp_ref",
+    "visitCookie": "affwp_ref_visit_id",
+    "shopCookieDomain": ".ambrosiastandard.com"
+  },
+  "affiliates": [
+    { "slug": "nicole", "name": "Nicole", "id": "2" }
+  ]
+}
