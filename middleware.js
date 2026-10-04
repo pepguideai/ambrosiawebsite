@@ -1,7 +1,7 @@
 /* /checkout goes to WooCommerce unless live-checkout.json says "zelle".
    To switch: edit live-checkout.json on GitHub. Vercel redeploys in ~1 minute.
 
-   createyouroffer.net serves the offer screen. /Nicole (any case) serves that
+   claimyouroffer.net serves the offer screen. /Nicole (any case) serves that
    same screen; affiliate-vanity.js records the AffiliateWP click. Affiliates
    live in config/affiliates.json. */
 export const config = {
@@ -12,7 +12,7 @@ export const config = {
   ]
 };
 
-const OFFER_HOSTS = new Set(['createyouroffer.net', 'www.createyouroffer.net']);
+const OFFER_HOSTS = new Set(['claimyouroffer.net', 'www.claimyouroffer.net']);
 
 /* Top-level pages and routes that must never be captured by a vanity slug. */
 const RESERVED = new Set([
