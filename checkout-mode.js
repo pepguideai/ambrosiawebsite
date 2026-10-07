@@ -77,10 +77,21 @@
     try { new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
   }
 
+  /* Zelle mode: no popups. Removes the entry gate if it mounted before the
+     mode was known, and keeps it from coming back. */
+  function killPopups() {
+    function sweep() {
+      var g = document.getElementById('ambrosia-gate');
+      if (g) { g.remove(); document.body.style.overflow = ''; }
+    }
+    sweep();
+    try { new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+  }
+
   var ready = fetchMode().then(function (mode) {
     window.AmbrosiaCheckoutMode = mode;
     if (!window.AmbrosiaBacWater) hideBacWater();
-    if (mode === 'zelle') showZelleOnly();
+    if (mode === 'zelle') { showZelleOnly(); killPopups(); }
     if (mode === 'zelle') showPromo();
     try { window.dispatchEvent(new CustomEvent('ambrosia:checkout-mode', { detail: mode })); } catch (e) {}
     return mode;

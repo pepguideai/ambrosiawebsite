@@ -84,5 +84,20 @@
     paint();
   }
 
-  if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount);
+  /* Zelle mode: no popups, so the gate never shows. Any doubt (offline,
+     slow, preview host) falls through to showing it as normal. */
+  function start() { if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount); }
+  var live = /(^|\.)ambrosiastandard\.com$|\.vercel\.app$/.test(location.hostname);
+  if (!live || !window.fetch) { start(); return; }
+  var done = false;
+  var fallback = setTimeout(function () { if (!done) { done = true; start(); } }, 2500);
+  fetch('/api/checkout-mode', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .catch(function () { return null; })
+    .then(function (d) {
+      if (done) return;
+      done = true; clearTimeout(fallback);
+      if (d && d.mode === 'zelle') return;
+      start();
+    });
 })();

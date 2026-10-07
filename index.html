@@ -14,8 +14,8 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=5"></script>
-<script src="entry-gate.js?v=3"></script>
-<script src="checkout-mode.js?v=3"></script>
+<script src="entry-gate.js?v=4"></script>
+<script src="checkout-mode.js?v=4"></script>
 <link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
 
@@ -485,6 +485,7 @@ class Component extends DCLogic {
     const a = e.target.closest && e.target.closest('a[href]');
     if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
     if (!/^(?:\.\/)?(glp-2|glp-3|ghk-cu|ghk-cu-bpc-157-tb-500|ghk-cu-bpc-157-tb-500-kpv|bpc-157-tb-500)\.html(?:[?#].*)?$/.test(a.getAttribute('href'))) return;
+    if (window.AmbrosiaCheckoutMode === 'zelle') return;
     if (this.state.offerOpen || document.getElementById('ambrosia-gate')) return;
     try {
       if (localStorage.getItem('ambrosia-offer-consent') !== null || localStorage.getItem('ambrosia-offer-email') !== null) return;
@@ -510,8 +511,11 @@ class Component extends DCLogic {
       claimed = (localStorage.getItem('ambrosia-offer-consent') || localStorage.getItem('ambrosia-offer-email')) !== null;
     } catch (e) {}
     if (seen || claimed) return;
-    try { sessionStorage.setItem('ambrosia-offer-shown', 'yes'); } catch (e) {}
-    this._offerTimer = setTimeout(() => { if (!document.getElementById('ambrosia-gate')) this.setState({ offerOpen: true }); }, 10000);
+    this._offerTimer = setTimeout(() => {
+      if (window.AmbrosiaCheckoutMode === 'zelle' || document.getElementById('ambrosia-gate')) return;
+      try { sessionStorage.setItem('ambrosia-offer-shown', 'yes'); } catch (e) {}
+      this.setState({ offerOpen: true });
+    }, 10000);
   }
 
 
@@ -582,6 +586,7 @@ class Component extends DCLogic {
       submitOffer: submitOffer,
       openOffer: e => {
         if (e && e.preventDefault) e.preventDefault();
+        if (window.AmbrosiaCheckoutMode === 'zelle') return;
         this.setState({ offerOpen: true, offerTried: false });
       },
       closeOffer: () => {
