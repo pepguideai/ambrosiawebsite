@@ -15,17 +15,17 @@
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=5"></script>
 <script src="entry-gate.js?v=3"></script>
-<script src="checkout-mode.js?v=1"></script>
+<script src="checkout-mode.js?v=3"></script>
 <script src="zelle-pricing.js?v=1"></script>
-<link rel="stylesheet" href="ambrosia.css?v=4">
+<link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
 
 <div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column">
 
   <div style="background:#3E1218; padding:12px clamp(20px,4vw,56px)">
     <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px clamp(22px,3vw,44px); text-align:center">
-      <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:nowrap">FOR RESEARCH USE ONLY &mdash; NOT FOR HUMAN USE</span>
-      <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096; white-space:nowrap">QUALIFIED PURCHASERS ONLY &nbsp;&middot;&nbsp; 21+</span>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:normal">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</span>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096; white-space:normal">SOLD EXCLUSIVELY TO QUALIFIED RESEARCHERS AND LICENSED LABORATORIES</span>
     </div>
   </div>
 
@@ -148,7 +148,7 @@
                 <span style="font-size:14.5px; color:#241C19; white-space:nowrap">{{ s.priceLabel }}</span>
               </button>
             </sc-for>
-            <div data-promo style="font-size:12px; line-height:1.6; color:#3C312C; padding-top:12px; border-top:1px solid #D8C9B2">Flat-rate domestic shipping, free on orders over $200.</div>
+            <div style="font-size:12px; line-height:1.6; color:#3C312C; padding-top:12px; border-top:1px solid #D8C9B2">Flat-rate domestic shipping, free on orders over $200.</div>
           </div>
 
           <label style="display:flex; flex-direction:column; gap:10px">
@@ -171,7 +171,15 @@
           </div>
 
           <div style="display:flex; flex-direction:column; gap:20px; padding-top:4px">
-            <div style="padding:12px 14px; border:1px solid #6B1F28; font-size:12px; font-weight:600; letter-spacing:0.12em; line-height:1.5; color:#6B1F28">FOR RESEARCH USE ONLY &mdash; NOT FOR HUMAN USE</div>
+            <div style="padding:12px 14px; border:1px solid #6B1F28; font-size:12px; font-weight:600; letter-spacing:0.12em; line-height:1.5; color:#6B1F28">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</div>
+
+            <label style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:13px; color:#3C312C">Research purpose <span style="color:#6E6055">(required)</span></span>
+              <select required value="{{ purpose }}" onChange="{{ setPurpose }}" style="height:52px; padding:0 12px; border:1px solid #7A5622; background:#F0E9DC; color:#241C19; font-size:16px; font-family:Archivo, sans-serif; border-radius:0; width:100%">
+                <option value="" disabled>Select your status</option>
+                <sc-for list="{{ purposes }}" as="p" hint-placeholder-count="0"><option value="{{ p }}">{{ p }}</option></sc-for>
+              </select>
+            </label>
 
             <div onClick="{{ toggleAge }}" role="checkbox" aria-checked="{{ ageOk }}" tabindex="0" onKeyDown="{{ keyAge }}" style="display:grid; grid-template-columns:22px 1fr; gap:16px; align-items:start; min-height:44px; cursor:pointer">
               <span style="width:22px; height:22px; margin-top:1px; display:flex; align-items:center; justify-content:center; border:1px solid {{ bd.age }}; background:#FFFFFF">
@@ -188,7 +196,7 @@
                   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:14px; height:14px; display:block"><path d="M4 12.5 L9.5 18 L20 6.5" stroke="#6B1F28" stroke-width="3" stroke-linecap="square"></path></svg>
                 </sc-if>
               </span>
-              <span style="font-size:14.5px; line-height:1.6; color:#241C19; text-wrap:pretty">I agree to the <a href="terms-of-sale.html" target="_blank" rel="noopener" onClick="{{ stop }}" style="color:#6B1F28; text-decoration:underline; text-underline-offset:3px">Terms of Service</a> and confirm these products are for research use only.</span>
+              <span style="font-size:14.5px; line-height:1.6; color:#241C19; text-wrap:pretty">I confirm these products are purchased for research use only and not for human consumption, and I agree to the <a href="terms-of-sale.html" target="_blank" rel="noopener" onClick="{{ stop }}" style="color:#6B1F28; text-decoration:underline; text-underline-offset:3px">Terms of Service</a>.</span>
             </div>
 
             <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; border-top:1px solid #241C19; padding-top:18px">
@@ -378,10 +386,11 @@ class Component extends DCLogic {
   static STATES = 'AL Alabama|AK Alaska|AZ Arizona|AR Arkansas|CA California|CO Colorado|CT Connecticut|DE Delaware|DC District of Columbia|FL Florida|GA Georgia|HI Hawaii|ID Idaho|IL Illinois|IN Indiana|IA Iowa|KS Kansas|KY Kentucky|LA Louisiana|ME Maine|MD Maryland|MA Massachusetts|MI Michigan|MN Minnesota|MS Mississippi|MO Missouri|MT Montana|NE Nebraska|NV Nevada|NH New Hampshire|NJ New Jersey|NM New Mexico|NY New York|NC North Carolina|ND North Dakota|OH Ohio|OK Oklahoma|OR Oregon|PA Pennsylvania|RI Rhode Island|SC South Carolina|SD South Dakota|TN Tennessee|TX Texas|UT Utah|VT Vermont|VA Virginia|WA Washington|WV West Virginia|WI Wisconsin|WY Wyoming'
     .split('|').map(s => ({ code: s.slice(0, 2), name: s.slice(3) }));
   static EMPTY = { email: '', phone: '', name: '', street: '', apt: '', city: '', state: '', zip: '', notes: '' };
+  static PURPOSES = ['Independent researcher', 'MD', 'Research foundation', 'Research institute', 'Analytical laboratory'];
 
   state = {
     step: 'loading', cfg: null, cart: [], f: { ...Component.EMPTY }, errors: {}, shipId: 'standard',
-    ageOk: false, termsOk: false, ageAt: null, termsAt: null, submitting: false, formError: '', modeOff: false,
+    ageOk: false, termsOk: false, ageAt: null, termsAt: null, purpose: '', submitting: false, formError: '', modeOff: false,
     order: null, copied: '', emailState: '', count: null, counting: false, loadError: ''
   };
 
@@ -390,7 +399,7 @@ class Component extends DCLogic {
   get demo() { return !/(^|\.)ambrosiastandard\.com$|\.vercel\.app$/.test(location.hostname); }
 
   async componentDidMount() {
-    this._pageshow = e => { if (e.persisted) this.setState({ ageOk: false, termsOk: false, ageAt: null, termsAt: null }); };
+    this._pageshow = e => { if (e.persisted) this.setState({ ageOk: false, termsOk: false, ageAt: null, termsAt: null, purpose: '' }); };
     window.addEventListener('pageshow', this._pageshow);
     let cfg;
     try { cfg = await (await fetch('config/zelle.config.json', { cache: 'no-store' })).json(); }
@@ -505,7 +514,7 @@ class Component extends DCLogic {
 
   async submit() {
     const s = this.state;
-    if (this._busy || !s.ageOk || !s.termsOk) return;
+    if (this._busy || !s.ageOk || !s.termsOk || !s.purpose) return;
     const errs = this.validate();
     if (Object.keys(errs).length) { this.setState({ errors: errs, formError: 'Please check the highlighted fields.' }); return; }
     this._busy = true;
@@ -527,7 +536,7 @@ class Component extends DCLogic {
           idempotencyKey: this.idemKey(),
           customer: { email: f.email, phone: f.phone, name: f.name, street: f.street, apt: f.apt, city: f.city, state: f.state, zip: f.zip },
           notes: f.notes, lines: s.cart, shipId: s.shipId,
-          attest: { age: true, ageAt: s.ageAt, terms: true, termsAt: s.termsAt }
+          attest: { age: true, ageAt: s.ageAt, terms: true, termsAt: s.termsAt, purpose: s.purpose }
         })
       });
       const d = await r.json().catch(() => ({}));
@@ -622,7 +631,7 @@ class Component extends DCLogic {
     const setAge = () => this.setState(p => ({ ageOk: !p.ageOk, ageAt: !p.ageOk ? new Date().toISOString() : null }));
     const setTerms = () => this.setState(p => ({ termsOk: !p.termsOk, termsAt: !p.termsOk ? new Date().toISOString() : null }));
     const key = fn => e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); fn(); } };
-    const cant = !s.ageOk || !s.termsOk || s.submitting;
+    const cant = !s.ageOk || !s.termsOk || !s.purpose || s.submitting;
 
     const o = s.order;
     const zelle = (cfg && cfg.zelle) || { email: '', name: '' };
@@ -656,6 +665,8 @@ class Component extends DCLogic {
 
       ageOk: s.ageOk, termsOk: s.termsOk,
       toggleAge: setAge, toggleTerms: setTerms, keyAge: key(setAge), keyTerms: key(setTerms),
+      purpose: s.purpose, purposes: Component.PURPOSES,
+      setPurpose: e => this.setState({ purpose: e.target.value }),
       stop: e => e.stopPropagation(),
       cantSubmit: cant, btnOpacity: cant ? '0.45' : '1', btnCursor: cant ? 'not-allowed' : 'pointer',
       submitLabel: s.submitting ? 'PLACING ORDER\u2026' : 'CONTINUE TO PAYMENT',

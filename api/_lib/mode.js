@@ -39,6 +39,16 @@ async function readMode() {
   }
 }
 
+/* Bacteriostatic water. Always on in Zelle mode; in WooCommerce mode it
+   follows bacWater in the same file (only an explicit false hides it). */
+async function readBacWater() {
+  try {
+    const v = require('../../live-checkout.json');
+    if (v && String(v.mode).trim().toLowerCase() === 'zelle') return true;
+    return !(v && v.bacWater === false);
+  } catch (e) { return true; }
+}
+
 /* The admin page shows the same mode the site uses: live-checkout.json. */
 async function readStatus() {
   return { current: { mode: await readMode(), by: null, at: null }, log: [] };
@@ -70,4 +80,4 @@ async function writeModeEdgeConfig(mode, by) {
   return { current: { mode, by, at }, log };
 }
 
-module.exports = { readMode, readStatus, writeMode, MODES };
+module.exports = { readMode, readBacWater, readStatus, writeMode, MODES };

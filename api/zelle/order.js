@@ -1,6 +1,6 @@
 const cfg = require('../../config/zelle.config.json');
 const Pricing = require('../../zelle-pricing.js');
-const { readMode } = require('../_lib/mode');
+const { readMode, readBacWater } = require('../_lib/mode');
 const { callSheet } = require('../_lib/sheet');
 const { noStore, body, sameOrigin } = require('../_lib/http');
 
@@ -27,10 +27,14 @@ function validate(b) {
   const ageAt = a.age === true ? iso(a.ageAt) : null;
   const termsAt = a.terms === true ? iso(a.termsAt) : null;
   if (!ageAt) errors.age = 'Please confirm you are 21 or older.';
-  if (!termsAt) errors.terms = 'Please agree to the Terms of Service and research-use terms.';
+  if (!termsAt) errors.terms = 'Please confirm research use only and agree to the Terms of Service.';
+  const purpose = PURPOSES.includes(a.purpose) ? a.purpose : '';
+  if (!purpose) errors.purpose = 'Please select your research purpose.';
   if (!/^[A-Za-z0-9-]{16,64}$/.test(String(b.idempotencyKey || ''))) errors.form = 'Please reload the page and try again.';
-  return { customer: out, ageAt, termsAt, notes: str(b.notes, 1000), errors };
+  return { customer: out, ageAt, termsAt, purpose, notes: str(b.notes, 1000), errors };
 }
+const PURPOSES = ['Independent researcher', 'MD', 'Research foundation', 'Research institute', 'Analytical laboratory'];
+
 
 module.exports = async (req, res) => {
   noStore(res);
@@ -55,6 +59,9 @@ module.exports = async (req, res) => {
     if (!lines.length) v.errors.form = 'Your cart is empty.';
     if (Object.keys(v.errors).length) return res.status(400).json({ code: 'INVALID', errors: v.errors });
 
+    if (!(await readBacWater()) && lines.some(l => l && l.id === 'bac-water')) {
+      return res.status(400).json({ code: 'INVALID', errors: { form: 'Bacteriostatic water is not available right now. Remove it from your cart to continue.' } });
+    }
     const q = Pricing.quote({ lines, shipId: b.shipId, state: v.customer.state, zip: v.customer.zip }, cfg);
     if (q.errors.length || !q.items.length) return res.status(400).json({ code: 'INVALID', errors: { form: 'One of the items in your cart is no longer available.' } });
 
@@ -62,7 +69,7 @@ module.exports = async (req, res) => {
       idempotencyKey: b.idempotencyKey,
       order: {
         customer: v.customer, notes: v.notes, quote: q,
-        attest: { ageAt: v.ageAt, termsAt: v.termsAt, receivedAt: new Date().toISOString() }
+        attest: { ageAt: v.ageAt, termsAt: v.termsAt, purpose: v.purpose, receivedAt: new Date().toISOString() }
       },
       zelle: cfg.zelle, support: cfg.support
     });

@@ -75,6 +75,7 @@ add_action( 'wp_enqueue_scripts', function () {
 			'ajax'  => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'ambrosia_attest' ),
 			'terms' => AMBROSIA_TERMS_URL,
+			'purposes' => ambrosia_attestation_purposes(),
 		)
 	);
 
@@ -101,6 +102,19 @@ function ambrosia_attestation_css() {
   padding:22px 0 0 0;
   border-top:1px solid var(--amb-rule, #D8C9B2);
 }
+.amb-attest__field { display:flex; flex-direction:column; gap:8px; }
+.amb-attest__select {
+  height:52px;
+  padding:0 12px;
+  border:1px solid var(--amb-brown, #7A5622);
+  border-radius:0;
+  background:#FFFFFF;
+  color:var(--amb-ink, #3C312C);
+  font-family:'AmbArchivo', system-ui, sans-serif;
+  font-size:16px;
+  width:100%;
+}
+.amb-attest__select:focus-visible { outline:2px solid var(--amb-brown, #7A5622); outline-offset:2px; }
 .amb-attest__row {
   display:flex;
   align-items:flex-start;
@@ -184,7 +198,7 @@ CSS;
 function ambrosia_attestation_js() {
 
 	$age      = esc_js( 'I confirm that I am over twenty one years of age.' );
-	$research = esc_js( 'I confirm that these products are for research use only, and I agree to the ' );
+	$research = esc_js( 'I confirm these products are purchased for research use only and not for human consumption, and I agree to the ' );
 	$link     = esc_js( 'terms of service' );
 	$noadmin  = esc_js( 'I confirm that I will not administer these materials to any human or animal, and I have read the research-use-only labelling.' );
 
@@ -197,6 +211,29 @@ function ambrosia_attestation_js() {
 		var wrap = document.createElement( 'div' );
 		wrap.className = 'amb-attest';
 		wrap.setAttribute( 'data-amb-attest', '1' );
+
+		var pl = document.createElement( 'label' );
+		pl.className = 'amb-attest__field';
+		pl.setAttribute( 'for', 'amb-attest-purpose' );
+		var pt = document.createElement( 'span' );
+		pt.className = 'amb-attest__text';
+		pt.textContent = 'Research purpose (required)';
+		var sel = document.createElement( 'select' );
+		sel.id = 'amb-attest-purpose';
+		sel.className = 'amb-attest__select';
+		sel.required = true;
+		var o0 = document.createElement( 'option' );
+		o0.value = ''; o0.textContent = 'Select your status'; o0.disabled = true; o0.selected = true;
+		sel.appendChild( o0 );
+		ambrosiaAttest.purposes.forEach( function ( p ) {
+			var o = document.createElement( 'option' );
+			o.value = p; o.textContent = p;
+			sel.appendChild( o );
+		} );
+		sel.addEventListener( 'change', sync );
+		pl.appendChild( pt );
+		pl.appendChild( sel );
+		wrap.appendChild( pl );
 
 		wrap.appendChild( row( 'amb-attest-age', '{$age}' ) );
 
@@ -243,7 +280,8 @@ function ambrosia_attestation_js() {
 		var a = document.getElementById( 'amb-attest-age' );
 		var b = document.getElementById( 'amb-attest-research' );
 		var c = document.getElementById( 'amb-attest-noadmin' );
-		return !! ( a && b && c && a.checked && b.checked && c.checked );
+		var p = document.getElementById( 'amb-attest-purpose' );
+		return !! ( a && b && c && p && a.checked && b.checked && c.checked && p.value );
 	}
 
 	function sync() {
@@ -258,19 +296,21 @@ function ambrosia_attestation_js() {
 		if ( ok ) { record(); }
 	}
 
-	var recorded = false;
+	var recorded = '';
 	function record() {
-		if ( recorded ) { return; }
-		recorded = true;
+		var purpose = document.getElementById( 'amb-attest-purpose' ).value;
+		if ( recorded === purpose ) { return; }
+		recorded = purpose;
 		var body = new URLSearchParams();
 		body.append( 'action', 'ambrosia_attest' );
 		body.append( 'nonce', ambrosiaAttest.nonce );
+		body.append( 'purpose', purpose );
 		fetch( ambrosiaAttest.ajax, {
 			method: 'POST',
 			credentials: 'same-origin',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: body.toString()
-		} ).catch( function () { recorded = false; } );
+		} ).catch( function () { recorded = ''; } );
 	}
 
 	function place() {
@@ -317,6 +357,9 @@ function ambrosia_attestation_js() {
 			var el = document.getElementById( id );
 			if ( el ) { el.checked = false; }
 		} );
+		var ps = document.getElementById( 'amb-attest-purpose' );
+		if ( ps ) { ps.value = ''; }
+		recorded = '';
 		sync();
 	} );
 
@@ -333,6 +376,11 @@ JS;
  * 2. Server — record the confirmation against the session
  * ------------------------------------------------------------------------ */
 
+/* Research purpose list, fixed by the processor's storefront policy. */
+function ambrosia_attestation_purposes() {
+	return array( 'Independent researcher', 'MD', 'Research foundation', 'Research institute', 'Analytical laboratory' );
+}
+
 add_action( 'wp_ajax_ambrosia_attest', 'ambrosia_attestation_capture' );
 add_action( 'wp_ajax_nopriv_ambrosia_attest', 'ambrosia_attestation_capture' );
 
@@ -344,12 +392,18 @@ function ambrosia_attestation_capture() {
 		wp_send_json_error( 'no-session', 400 );
 	}
 
+	$purpose = isset( $_POST['purpose'] ) ? sanitize_text_field( wp_unslash( $_POST['purpose'] ) ) : '';
+	if ( ! in_array( $purpose, ambrosia_attestation_purposes(), true ) ) {
+		wp_send_json_error( 'bad-purpose', 400 );
+	}
+
 	WC()->session->set(
 		'ambrosia_attestation',
 		array(
 			'age'      => 'yes',
 			'research' => 'yes',
 			'noadmin'  => 'yes',
+			'purpose'  => $purpose,
 			'time'     => gmdate( 'c' ),
 			'ip'       => ambrosia_attestation_ip(),
 			'terms'    => AMBROSIA_TERMS_URL,
@@ -371,7 +425,7 @@ function ambrosia_attestation_session() {
 		return null;
 	}
 	$data = WC()->session->get( 'ambrosia_attestation' );
-	return ( is_array( $data ) && 'yes' === ( $data['age'] ?? '' ) && 'yes' === ( $data['research'] ?? '' ) && 'yes' === ( $data['noadmin'] ?? '' ) ) ? $data : null;
+	return ( is_array( $data ) && 'yes' === ( $data['age'] ?? '' ) && 'yes' === ( $data['research'] ?? '' ) && 'yes' === ( $data['noadmin'] ?? '' ) && in_array( $data['purpose'] ?? '', ambrosia_attestation_purposes(), true ) ) ? $data : null;
 }
 
 /* ---------------------------------------------------------------------------
@@ -386,7 +440,7 @@ add_action( 'woocommerce_store_api_checkout_update_order_from_request', function
 	if ( ! $data ) {
 		throw new \Automattic\WooCommerce\StoreApi\Exceptions\RouteException(
 			'ambrosia_attestation_required',
-			'Please confirm your age and that these products are for research use only.',
+			'Please select your research purpose and confirm that these products are for research use only.',
 			400
 		);
 	}
@@ -413,6 +467,7 @@ function ambrosia_attestation_write( $order, $data ) {
 	$order->update_meta_data( '_ambrosia_attestation_age', 'yes' );
 	$order->update_meta_data( '_ambrosia_attestation_research', 'yes' );
 	$order->update_meta_data( '_ambrosia_attestation_noadmin', 'yes' );
+	$order->update_meta_data( '_ambrosia_research_purpose', $data['purpose'] );
 	$order->update_meta_data( '_ambrosia_attestation_time', $data['time'] );
 	$order->update_meta_data( '_ambrosia_attestation_ip', $data['ip'] );
 	$order->update_meta_data( '_ambrosia_attestation_terms', $data['terms'] );
@@ -443,7 +498,8 @@ add_action( 'woocommerce_admin_order_data_after_billing_address', function ( $or
 	}
 
 	printf(
-		'<p><strong>Attestations</strong><br>Over 21: yes<br>Research use only + terms: yes<br>No administration to any human or animal + RUO labelling read: yes<br>Confirmed: %s UTC<br>IP: %s</p>',
+		'<p><strong>Attestations</strong><br>Research purpose: %s<br>Over 21: yes<br>Research use only, not for human consumption + terms: yes<br>No administration to any human or animal + RUO labelling read: yes<br>Confirmed: %s UTC<br>IP: %s</p>',
+		esc_html( $order->get_meta( '_ambrosia_research_purpose' ) ),
 		esc_html( $time ),
 		esc_html( $order->get_meta( '_ambrosia_attestation_ip' ) )
 	);

@@ -12,7 +12,7 @@
 <title>Ambrosia</title>
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
-<link rel="stylesheet" href="ambrosia.css?v=4">
+<link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
 
 <div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh">
@@ -194,7 +194,7 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const cur = (s.current && s.current.mode) || 'woocommerce';
-    const NAMES = { woocommerce: 'WooCommerce (default)', zelle: 'Zelle fallback' };
+    const NAMES = { woocommerce: 'WooCommerce (default)', zelle: 'Zelle + bac water' };
     const fmt = iso => iso ? new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
     return {
       isLoading: s.phase === 'loading', isLogin: s.phase === 'login', isPanel: s.phase === 'panel',
@@ -214,7 +214,7 @@ class Component extends DCLogic {
         const on = cur === m;
         return {
           label: NAMES[m], on,
-          detail: m === 'woocommerce' ? 'Normal card checkout on WordPress.' : 'On-site Zelle checkout. 25% off is noted on the homepage only; other discount messaging is hidden.',
+          detail: m === 'woocommerce' ? 'Normal card checkout on WordPress.' : 'On-site Zelle checkout, 25% off, offer in the top strip. Bacteriostatic water and product nicknames (Glow, Klow, Wolverine) shown.',
           pick: () => { if (!on) this.setState({ pending: m, panelErr: '' }); },
           style: 'display:flex; flex-direction:column; align-items:flex-start; gap:8px; text-align:left; padding:clamp(18px,2.4vw,26px); min-height:120px; cursor:pointer; transition:background 300ms ease;'
             + (on ? ' background:#6B1F28; color:#F0E9DC' : ' background:transparent; color:#241C19')
@@ -222,7 +222,7 @@ class Component extends DCLogic {
       }),
       pending: !!s.pending,
       pendingText: s.pending === 'zelle'
-        ? 'Switch checkout to Zelle fallback? New orders will go through the Zelle flow. A 25% notice appears on the homepage, and other discount messaging is hidden.'
+        ? 'Switch to Zelle + bac water? New orders will go through the Zelle flow, the 25% offer appears site-wide, and bacteriostatic water and product nicknames are shown.'
         : 'Switch checkout back to WooCommerce? New Zelle orders will be blocked; customers mid-payment can still finish.',
       confirmLabel: s.busy ? 'SWITCHING\u2026' : 'SWITCH',
       confirm: () => this.flip(s.pending), cancel: () => this.setState({ pending: null }),

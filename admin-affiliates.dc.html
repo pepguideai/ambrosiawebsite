@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Ambrosia</title>
+<link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="ambrosia.css?v=5">
+<style>a{color:#6B1F28}a:hover{color:#8E2C36}</style>
+</helmet>
+
+<div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh">
+
+  <div style="border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px)">
+    <div style="max-width:1120px; margin:0 auto; min-height:80px; display:flex; align-items:center; justify-content:space-between; gap:16px">
+      <div style="display:flex; align-items:center; gap:12px">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:24px; height:24px">
+          <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+          <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+          <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+            <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+            <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+            <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+          </g>
+          <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+        </svg>
+        <span style="font-family:Cinzel, serif; font-weight:600; font-size:18px; letter-spacing:0.3em; color:#6B1F28">AMBROSIA</span>
+        <span style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-left:6px">AFFILIATES</span>
+      </div>
+      <sc-if value="{{ isPanel }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; align-items:center; gap:18px">
+          <span style="font-size:13px; color:#6E6055">{{ user }}</span>
+          <button type="button" onClick="{{ logout }}" style="min-height:44px; white-space:nowrap; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; cursor:pointer">SIGN OUT</button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <div style="padding:clamp(28px,5vw,56px) clamp(20px,4vw,56px) 80px">
+    <div style="max-width:1120px; margin:0 auto">
+
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
+        <form onSubmit="{{ login }}" data-screen-label="Sign in" style="max-width:420px; display:flex; flex-direction:column; gap:22px">
+          <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(32px,4vw,44px); line-height:1.05; color:#6B1F28; margin:0">Sign in</h1>
+          <div style="display:flex; flex-direction:column; gap:8px">
+            <span style="font-size:13px; color:#3C312C">Who&rsquo;s signing in <span style="color:#6E6055">(for the change log)</span></span>
+            <div style="display:grid; grid-template-columns:1fr 1fr; border:1px solid #D8C9B2">
+              <sc-for list="{{ people }}" as="p" hint-placeholder-count="2">
+                <button type="button" onClick="{{ p.pick }}" aria-pressed="{{ p.on }}" style="{{ p.style }}">{{ p.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <label style="display:flex; flex-direction:column; gap:8px">
+            <span style="font-size:13px; color:#3C312C">Password</span>
+            <input type="password" autocomplete="current-password" value="{{ password }}" onChange="{{ setPassword }}" style="height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:16px; border-radius:0; width:100%">
+          </label>
+          <button type="submit" style="display:flex; align-items:center; justify-content:center; width:100%; height:56px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background 400ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#8E2C36">SIGN IN</button>
+        </form>
+      </sc-if>
+
+      <sc-if value="{{ isPanel }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:clamp(28px,4vw,44px)">
+
+          <div role="tablist" style="display:flex; flex-wrap:wrap; gap:4px 32px; border-bottom:1px solid #D8C9B2">
+            <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+              <button type="button" role="tab" aria-selected="{{ t.on }}" onClick="{{ t.pick }}" style="{{ t.style }}">
+                <span>{{ t.label }}</span>
+                <sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}">
+                  <span style="min-width:20px; height:20px; padding:0 6px; display:inline-flex; align-items:center; justify-content:center; background:#6B1F28; color:#F0E9DC; font-size:11px; letter-spacing:0">{{ t.badge }}</span>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ onAffiliates }}" hint-placeholder-val="{{ true }}">
+            <div data-screen-label="Affiliates" style="display:flex; flex-direction:column; gap:24px">
+
+              <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:18px">
+                <div style="display:flex; flex-direction:column; gap:10px; flex:1 1 320px">
+                  <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(30px,3.6vw,40px); line-height:1.05; color:#6B1F28; margin:0">Affiliates</h1>
+                  <span style="font-size:13.5px; line-height:1.6; color:#3C312C">{{ summary }}</span>
+                </div>
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:12px">
+                  <div role="radiogroup" aria-label="Date range" style="display:flex; border:1px solid #D8C9B2">
+                    <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="4">
+                      <button type="button" role="radio" aria-checked="{{ r.on }}" onClick="{{ r.pick }}" style="{{ r.style }}">{{ r.label }}</button>
+                    </sc-for>
+                  </div>
+                  <button type="button" onClick="{{ exportCsv }}" style="height:44px; padding:0 18px; white-space:nowrap; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer">EXPORT CSV</button>
+                  <button type="button" onClick="{{ openAdd }}" style="height:44px; padding:0 20px; white-space:nowrap; background:#6B1F28; color:#F0E9DC; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer" style-hover="background:#8E2C36">ADD AFFILIATE</button>
+                </div>
+              </div>
+
+              <sc-if value="{{ adding }}" hint-placeholder-val="{{ false }}">
+                <form onSubmit="{{ saveAdd }}" style="display:flex; flex-direction:column; gap:18px; padding:clamp(18px,2.4vw,26px); border:1px solid #241C19">
+                  <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">NEW AFFILIATE</div>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px">
+                    <label style="display:flex; flex-direction:column; gap:8px">
+                      <span style="font-size:13px; color:#3C312C">Name</span>
+                      <input value="{{ addName }}" onChange="{{ setAddName }}" placeholder="Jordan" style="height:48px; padding:0 14px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px; border-radius:0; width:100%">
+                    </label>
+                    <label style="display:flex; flex-direction:column; gap:8px">
+                      <span style="font-size:13px; color:#3C312C">Slug</span>
+                      <div style="display:flex; align-items:center; height:48px; border:1px solid #D8C9B2">
+                        <span style="padding:0 2px 0 14px; font-size:15px; color:#6E6055">/</span>
+                        <input value="{{ addSlug }}" onChange="{{ setAddSlug }}" placeholder="jordan" style="flex:1; min-width:0; height:100%; padding:0 14px 0 0; border:0; background:transparent; color:#241C19; font-size:15px; border-radius:0">
+                      </div>
+                    </label>
+                    <label style="display:flex; flex-direction:column; gap:8px">
+                      <span style="font-size:13px; color:#3C312C">WooCommerce coupon</span>
+                      <input value="{{ addCouponVal }}" onChange="{{ setAddCoupon }}" placeholder="jordan15" style="height:48px; padding:0 14px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px; border-radius:0; width:100%">
+                    </label>
+                    <label style="display:flex; flex-direction:column; gap:8px">
+                      <span style="font-size:13px; color:#3C312C">Discount %</span>
+                      <input type="number" min="0" max="100" value="{{ addPct }}" onChange="{{ setAddPct }}" style="height:48px; padding:0 14px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px; border-radius:0; width:100%">
+                    </label>
+                  </div>
+                  <span style="font-size:12.5px; line-height:1.6; color:#6E6055">Creates or links WooCommerce coupon <strong style="color:#241C19; font-weight:600">{{ addCoupon }}</strong> and the link claimyouroffer.net/{{ addSlugShown }}.</span>
+                  <sc-if value="{{ addErr }}" hint-placeholder-val="{{ false }}">
+                    <div role="alert" style="font-size:13px; color:#6B1F28">{{ addErr }}</div>
+                  </sc-if>
+                  <div style="display:flex; gap:12px">
+                    <button type="submit" style="height:48px; padding:0 26px; background:#6B1F28; color:#F0E9DC; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer" style-hover="background:#8E2C36">CREATE</button>
+                    <button type="button" onClick="{{ closeAdd }}" style="height:48px; padding:0 20px; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer">CANCEL</button>
+                  </div>
+                </form>
+              </sc-if>
+
+              <div style="overflow-x:auto">
+                <div style="min-width:880px">
+                  <div style="display:grid; grid-template-columns:minmax(110px,0.9fr) minmax(220px,1.8fr) 90px 130px minmax(130px,1fr) 110px 70px; gap:16px; padding:0 0 12px; font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">
+                    <span>NAME</span><span>LINK &amp; COUPON</span><span>DISCOUNT</span><span>LINK</span><span>SALES</span><span style="text-align:right">REVENUE</span><span></span>
+                  </div>
+                  <sc-for list="{{ rows }}" as="a" hint-placeholder-count="4">
+                    <div style="border-top:1px solid #D8C9B2">
+                      <div style="display:grid; grid-template-columns:minmax(110px,0.9fr) minmax(220px,1.8fr) 90px 130px minmax(130px,1fr) 110px 70px; gap:16px; align-items:center; padding:16px 0; font-size:14px; line-height:1.5">
+                        <span style="font-family:'Instrument Serif', serif; font-size:22px; line-height:1.1; color:{{ a.nameColor }}">{{ a.name }}</span>
+                        <span style="display:flex; flex-direction:column; gap:2px; min-width:0">
+                          <span style="font-size:12px; color:#6E6055">claimyouroffer.net</span>
+                          <span style="display:flex; align-items:center; gap:10px; min-width:0">
+                            <span style="color:#241C19; white-space:nowrap">/{{ a.slug }}</span>
+                            <button type="button" onClick="{{ a.copy }}" style="font-size:10px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; cursor:pointer; min-height:28px">{{ a.copyLabel }}</button>
+                          </span>
+                          <span style="font-size:12.5px; color:#6E6055">Coupon {{ a.coupon }}</span>
+                        </span>
+                        <label style="display:flex; align-items:center; gap:6px">
+                          <input type="number" min="0" max="100" aria-label="{{ a.pctLabel }}" value="{{ a.pctDraft }}" onChange="{{ a.setPct }}" onBlur="{{ a.commitPct }}" onKeyDown="{{ a.pctKey }}" style="{{ a.pctStyle }}">
+                          <span style="color:#3C312C">%</span>
+                        </label>
+                        <span style="display:flex; align-items:center; gap:10px">
+                          <button type="button" role="switch" aria-checked="{{ a.active }}" aria-label="{{ a.switchLabel }}" onClick="{{ a.toggle }}" style="{{ a.trackStyle }}">
+                            <span style="{{ a.knobStyle }}"></span>
+                          </button>
+                          <span style="font-size:12.5px; color:#3C312C">{{ a.stateLabel }}</span>
+                        </span>
+                        <span style="display:flex; flex-direction:column; gap:2px">
+                          <span style="font-variant-numeric:tabular-nums; font-weight:600">{{ a.sales }}</span>
+                          <span style="font-size:12.5px; color:#6E6055">{{ a.split }}</span>
+                        </span>
+                        <span style="text-align:right; font-variant-numeric:tabular-nums">{{ a.revenue }}</span>
+                        <button type="button" onClick="{{ a.edit }}" style="justify-self:end; min-height:40px; font-size:11px; font-weight:600; letter-spacing:0.16em; color:#6B1F28; cursor:pointer">EDIT</button>
+                      </div>
+
+                      <sc-if value="{{ a.editing }}" hint-placeholder-val="{{ false }}">
+                        <form onSubmit="{{ saveEdit }}" style="display:flex; flex-wrap:wrap; align-items:flex-end; gap:18px 28px; padding:20px; margin:0 0 16px; background:#E8DECD">
+                          <label style="display:flex; flex-direction:column; gap:8px">
+                            <span style="font-size:13px; color:#3C312C">Discount %</span>
+                            <input type="number" min="0" max="100" value="{{ draftPct }}" onChange="{{ setDraftPct }}" style="height:48px; width:120px; padding:0 14px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px; border-radius:0">
+                          </label>
+                          <label style="display:flex; flex-direction:column; gap:8px">
+                            <span style="font-size:13px; color:#3C312C">Coupon</span>
+                            <input value="{{ draftCoupon }}" onChange="{{ setDraftCoupon }}" style="height:48px; width:160px; padding:0 14px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:15px; border-radius:0">
+                          </label>
+                          <div style="display:flex; flex-direction:column; gap:8px">
+                            <span style="font-size:13px; color:#3C312C">Link</span>
+                            <div role="radiogroup" style="display:flex; border:1px solid #241C19">
+                              <sc-for list="{{ draftStates }}" as="d" hint-placeholder-count="2">
+                                <button type="button" role="radio" aria-checked="{{ d.on }}" onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.label }}</button>
+                              </sc-for>
+                            </div>
+                          </div>
+                          <span style="flex:1 1 240px; font-size:12.5px; line-height:1.6; color:#3C312C">{{ draftNote }}</span>
+                          <div style="display:flex; gap:12px">
+                            <button type="submit" style="height:48px; padding:0 26px; background:#6B1F28; color:#F0E9DC; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer" style-hover="background:#8E2C36">SAVE</button>
+                            <button type="button" onClick="{{ cancelEdit }}" style="height:48px; padding:0 20px; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer">CANCEL</button>
+                          </div>
+                          <sc-if value="{{ editErr }}" hint-placeholder-val="{{ false }}">
+                            <div role="alert" style="flex-basis:100%; font-size:13px; color:#6B1F28">{{ editErr }}</div>
+                          </sc-if>
+                        </form>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                  <div style="border-top:1px solid #D8C9B2"></div>
+                </div>
+              </div>
+
+              <p style="font-size:12.5px; line-height:1.7; color:#6E6055; margin:0; max-width:680px">WooCommerce sales come from orders that used the affiliate&rsquo;s coupon. Zelle sales count once an order is marked paid in the queue. Links forward to ambrosiastandard.com, which sets the 30-day referral cookie. Inactive links send visitors to the home page with no cookie and no coupon; past sales stay on record.</p>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onQueue }}" hint-placeholder-val="{{ false }}">
+            <div data-screen-label="Zelle queue" style="display:flex; flex-direction:column; gap:28px">
+              <div style="display:flex; flex-direction:column; gap:10px">
+                <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(30px,3.6vw,40px); line-height:1.05; color:#6B1F28; margin:0">Zelle orders awaiting payment</h1>
+                <span style="font-size:13.5px; line-height:1.6; color:#3C312C; max-width:640px">Check the bank app for the order number in the Zelle memo, then mark it paid. That adds the sale to the affiliate&rsquo;s count.</span>
+              </div>
+
+              <sc-if value="{{ noQueue }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:14px; color:#6E6055; padding:18px 0; border-top:1px solid #D8C9B2; border-bottom:1px solid #D8C9B2">Nothing waiting. New Zelle orders appear here.</div>
+              </sc-if>
+
+              <div style="display:flex; flex-direction:column">
+                <sc-for list="{{ queue }}" as="q" hint-placeholder-count="3">
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px 24px; align-items:center; padding:18px 0; border-top:1px solid #D8C9B2">
+                    <span style="display:flex; flex-direction:column; gap:2px">
+                      <span style="font-weight:600; font-size:15px; font-variant-numeric:tabular-nums">{{ q.no }} &middot; {{ q.total }}</span>
+                      <span style="font-size:12.5px; color:#6E6055">{{ q.buyer }} &middot; {{ q.when }}</span>
+                    </span>
+                    <label style="display:flex; flex-direction:column; gap:6px">
+                      <span style="font-size:12.5px; color:#6E6055">Referred by <span style="color:#3C312C">({{ q.via }})</span></span>
+                      <select value="{{ q.aff }}" onChange="{{ q.setAff }}" style="height:44px; padding:0 12px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-size:14px; border-radius:0; font-family:Archivo, sans-serif">
+                        <sc-for list="{{ affOptions }}" as="o" hint-placeholder-count="5">
+                          <option value="{{ o.value }}">{{ o.label }}</option>
+                        </sc-for>
+                      </select>
+                    </label>
+                    <span style="display:flex; flex-wrap:wrap; justify-content:flex-end; gap:12px">
+                      <button type="button" onClick="{{ q.pay }}" style="{{ q.payStyle }}">{{ q.payLabel }}</button>
+                      <button type="button" onClick="{{ q.cancel }}" style="height:44px; padding:0 18px; white-space:nowrap; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer">{{ q.cancelLabel }}</button>
+                    </span>
+                  </div>
+                </sc-for>
+                <div style="border-top:1px solid #D8C9B2"></div>
+              </div>
+
+              <div style="display:flex; flex-direction:column">
+                <div style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622; padding-bottom:12px">RECENTLY CONFIRMED</div>
+                <sc-for list="{{ recentPaid }}" as="p" hint-placeholder-count="3">
+                  <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr); gap:12px; padding:12px 0; border-top:1px solid #D8C9B2; font-size:13.5px; line-height:1.5">
+                    <span style="font-variant-numeric:tabular-nums">{{ p.no }} &middot; {{ p.total }}</span>
+                    <span style="color:#3C312C">{{ p.aff }}</span>
+                    <span style="color:#6E6055">{{ p.when }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onMode }}" hint-placeholder-val="{{ false }}">
+            <div data-screen-label="Live site" style="display:flex; flex-direction:column; gap:22px; max-width:880px">
+              <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(30px,3.6vw,40px); line-height:1.05; color:#6B1F28; margin:0">Live checkout</h1>
+              <div role="radiogroup" aria-label="Checkout mode" style="display:grid; grid-template-columns:1fr 1fr; border:1px solid #241C19">
+                <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+                  <button type="button" role="radio" aria-checked="{{ m.on }}" onClick="{{ m.pick }}" style="{{ m.style }}">
+                    <span style="font-family:'Instrument Serif', serif; font-size:clamp(22px,2.6vw,28px); line-height:1.1">{{ m.label }}</span>
+                    <span style="font-size:12.5px; line-height:1.5; opacity:0.8">{{ m.detail }}</span>
+                  </button>
+                </sc-for>
+              </div>
+              <sc-if value="{{ modePending }}" hint-placeholder-val="{{ false }}">
+                <div role="alertdialog" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px 24px; padding:18px 20px; border:1px solid #6B1F28">
+                  <span style="font-size:14.5px; line-height:1.6; color:#241C19; max-width:480px">{{ modePendingText }}</span>
+                  <span style="display:flex; gap:12px">
+                    <button type="button" onClick="{{ confirmMode }}" style="height:48px; padding:0 26px; background:#6B1F28; color:#F0E9DC; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer" style-hover="background:#8E2C36">SWITCH</button>
+                    <button type="button" onClick="{{ cancelMode }}" style="height:48px; padding:0 20px; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer">CANCEL</button>
+                  </span>
+                </div>
+              </sc-if>
+              <div style="display:flex; flex-wrap:wrap; gap:8px 28px; font-size:13.5px; line-height:1.6; color:#3C312C">
+                <span>Now: <strong style="color:#241C19; font-weight:600">{{ modeLabel }}</strong></span>
+                <span>{{ modeChanged }}</span>
+              </div>
+              <p style="font-size:12.5px; line-height:1.7; color:#6E6055; margin:0; max-width:620px">Same switch as the checkout admin page; changing it in either place changes both. Affiliate links keep working in both modes. In Zelle mode each buyer gets the larger of 25% and their affiliate&rsquo;s discount.</p>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onLog }}" hint-placeholder-val="{{ false }}">
+            <div data-screen-label="Change log" style="display:flex; flex-direction:column">
+              <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(30px,3.6vw,40px); line-height:1.05; color:#6B1F28; margin:0 0 24px">Change log</h1>
+              <sc-for list="{{ log }}" as="e" hint-placeholder-count="5">
+                <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,0.5fr) minmax(0,2fr); gap:12px; padding:13px 0; border-top:1px solid #D8C9B2; font-size:13.5px; line-height:1.5">
+                  <span style="color:#6E6055">{{ e.when }}</span>
+                  <span style="color:#241C19">{{ e.by }}</span>
+                  <span style="color:#241C19">{{ e.text }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200},&quot;demoSignedIn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Preview&quot;},&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;affiliates&quot;,&quot;queue&quot;,&quot;mode&quot;,&quot;log&quot;],&quot;default&quot;:&quot;affiliates&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;}}">
+class Component extends DCLogic {
+  state = {
+    phase: 'panel', who: 'philip', password: '', user: 'Philip',
+    tab: null, range: '30',
+    affiliates: [], orders: [], log: [],
+    editing: null, draft: null, editErr: '',
+    adding: false, add: { name: '', slug: '', coupon: '', pct: '15' }, addErr: '',
+    copied: null, confirmPay: null, confirmCancel: null,
+    mode: { mode: 'woocommerce', by: 'Brittney', at: null }, modePending: null
+  };
+
+  componentDidMount() {
+    const now = Date.now(), H = 36e5, D = 864e5;
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const affiliates = [
+      { id: 'nicole', name: 'Nicole', slug: 'nicole', coupon: 'nicole15', pct: 15, active: true },
+      { id: 'elana', name: 'Elana', slug: 'elana', coupon: 'elana15', pct: 20, active: true },
+      { id: 'caroline', name: 'Caroline', slug: 'caroline', coupon: 'cgm2026', pct: 15, active: true },
+      { id: 'scott', name: 'Scott', slug: 'scott', coupon: 'scott', pct: 10, active: false },
+      { id: 'kathryn', name: 'Kathryn', slug: 'kathryn', coupon: 'Golden', pct: 15, active: true },
+      { id: 'dawn', name: 'Dawn', slug: 'dawn', coupon: 'Dawn15', pct: 15, active: true }
+    ];
+    const weights = [['nicole', .38], ['elana', .3], ['caroline', .22], ['scott', .1]];
+    const totals = [89, 129, 149, 178, 219, 264, 310];
+    const orders = [];
+    for (let i = 0; i < 150; i++) {
+      let r = rnd(), aff = 'nicole';
+      for (const [id, w] of weights) { if (r < w) { aff = id; break; } r -= w; }
+      const zelle = rnd() < 0.14;
+      orders.push({ id: 'o' + i, no: zelle ? 'Z-' + (1200 + i) : '#' + (48200 + i), at: now - rnd() * 120 * D - (aff === 'scott' ? 40 * D : 0),
+        aff, source: zelle ? 'zelle' : 'woo', total: totals[Math.floor(rnd() * totals.length)], status: 'paid', buyer: '' });
+    }
+    [['Z-1391', 'M. Alvarez', 'elana', 'cookie', 5, 264], ['Z-1392', 'R. Chen', 'nicole', 'buyer', 11, 149], ['Z-1393', 'D. Okafor', '', 'none', 19, 178], ['Z-1394', 'S. Patel', 'caroline', 'cookie', 30, 219]]
+      .forEach(([no, buyer, aff, via, h, total], i) => orders.push({ id: 'p' + i, no, buyer, aff, via, at: now - h * H, source: 'zelle', total, status: 'pending' }));
+    const log = [
+      { at: now - 1 * H, by: 'Philip', text: 'Added affiliate Dawn (/dawn, 15%)' },
+      { at: now - 1 * H, by: 'Philip', text: 'Added affiliate Kathryn (/kathryn, 15%)' },
+      { at: now - 3 * H, by: 'Brittney', text: 'Marked Zelle order Z-1388 paid (Nicole)' },
+      { at: now - 26 * H, by: 'Brittney', text: 'Checkout mode: Zelle fallback \u2192 WooCommerce' },
+      { at: now - 31 * H, by: 'Philip', text: 'Checkout mode: WooCommerce \u2192 Zelle fallback' },
+      { at: now - 4 * D, by: 'Philip', text: 'Elana discount 15% \u2192 20%' },
+      { at: now - 9 * D, by: 'Philip', text: 'Scott link deactivated' },
+      { at: now - 40 * D, by: 'Brittney', text: 'Added affiliate Caroline (/caroline, 15%)' }
+    ];
+    this.setState({ affiliates, orders, log, phase: this.props.demoSignedIn === false ? 'login' : 'panel', mode: { mode: 'woocommerce', by: 'Brittney', at: now - 26 * H } });
+  }
+
+  componentDidUpdate(prev) {
+    if (prev.demoSignedIn !== this.props.demoSignedIn) this.setState({ phase: this.props.demoSignedIn === false ? 'login' : 'panel' });
+  }
+
+  addLog(text) { this.setState(s => ({ log: [{ at: Date.now(), by: s.user, text }, ...s.log] })); }
+
+  inRange(o) { const r = this.state.range; return r === 'all' || o.at >= Date.now() - Number(r) * 864e5; }
+
+  stats(id) {
+    const list = this.state.orders.filter(o => o.status === 'paid' && o.aff === id && this.inRange(o));
+    const woo = list.filter(o => o.source === 'woo').length;
+    return { woo, zelle: list.length - woo, total: list.length, revenue: list.reduce((a, o) => a + o.total, 0) };
+  }
+
+  toggleActive(a) {
+    this.setState(s => ({ affiliates: s.affiliates.map(x => x.id === a.id ? { ...x, active: !x.active } : x) }));
+    this.addLog(a.name + ' link ' + (a.active ? 'deactivated' : 'reactivated'));
+  }
+
+  commitPct(a) {
+    const raw = (this.state.pctDrafts || {})[a.id];
+    if (raw === undefined) return;
+    const pct = Number(raw);
+    const clear = p => ({ pctDrafts: { ...(p.pctDrafts || {}), [a.id]: undefined } });
+    if (raw === '' || !Number.isInteger(pct) || pct < 0 || pct > 100) return this.setState(p => ({ pctErr: { ...(p.pctErr || {}), [a.id]: true } }));
+    if (pct === a.pct) return this.setState(clear);
+    this.setState(p => ({ ...clear(p), affiliates: p.affiliates.map(x => x.id === a.id ? { ...x, pct } : x) }));
+    this.addLog(a.name + ' discount ' + a.pct + '% \u2192 ' + pct + '%');
+  }
+
+  saveEdit(e) {
+    e.preventDefault();
+    const s = this.state, a = s.affiliates.find(x => x.id === s.editing);
+    const pct = Number(s.draft.pct);
+    if (!Number.isInteger(pct) || pct < 0 || pct > 100) return this.setState({ editErr: 'Discount must be a whole number from 0 to 100.' });
+    const coupon = s.draft.coupon.trim();
+    if (!/^[A-Za-z0-9-]{2,30}$/.test(coupon)) return this.setState({ editErr: 'Coupon: 2\u201330 letters, numbers or hyphens.' });
+    if (this.couponTaken(coupon, a.id)) return this.setState({ editErr: 'Coupon ' + coupon + ' is already used by another affiliate.' });
+    const changes = [];
+    if (coupon !== a.coupon) changes.push(a.name + ' coupon ' + a.coupon + ' \u2192 ' + coupon);
+    if (pct !== a.pct) changes.push(a.name + ' discount ' + a.pct + '% \u2192 ' + pct + '%');
+    if (s.draft.active !== a.active) changes.push(a.name + ' link ' + (s.draft.active ? 'reactivated' : 'deactivated'));
+    this.setState({ affiliates: s.affiliates.map(x => x.id === a.id ? { ...x, pct, coupon, active: s.draft.active } : x), editing: null, draft: null, editErr: '' });
+    changes.forEach(c => this.addLog(c));
+  }
+
+  couponTaken(code, exceptId) { return this.state.affiliates.some(a => a.id !== exceptId && a.coupon.toLowerCase() === code.toLowerCase()); }
+
+  saveAdd(e) {
+    e.preventDefault();
+    const s = this.state, name = s.add.name.trim(), slug = s.add.slug.trim().toLowerCase(), coupon = s.add.coupon.trim(), pct = Number(s.add.pct);
+    const reserved = ['shop', 'cart', 'checkout', 'admin', 'api', 'about', 'contact', 'coa', 'fonts', 'order', 'products', 'faq', 'terms', 'privacy'];
+    let err = '';
+    if (!name) err = 'Enter a name.';
+    else if (!/^[a-z0-9][a-z0-9-]{1,30}$/.test(slug)) err = 'Slug: 2\u201331 lowercase letters, numbers or hyphens.';
+    else if (reserved.includes(slug)) err = '/' + slug + ' is already a page on the site.';
+    else if (s.affiliates.some(a => a.slug === slug)) err = '/' + slug + ' is already taken.';
+    else if (!/^[A-Za-z0-9-]{2,30}$/.test(coupon)) err = 'Coupon: 2\u201330 letters, numbers or hyphens.';
+    else if (this.couponTaken(coupon)) err = 'Coupon ' + coupon + ' is already used by another affiliate.';
+    else if (!Number.isInteger(pct) || pct < 0 || pct > 100) err = 'Discount must be a whole number from 0 to 100.';
+    if (err) return this.setState({ addErr: err });
+    this.setState({ affiliates: [...s.affiliates, { id: slug, name, slug, coupon, pct, active: true }], adding: false, add: { name: '', slug: '', coupon: '', pct: '15' }, addErr: '' });
+    this.addLog('Added affiliate ' + name + ' (/' + slug + ', coupon ' + coupon + ', ' + pct + '%)');
+  }
+
+  exportCsv() {
+    const esc = v => /[",\n]/.test(String(v)) ? '"' + String(v).replace(/"/g, '""') + '"' : v;
+    const rows = [['name', 'slug', 'url', 'coupon', 'discount_pct', 'active', 'woo_sales', 'zelle_sales', 'total_sales', 'revenue_usd', 'range']];
+    this.state.affiliates.forEach(a => { const t = this.stats(a.id); rows.push([a.name, a.slug, 'https://claimyouroffer.net/' + a.slug, a.coupon, a.pct, a.active, t.woo, t.zelle, t.total, t.revenue, this.state.range === 'all' ? 'all time' : 'last ' + this.state.range + ' days']); });
+    const url = URL.createObjectURL(new Blob([rows.map(r => r.map(esc).join(',')).join('\n')], { type: 'text/csv' }));
+    const link = document.createElement('a'); link.href = url; link.download = 'affiliates-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  markPaid(o) {
+    if (this.state.confirmPay !== o.id) return this.setState({ confirmPay: o.id, confirmCancel: null });
+    const aff = this.state.affiliates.find(a => a.id === o.aff);
+    this.setState(s => ({ confirmPay: null, orders: s.orders.map(x => x.id === o.id ? { ...x, status: 'paid', paidAt: Date.now(), at: Date.now() } : x) }));
+    this.addLog('Marked Zelle order ' + o.no + ' paid (' + (aff ? aff.name : 'no affiliate') + ')');
+  }
+
+  cancelOrder(o) {
+    if (this.state.confirmCancel !== o.id) return this.setState({ confirmCancel: o.id, confirmPay: null });
+    this.setState(s => ({ confirmCancel: null, orders: s.orders.map(x => x.id === o.id ? { ...x, status: 'cancelled' } : x) }));
+    this.addLog('Cancelled unpaid Zelle order ' + o.no);
+  }
+
+  renderVals() {
+    const s = this.state, now = Date.now();
+    const money = n => '$' + n.toLocaleString('en-US');
+    const fmt = t => t ? new Date(t).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
+    const affName = id => (s.affiliates.find(a => a.id === id) || {}).name || 'No affiliate';
+    const seg = on => 'height:44px; padding:0 14px; white-space:nowrap; font-size:12.5px; cursor:pointer; transition:background 300ms ease;' + (on ? ' background:#241C19; color:#F0E9DC' : ' background:transparent; color:#241C19');
+    const pending = s.orders.filter(o => o.status === 'pending').sort((a, b) => b.at - a.at);
+    const tab = s.tab || this.props.startTab || 'affiliates';
+    const TABS = [['affiliates', 'Affiliates'], ['queue', 'Zelle queue'], ['mode', 'Live site'], ['log', 'Change log']];
+    const all = s.affiliates.map(a => ({ a, t: this.stats(a.id) }));
+    const totSales = all.reduce((x, r) => x + r.t.total, 0), totRev = all.reduce((x, r) => x + r.t.revenue, 0);
+    const rangeLabel = s.range === 'all' ? 'all time' : 'the last ' + s.range + ' days';
+    const cur = s.mode.mode, NAMES = { woocommerce: 'WooCommerce (default)', zelle: 'Zelle fallback' };
+    const addSlug = s.add.slug.trim().toLowerCase();
+    const editA = s.affiliates.find(a => a.id === s.editing);
+    const dp = s.draft ? Number(s.draft.pct) : 0;
+
+    return {
+      isLogin: s.phase === 'login', isPanel: s.phase === 'panel', user: s.user,
+      logout: () => this.setState({ phase: 'login' }),
+      people: ['philip', 'brittney'].map(u => ({ label: u[0].toUpperCase() + u.slice(1), on: s.who === u, pick: () => this.setState({ who: u }),
+        style: 'height:50px; font-size:14px; cursor:pointer;' + (s.who === u ? ' background:#241C19; color:#F0E9DC' : ' background:transparent; color:#241C19') })),
+      password: s.password, setPassword: e => this.setState({ password: e.target.value }),
+      login: e => { e.preventDefault(); this.setState({ phase: 'panel', password: '', user: s.who[0].toUpperCase() + s.who.slice(1) }); },
+
+      tabs: TABS.map(([id, label]) => ({ label, on: tab === id, badge: id === 'queue' && pending.length ? String(pending.length) : '',
+        pick: () => this.setState({ tab: id }),
+        style: 'display:flex; align-items:center; gap:8px; min-height:48px; white-space:nowrap; margin-bottom:-1px; font-size:11px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; cursor:pointer; border-bottom:2px solid ' + (tab === id ? '#6B1F28; color:#6B1F28' : 'transparent; color:#6E6055') })),
+      onAffiliates: tab === 'affiliates', onQueue: tab === 'queue', onMode: tab === 'mode', onLog: tab === 'log',
+
+      summary: totSales + ' attributed sales, ' + money(totRev) + ' in ' + rangeLabel + '. ' + s.affiliates.filter(a => a.active).length + ' of ' + s.affiliates.length + ' links active.',
+      ranges: [['7', '7 days'], ['30', '30 days'], ['90', '90 days'], ['all', 'All time']].map(([v, label]) => ({ label, on: s.range === v, pick: () => this.setState({ range: v }), style: seg(s.range === v) })),
+      exportCsv: () => this.exportCsv(),
+      openAdd: () => this.setState({ adding: true, addErr: '' }), closeAdd: () => this.setState({ adding: false, addErr: '' }),
+      adding: s.adding, addName: s.add.name, addSlug: s.add.slug, addPct: s.add.pct, addErr: s.addErr,
+      addSlugShown: addSlug || 'slug', addCoupon: s.add.coupon.trim() || 'the code above',
+      addCouponVal: s.add.coupon,
+      setAddCoupon: e => { const coupon = e.target.value; this.setState(p => ({ add: { ...p.add, coupon } })); },
+      setAddName: e => { const name = e.target.value; this.setState(p => ({ add: { ...p.add, name, slug: p.add.slugTouched ? p.add.slug : name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') } })); },
+      setAddSlug: e => { const slug = e.target.value; this.setState(p => ({ add: { ...p.add, slug, slugTouched: true } })); },
+      setAddPct: e => { const pct = e.target.value; this.setState(p => ({ add: { ...p.add, pct } })); },
+      saveAdd: e => this.saveAdd(e),
+
+      rows: all.map(({ a, t }) => ({
+        name: a.name, slug: a.slug, coupon: a.coupon, pct: a.pct, active: a.active,
+        nameColor: a.active ? '#241C19' : '#6E6055',
+        switchLabel: (a.active ? 'Deactivate ' : 'Activate ') + a.name + '\u2019s link',
+        stateLabel: a.active ? 'Active' : 'Inactive',
+        trackStyle: 'position:relative; width:44px; height:24px; flex:none; cursor:pointer; transition:background 250ms ease; border:1px solid ' + (a.active ? '#6B1F28; background:#6B1F28' : '#6E6055; background:transparent'),
+        knobStyle: 'position:absolute; top:3px; width:16px; height:16px; transition:left 250ms cubic-bezier(.2,.6,.2,1); left:' + (a.active ? '23px; background:#F0E9DC' : '3px; background:#6E6055'),
+        toggle: () => this.toggleActive(a),
+        sales: String(t.total), split: t.woo + ' Woo \u00b7 ' + t.zelle + ' Zelle', revenue: money(t.revenue),
+        copyLabel: s.copied === a.id ? 'COPIED' : 'COPY',
+        copy: () => { navigator.clipboard && navigator.clipboard.writeText('https://claimyouroffer.net/' + a.slug).catch(() => {}); this.setState({ copied: a.id }); setTimeout(() => this.setState(p => p.copied === a.id ? { copied: null } : null), 1500); },
+        pctLabel: a.name + ' discount percent',
+        pctDraft: (s.pctDrafts || {})[a.id] ?? String(a.pct),
+        pctStyle: 'width:64px; height:40px; padding:0 8px; background:#F0E9DC; color:#241C19; font-size:14px; border-radius:0; font-variant-numeric:tabular-nums; border:1px solid ' + ((s.pctErr || {})[a.id] ? '#6B1F28' : '#D8C9B2'),
+        setPct: e => { const v = e.target.value; this.setState(p => ({ pctDrafts: { ...(p.pctDrafts || {}), [a.id]: v }, pctErr: { ...(p.pctErr || {}), [a.id]: false } })); },
+        pctKey: e => { if (e.key === 'Enter') e.target.blur(); if (e.key === 'Escape') { this.setState(p => ({ pctDrafts: { ...(p.pctDrafts || {}), [a.id]: undefined } })); } },
+        commitPct: () => this.commitPct(a),
+        editing: s.editing === a.id,
+        edit: () => this.setState({ editing: s.editing === a.id ? null : a.id, draft: { pct: String(a.pct), coupon: a.coupon, active: a.active }, editErr: '' })
+      })),
+      draftCoupon: s.draft ? s.draft.coupon : '', setDraftCoupon: e => { const coupon = e.target.value; this.setState(p => ({ draft: { ...p.draft, coupon } })); },
+      draftPct: s.draft ? s.draft.pct : '', setDraftPct: e => { const pct = e.target.value; this.setState(p => ({ draft: { ...p.draft, pct } })); },
+      draftStates: [[true, 'Active'], [false, 'Inactive']].map(([v, label]) => ({ label, on: !!s.draft && s.draft.active === v,
+        pick: () => this.setState(p => ({ draft: { ...p.draft, active: v } })), style: seg(!!s.draft && s.draft.active === v).replace('height:44px', 'height:46px') })),
+      draftNote: !s.draft ? '' : !s.draft.active
+        ? 'Visitors to claimyouroffer.net/' + (editA ? editA.slug : '') + ' go to the Ambrosia home page with no cookie; coupon ' + (editA ? editA.coupon : '') + ' is disabled in WooCommerce. Sales history is kept.'
+        : 'Updates coupon ' + (editA ? editA.coupon : '') + ' in WooCommerce. In Zelle mode buyers get ' + Math.max(25, dp || 0) + '% (the larger of 25% and this).',
+      saveEdit: e => this.saveEdit(e), cancelEdit: () => this.setState({ editing: null, draft: null, editErr: '' }), editErr: s.editErr,
+
+      noQueue: !pending.length,
+      affOptions: [{ value: '', label: 'None' }, ...s.affiliates.filter(a => a.active).map(a => ({ value: a.id, label: a.name }))],
+      queue: pending.map(o => ({
+        no: o.no, total: money(o.total), buyer: o.buyer, when: fmt(o.at), aff: o.aff,
+        via: { cookie: 'from link', buyer: 'buyer chose', none: 'none given', admin: 'set by admin' }[o.via],
+        setAff: e => { const aff = e.target.value; this.setState(p => ({ orders: p.orders.map(x => x.id === o.id ? { ...x, aff, via: 'admin' } : x) })); },
+        pay: () => this.markPaid(o), payLabel: s.confirmPay === o.id ? 'CONFIRM ' + money(o.total) + ' RECEIVED' : 'MARK PAID',
+        payStyle: 'height:44px; padding:0 20px; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; color:#F0E9DC; background:' + (s.confirmPay === o.id ? '#241C19' : '#6B1F28'),
+        cancel: () => this.cancelOrder(o), cancelLabel: s.confirmCancel === o.id ? 'CONFIRM CANCEL' : 'CANCEL'
+      })),
+      recentPaid: s.orders.filter(o => o.source === 'zelle' && o.status === 'paid').sort((a, b) => b.at - a.at).slice(0, 5)
+        .map(o => ({ no: o.no, total: money(o.total), aff: affName(o.aff), when: fmt(o.at) })),
+
+      modes: ['woocommerce', 'zelle'].map(m => ({ label: NAMES[m], on: cur === m,
+        detail: m === 'woocommerce' ? 'Card checkout on WordPress. Affiliate coupon applies automatically.' : 'On-site Zelle checkout. Orders land in the Zelle queue.',
+        pick: () => { if (cur !== m) this.setState({ modePending: m }); },
+        style: 'display:flex; flex-direction:column; align-items:flex-start; gap:8px; text-align:left; padding:clamp(18px,2.4vw,26px); min-height:120px; cursor:pointer; transition:background 300ms ease;' + (cur === m ? ' background:#6B1F28; color:#F0E9DC' : ' background:transparent; color:#241C19') })),
+      modePending: !!s.modePending,
+      modePendingText: s.modePending === 'zelle' ? 'Switch checkout to Zelle fallback? All visitors are sent to the Zelle checkout until you switch back.' : 'Switch checkout back to WooCommerce? New Zelle orders will be blocked; customers mid-payment can still finish.',
+      confirmMode: () => { const m = s.modePending; this.setState({ modePending: null, mode: { mode: m, by: s.user, at: Date.now() } }); this.addLog('Checkout mode: ' + NAMES[cur].replace(' (default)', '') + ' \u2192 ' + NAMES[m].replace(' (default)', '')); },
+      cancelMode: () => this.setState({ modePending: null }),
+      modeLabel: NAMES[cur], modeChanged: s.mode.at ? 'Changed by ' + s.mode.by + ', ' + fmt(s.mode.at) : '',
+
+      log: s.log.map(e => ({ when: fmt(e.at), by: e.by, text: e.text }))
+    };
+  }
+}
+</script>
+</body>
+</html>

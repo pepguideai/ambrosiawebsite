@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GLP 3 (RT) · Research Peptide · Ambrosia</title>
-<meta name="description" content="For Research Use Only — Not for Human Use. GLP 3 (RT) lyophilised research peptide, HPLC-certified with a lot-specific certificate of analysis.">
+<meta name="description" content="For Laboratory and Research Use Only. Not for Human Consumption. GLP 3 (RT) lyophilised research peptide, HPLC-certified with a lot-specific certificate of analysis.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"GLP 3 (RT) — Research Peptide","url":"https://www.ambrosiastandard.com/glp-3","image":"https://www.ambrosiastandard.com/vial-glp-3.png","brand":{"@type":"Brand","name":"Ambrosia"},"description":"GLP 3 (RT) lyophilised research peptide with a lot-specific certificate of analysis. For research use only. Not for human or veterinary use.","audience":{"@type":"Audience","audienceType":"Research laboratories"}}</script>
 <script src="./support.js"></script>
 </head>
@@ -16,16 +16,16 @@
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=5"></script>
 <script src="entry-gate.js?v=3"></script>
-<script src="checkout-mode.js?v=1"></script>
-<link rel="stylesheet" href="ambrosia.css?v=4">
+<script src="checkout-mode.js?v=3"></script>
+<link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
 
 <div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased">
 
   <div style="background:#3E1218; padding:12px clamp(20px,4vw,56px)">
     <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px clamp(22px,3vw,44px); text-align:center">
-      <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:nowrap">FOR RESEARCH USE ONLY &mdash; NOT FOR HUMAN USE</span>
-      <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096; white-space:nowrap">QUALIFIED PURCHASERS ONLY &nbsp;&middot;&nbsp; 21+</span>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:normal">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</span>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096; white-space:normal">SOLD EXCLUSIVELY TO QUALIFIED RESEARCHERS AND LICENSED LABORATORIES</span>
     </div>
   </div>
 
@@ -111,7 +111,7 @@
           <div style="font-size:13px; line-height:1.6; color:#6E6055">{{ selectedLabel }}</div>
         </div>
         <div style="margin-top:18px; padding:14px 16px; border:1px solid #6B1F28; display:flex; flex-direction:column; gap:6px">
-          <div style="font-size:13px; font-weight:600; letter-spacing:0.14em; line-height:1.4; color:#6B1F28">FOR RESEARCH USE ONLY &mdash; NOT FOR HUMAN USE</div>
+          <div style="font-size:13px; font-weight:600; letter-spacing:0.14em; line-height:1.4; color:#6B1F28">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</div>
           <div style="font-size:13px; line-height:1.6; color:#3C312C">Not for human or animal consumption, therapeutic, clinical or diagnostic use. Sold to laboratories and qualified researchers only.</div>
         </div>
 
@@ -312,7 +312,7 @@
       <div style="border-top:1px solid #7A3540; padding:26px 0 clamp(33px,5vw,64px); display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between">
         <div style="font-size:12px; line-height:1.8; color:#A9A096; max-width:640px">
           Ambrosia Research Supply Company, LLC, a Tennessee limited liability company<br>
-          803 Division St, Nashville, TN 37203 &middot; info@ambrosiastandard.com &middot; +1 (615) 207-8043<br>
+          803 Division St, Apt 817, Nashville, TN 37203 &middot; info@ambrosiastandard.com &middot; +1 (615) 207-8043<br>
           Governed by the laws of the State of Tennessee, with exclusive venue in Davidson County, Tennessee.
         </div>
         <div style="font-size:12px; color:#A9A096">&copy; 2026 Ambrosia Research Supply Company, LLC</div>
@@ -325,16 +325,17 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
 class Component extends DCLogic {
-  state = { menuOpen: false, openGroup: null, openSub: null, size: 0, qty: 1, cart: 0, added: false, zelle: window.AmbrosiaCheckoutMode === 'zelle' };
+  state = { menuOpen: false, openGroup: null, openSub: null, size: 0, qty: 1, cart: 0, added: false };
 
   static SUBMENUS = [
     { label: 'Compounds', links: [
       { label: 'GLP 2 (TZ)', href: 'glp-2.html' },
       { label: 'GLP 3 (RT)', href: 'glp-3.html' },
       { label: 'GHK-Cu', href: 'ghk-cu.html' },
-      { label: 'Glow (GHK-Cu + BPC-157 + TB-500)', href: 'glow.html' },
-      { label: 'Klow (GHK-Cu + BPC-157 + TB-500 + KPV)', href: 'klow.html' },
-      { label: 'Wolverine (BPC-157 + TB-500)', href: 'wolverine.html' }
+      { label: 'GHK-Cu + BPC-157 + TB-500', href: 'ghk-cu-bpc-157-tb-500.html' },
+      { label: 'GHK-Cu + BPC-157 + TB-500 + KPV', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
+      { label: 'BPC-157 + TB-500', href: 'bpc-157-tb-500.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
     ] }
   ];
 
@@ -343,9 +344,10 @@ class Component extends DCLogic {
       { label: 'GLP 2 (TZ)', href: 'glp-2.html' },
       { label: 'GLP 3 (RT)', href: 'glp-3.html' },
       { label: 'GHK-Cu', href: 'ghk-cu.html' },
-      { label: 'Glow (GHK-Cu + BPC-157 + TB-500)', href: 'glow.html' },
-      { label: 'Klow (GHK-Cu + BPC-157 + TB-500 + KPV)', href: 'klow.html' },
-      { label: 'Wolverine (BPC-157 + TB-500)', href: 'wolverine.html' }
+      { label: 'GHK-Cu + BPC-157 + TB-500', href: 'ghk-cu-bpc-157-tb-500.html' },
+      { label: 'GHK-Cu + BPC-157 + TB-500 + KPV', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
+      { label: 'BPC-157 + TB-500', href: 'bpc-157-tb-500.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
     ] },
     { label: 'Support', items: [
       { label: 'FAQ', href: 'faq.html' },
@@ -425,11 +427,17 @@ class Component extends DCLogic {
   ];
 
   static SPECS = [
+    { k: 'COMPOSITION', v: 'Retatrutide (LY3437943), synthetic 39-amino-acid peptide' },
     { k: 'MASS PER VIAL', v: '10, 20 or 30 MG + per vial' },
     { k: 'PURITY', v: '\u226599%, HPLC certified' },
+    { k: 'CAS NUMBER', v: '2381089-83-2' },
+    { k: 'MOLECULAR FORMULA', v: 'C\u2082\u2082\u2081H\u2083\u2084\u2082N\u2084\u2086O\u2086\u2088' },
+    { k: 'MOLECULAR WEIGHT', v: '4731.3 g/mol' },
     { k: 'PHYSICAL FORM', v: 'Lyophilised powder' },
     { k: 'APPEARANCE', v: 'White to off-white powder' },
     { k: 'SOLUBILITY', v: 'Soluble in laboratory-grade sterile water' },
+    { k: 'STORAGE', v: '2\u20138 \u00B0C, protected from light' },
+    { k: 'CERTIFICATE OF ANALYSIS', v: 'Third-party tested; downloadable for every lot below' },
     { k: 'LOT DOCUMENTATION', v: 'Production and handling records held for every lot' }
   ];
 
@@ -505,14 +513,11 @@ class Component extends DCLogic {
     this.scrollToHash();
     this._esc = e => { if (e.key === 'Escape') this.setState({ menuOpen: false, waterModal: false, bulkModal: false, tierModal: false, stdOpen: false }); };
     document.addEventListener('keydown', this._esc);
-    this._mode = e => this.setState({ zelle: e.detail === 'zelle' });
-    window.addEventListener('ambrosia:checkout-mode', this._mode);
   }
 
   componentWillUnmount() {
     if (this._offCart) this._offCart();
     document.removeEventListener('keydown', this._esc);
-    window.removeEventListener('ambrosia:checkout-mode', this._mode);
   }
 
   renderVals() {
@@ -565,16 +570,16 @@ class Component extends DCLogic {
 
       priceLabel: (() => {
         const q = s.qty || 1;
-        const r = s.zelle ? 0 : (q >= 10 ? 0.15 : (q >= 3 ? 0.10 : (q >= 2 ? 0.05 : 0)));
+        const r = q >= 10 ? 0.15 : (q >= 3 ? 0.10 : (q >= 2 ? 0.05 : 0));
         return C.money(Math.round((size.price ?? 0) * q * (1 - r) * 100) / 100);
       })(),
-      priceDiscounted: !s.zelle && (s.qty || 1) >= 2,
+      priceDiscounted: (s.qty || 1) >= 2,
       priceGrossLabel: C.money((size.price ?? 0) * (s.qty || 1)),
       rangeLabel: C.rangeLabel(),
-      wasLabel: !s.zelle && size.was ? C.money(size.was) : '',
+      wasLabel: size.was ? C.money(size.was) : '',
       selectedLabel: (() => {
         const q = s.qty || 1;
-        const r = s.zelle ? 0 : (q >= 10 ? 15 : (q >= 3 ? 10 : (q >= 2 ? 5 : 0)));
+        const r = q >= 10 ? 15 : (q >= 3 ? 10 : (q >= 2 ? 5 : 0));
         const base = size.label ? size.label : '';
         const vials = q === 1 ? '1 vial' : q + ' vials';
         return (base ? base + ' \u00B7 ' : '') + vials + (r ? ' \u00B7 ' + r + '% off' : '');

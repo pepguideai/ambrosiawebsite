@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="/affiliate-vanity.js?v=1"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -14,11 +13,13 @@
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=5"></script>
 <script src="entry-gate.js?v=3"></script>
-<script src="checkout-mode.js?v=1"></script>
-<link rel="stylesheet" href="ambrosia.css?v=4">
+<script src="checkout-mode.js?v=3"></script>
+<link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
 
 <div style="background:#3E1218; color:#F0E9DC; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column">
+
+  <div style="background:#3E1218; padding:12px clamp(20px,4vw,56px); border-bottom:1px solid #7A3A42"><div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px clamp(22px,3vw,44px); text-align:center"><span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:normal">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</span><span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096; white-space:normal">SOLD EXCLUSIVELY TO QUALIFIED RESEARCHERS AND LICENSED LABORATORIES</span></div></div>
 
   <div style="padding:clamp(24px,3vw,38px) clamp(20px,4vw,56px); display:flex; align-items:center; justify-content:space-between; gap:20px">
     <a href="index.html" style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#D8A9AE; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#F0E9DC">&larr; RETURN</a>
@@ -39,22 +40,8 @@
         <circle cx="50" cy="50" r="4.8" stroke="#C9A227" stroke-width="3.8" fill="#3E1218"></circle>
       </svg>
 
-      <div data-zelle-copy style="display:none">
-        <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(22px,3vw,32px); letter-spacing:0.12em; line-height:1.3; color:#F0E9DC; margin:0; padding-left:0.12em">CONTINUE TO THE CATALOGUE</h1>
-        <p style="font-size:16px; line-height:1.7; color:#E0CFC0; margin:22px auto 0; max-width:420px">This page is not part of checkout while Zelle is the only payment method.</p>
-        <div style="display:flex; justify-content:center; margin-top:36px">
-          <a href="index.html" style="display:inline-flex; align-items:center; height:58px; padding:0 44px; background:#F0E9DC; color:#3E1218; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap">RETURN HOME</a>
-        </div>
-      </div>
-
-      <div data-promo>
-        <sc-if value="{{ showGreeting }}" hint-placeholder-val="{{ false }}">
-          <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227; margin:0 0 18px; padding-left:0.24em">{{ affiliateGreeting }}</div>
-        </sc-if>
-      </div>
-
       <sc-if value="{{ onConsent }}" hint-placeholder-val="{{ true }}">
-      <div data-promo>
+      <div>
         <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(24px,3.4vw,38px); letter-spacing:0.16em; line-height:1.24; color:#F0E9DC; margin:0; padding-left:0.16em">UNLOCK YOUR MYSTERY OFFER</h1>
         <p style="font-size:16.5px; line-height:1.8; color:#E0CFC0; margin:26px auto 0; max-width:400px; text-wrap:pretty">Confirm below to reveal your welcome offer. It applies to a first order verified under our Terms of Sale.</p>
 
@@ -74,7 +61,7 @@
 
       <!-- ─── revealed ─────────────────────────────────────── -->
       <sc-if value="{{ onReveal }}" hint-placeholder-val="{{ false }}">
-      <div data-promo>
+      <div>
         <div style="font-size:11px; font-weight:600; letter-spacing:0.24em; color:#C9A227">YOUR WELCOME OFFER</div>
         <div style="font-family:'Instrument Serif', serif; font-size:clamp(45px,12vw,148px); line-height:0.92; letter-spacing:-0.02em; color:#F0E9DC; margin-top:22px">10%</div>
         <div style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(15px,1.8vw,20px); letter-spacing:0.2em; color:#F0E9DC; margin-top:12px; padding-left:0.2em">OFF YOUR FIRST ORDER</div>
@@ -99,8 +86,8 @@
 
   <div style="border-top:1px solid #7A3A42; padding:22px clamp(20px,4vw,56px) clamp(25px,3.5vw,40px)">
     <div style="max-width:1000px; margin:0 auto; text-align:center">
-      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; margin-bottom:14px">FOR RESEARCH USE ONLY &nbsp;·&nbsp; NOT FOR HUMAN CONSUMPTION</div>
-      <p style="font-size:12px; line-height:1.75; color:#B08A8F; margin:0">Ambrosia supplies research materials to qualified purchasers aged 21 or older for laboratory research only. &copy; 2026 Ambrosia Research Supply Company, LLC</p>
+      <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; margin-bottom:14px">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</div>
+      <p style="font-size:12px; line-height:1.75; color:#B08A8F; margin:0">Ambrosia supplies research materials exclusively to qualified researchers and licensed laboratories, aged 21 or older, for laboratory research only. &copy; 2026 Ambrosia Research Supply Company, LLC</p>
     </div>
   </div>
 
@@ -109,7 +96,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;previewStep&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Live&quot;,&quot;Consent&quot;,&quot;Revealed&quot;],&quot;default&quot;:&quot;Live&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;State&quot;}}">
 class Component extends DCLogic {
-  state = { step: 0, consent: false, tried: false, affiliateName: '' };
+  state = { step: 0, consent: false, tried: false };
 
 
   btn(ready) {
@@ -135,10 +122,6 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.scrollToHash();
-    const pending = window.AmbrosiaVanity && window.AmbrosiaVanity.ready;
-    if (pending && typeof pending.then === 'function') {
-      pending.then((name) => { if (name) this.setState({ affiliateName: String(name) }); });
-    }
   }
 
   renderVals() {
@@ -147,9 +130,7 @@ class Component extends DCLogic {
     const forced = p === 'Consent' ? 0 : p === 'Revealed' ? 2 : null;
     const step = forced == null ? s.step : forced;
     const ok = !!s.consent;
-    const affiliateName = String(s.affiliateName || '').trim();
     const reveal = () => {
-      if (window.AmbrosiaCheckoutMode === 'zelle') return;
       if (!ok) { this.setState({ tried: true }); return; }
       try { localStorage.setItem('ambrosia-offer-consent', new Date().toISOString()); } catch (e) {}
       this.setState({ step: 2, tried: false });
@@ -163,9 +144,7 @@ class Component extends DCLogic {
       consentBlocked: !ok,
       consentError: s.tried && !ok,
       consentBtn: this.btn(ok),
-      reveal: reveal,
-      showGreeting: !!affiliateName,
-      affiliateGreeting: affiliateName ? ('FOR ' + affiliateName.toUpperCase()) : ''
+      reveal: reveal
     };
   }
 }

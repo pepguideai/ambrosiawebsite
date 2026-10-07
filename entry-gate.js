@@ -53,7 +53,7 @@
         '<a href="https://www.google.com" style="display:inline-flex; align-items:center; justify-content:center; height:52px; padding:0 30px; border:1px solid #D8C9B2; color:#241C19; font-size:12px; font-weight:600; letter-spacing:0.18em; text-decoration:none">EXIT</a>' +
       '</div>' +
       '<div id="amb-gate-err" role="alert" style="display:none; font-size:13px; line-height:1.7; color:#6B1F28; margin:18px 0 0">Select your researcher type and confirm both statements to continue.</div>' +
-      '<p style="font-size:11.5px; line-height:1.7; color:#6E6055; margin:24px 0 0">For Research Use Only &mdash; Not for Human Use. Not for human or animal consumption, therapeutic, clinical or diagnostic use.</p>' +
+      '<p style="font-size:11.5px; line-height:1.7; color:#6E6055; margin:24px 0 0">For Laboratory and Research Use Only. Not for Human Consumption. Not for human or animal consumption, therapeutic, clinical or diagnostic use.</p>' +
     '</div>';
 
   function paint() {

@@ -19,7 +19,8 @@ var HEADERS = [
   'Discount Amount', 'Shipping', 'Tax Charged', 'Estimated Tax Owed', 'Total',
   'Age 21+ Confirmed', 'Research-Use/Terms Confirmed', 'Notes',
   // system columns — leave in place, used to restore orders and prevent duplicates
-  'Shipping Method', 'Tax Mode', 'Customer Marked Sent', 'Items JSON', 'Idempotency Key', 'Access Token'
+  'Shipping Method', 'Tax Mode', 'Customer Marked Sent', 'Items JSON', 'Idempotency Key', 'Access Token',
+  'Research Purpose'
 ];
 var C = {}; HEADERS.forEach(function (h, i) { C[h] = i; });
 var STATUSES = ['Awaiting Zelle payment', 'Payment received', 'Shipped', 'Cancelled'];
@@ -35,6 +36,8 @@ function doPost(e) {
     else if (req.action === 'get') out = { ok: true, order: publicView(findRow(req.orderNumber, req.token)) };
     else if (req.action === 'markSent') out = markSent(req);
     else if (req.action === 'resend') out = resend(req);
+    else if (req.action === 'accountGet') out = accountGet(req);
+    else if (req.action === 'accountCreate') out = accountCreate(req);
     else throw err('BAD_ACTION', 'Unknown action');
   } catch (x) {
     out = { ok: false, code: x.code || 'ERROR', error: String(x.message || x) };
@@ -53,6 +56,9 @@ function sheet() {
     sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
     sh.getRange('C2:C').setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(STATUSES, true).build());
     sh.hideColumns(C['Items JSON'] + 1, 3);
+  }
+  if (sh.getRange(1, HEADERS.length).getValue() !== HEADERS[HEADERS.length - 1]) {
+    sh.getRange(1, HEADERS.length).setValue(HEADERS[HEADERS.length - 1]).setFontWeight('bold');
   }
   return sh;
 }
@@ -124,6 +130,7 @@ function create(req) {
     row[C['Items JSON']] = JSON.stringify({ q: q, c: c, notes: o.notes || '' });
     row[C['Idempotency Key']] = req.idempotencyKey;
     row[C['Access Token']] = token;
+    row[C['Research Purpose']] = o.attest.purpose || '';
     var sh = sheet();
     sh.appendRow(row);
     var index = sh.getLastRow();
@@ -164,6 +171,54 @@ function resend(req) {
   var view = publicView(findRow(req.orderNumber, req.token));
   sendCustomer(view, req.zelle, req.support);
   cache.put(k, '1', 120);
+  return { ok: true };
+}
+
+/* ----------------------------- accounts ----------------------------- */
+/* Site sign-in accounts. Passwords arrive already hashed by Vercel; the
+   hash column is hidden. Delete a row to remove an account. */
+
+var ACCOUNTS = 'Accounts';
+var ACC_HEADERS = ['Email', 'Name', 'Created', 'Password Hash'];
+
+function accSheet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(ACCOUNTS) || ss.insertSheet(ACCOUNTS);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(ACC_HEADERS);
+    sh.setFrozenRows(1);
+    sh.getRange(1, 1, 1, ACC_HEADERS.length).setFontWeight('bold');
+    sh.hideColumns(4);
+  }
+  return sh;
+}
+
+function accFind(email) {
+  var sh = accSheet(), n = sh.getLastRow() - 1;
+  if (n < 1) return null;
+  var all = sh.getRange(2, 1, n, ACC_HEADERS.length).getValues();
+  for (var i = 0; i < all.length; i++) if (String(all[i][0]).toLowerCase() === email) return all[i];
+  return null;
+}
+
+function cleanCell(s) { s = String(s || '').slice(0, 254); return /^[=+\-@]/.test(s) ? "'" + s : s; }
+
+function accountGet(req) {
+  var r = accFind(String(req.email || '').toLowerCase());
+  if (!r) throw err('NOT_FOUND', 'No account');
+  return { ok: true, account: { email: r[0], name: r[1], hash: r[3] } };
+}
+
+function accountCreate(req) {
+  var email = String(req.email || '').toLowerCase();
+  if (!email || !/^pbkdf2\$/.test(String(req.hash || ''))) throw err('BAD_REQUEST', 'Bad request');
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    if (accFind(email)) throw err('EXISTS', 'Account exists');
+    accSheet().appendRow([cleanCell(email), cleanCell(req.name), new Date(), req.hash]);
+    SpreadsheetApp.flush();
+  } finally { lock.releaseLock(); }
   return { ok: true };
 }
 
@@ -215,7 +270,7 @@ function sendOwners(v, row) {
   var body = '<h1 style="font-family:Georgia,serif;font-weight:400;font-size:24px;color:#6B1F28;margin:0 0 16px">New Zelle order ' + v.number + '</h1>'
     + '<p style="font-size:14px;line-height:1.7;color:#241C19">' + esc(c.name) + '<br>' + esc(c.email) + ' &middot; ' + esc(c.phone) + '<br>' + esc(row[C['Shipping Address']]) + '</p>'
     + summaryHtml(v)
-    + '<p style="font-size:13px;line-height:1.7;color:#3C312C">Estimated tax owed: ' + money(Math.round(row[C['Estimated Tax Owed']] * 100)) + ' (' + esc(row[C['Tax Mode']]) + ')<br>Age 21+ confirmed: ' + esc(row[C['Age 21+ Confirmed']]) + '<br>Research-use/Terms confirmed: ' + esc(row[C['Research-Use/Terms Confirmed']]) + (v.notes ? '<br>Notes: ' + esc(v.notes) : '') + '</p>'
+    + '<p style="font-size:13px;line-height:1.7;color:#3C312C">Estimated tax owed: ' + money(Math.round(row[C['Estimated Tax Owed']] * 100)) + ' (' + esc(row[C['Tax Mode']]) + ')<br>Research purpose: ' + esc(row[C['Research Purpose']]) + '<br>Age 21+ confirmed: ' + esc(row[C['Age 21+ Confirmed']]) + '<br>Research-use/Terms confirmed: ' + esc(row[C['Research-Use/Terms Confirmed']]) + (v.notes ? '<br>Notes: ' + esc(v.notes) : '') + '</p>'
     + '<p style="font-size:13px;color:#3C312C">Status: Awaiting Zelle payment. Match the memo ' + v.number + ' against incoming Zelle payments, then set Status to "Payment received".</p>';
   MailApp.sendEmail({ to: to, subject: 'Zelle order ' + v.number + ' · ' + money(v.total), htmlBody: shell(body), name: 'Ambrosia Orders' });
 }

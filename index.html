@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ambrosia · Research Peptides · Certified by Lot</title>
-<meta name="description" content="For Research Use Only — Not for Human Use. Research-grade peptides, each lot HPLC-tested with a published certificate of analysis.">
+<meta name="description" content="For Laboratory and Research Use Only. Not for Human Consumption. Research-grade peptides, each lot HPLC-tested with a published certificate of analysis.">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -15,23 +15,16 @@
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=5"></script>
 <script src="entry-gate.js?v=3"></script>
-<script src="checkout-mode.js?v=1"></script>
-<link rel="stylesheet" href="ambrosia.css?v=4">
+<script src="checkout-mode.js?v=3"></script>
+<link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
 
 <div style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased">
 
-  <!-- Zelle mode only. Hidden until checkout-mode.js confirms zelle. -->
-  <div data-zelle-copy style="display:none; background:#3E1218; padding:16px clamp(20px,4vw,56px); text-align:center">
-    <div style="max-width:720px; margin:0 auto">
-      <div style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#C9A227">25% OFF EVERY ORDER</div>
-      <p style="font-family:'Instrument Serif', serif; font-size:clamp(18px,2.1vw,22px); line-height:1.35; color:#F0E9DC; margin:10px 0 0">We are switching payment processors and currently accept Zelle only. The flat 25% off is a courtesy for the inconvenience.</p>
-    </div>
-  </div>
 
   <!-- ─── welcome offer popup ──────────────────────────────── -->
   <sc-if value="{{ offerOpen }}" hint-placeholder-val="{{ false }}">
-  <div data-promo role="dialog" aria-modal="true" aria-label="Your welcome offer" style="position:fixed; inset:0; z-index:9998; background:rgba(36,28,25,0.88); display:flex; align-items:flex-start; justify-content:center; padding:20px; overflow-y:auto">
+  <div role="dialog" aria-modal="true" aria-label="Your welcome offer" style="position:fixed; inset:0; z-index:9998; background:rgba(36,28,25,0.88); display:flex; align-items:flex-start; justify-content:center; padding:20px; overflow-y:auto">
     <div style="position:relative; margin:auto; background:#3E1218; width:100%; max-width:480px; padding:clamp(30px,5vw,52px) clamp(24px,4.5vw,48px); text-align:center">
       <button type="button" aria-label="Close" onClick="{{ closeOffer }}" style="position:absolute; top:12px; right:12px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; font-size:19px; line-height:1; color:#B08A8F; background:transparent; cursor:pointer; transition:color 300ms ease" style-hover="color:#F0E9DC">&times;</button>
 
@@ -96,8 +89,8 @@
   <!-- ─── research-use strip ───────────────────────────────── -->
   <div style="background:#3E1218; padding:12px clamp(20px,4vw,56px)">
     <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px clamp(22px,3vw,44px); text-align:center">
-      <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:nowrap">FOR RESEARCH USE ONLY &mdash; NOT FOR HUMAN USE</span>
-      <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096; white-space:nowrap">QUALIFIED PURCHASERS ONLY &nbsp;&middot;&nbsp; 21+</span>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227; white-space:normal">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</span>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096; white-space:normal">SOLD EXCLUSIVELY TO QUALIFIED RESEARCHERS AND LICENSED LABORATORIES</span>
     </div>
   </div>
 
@@ -134,7 +127,7 @@
   <!-- ─── hero ─────────────────────────────────────────────── -->
   <div style="border-bottom:1px solid #D8C9B2">
     <div style="width:100%; height:clamp(230px,52vh,560px); background:#E4D8C6; overflow:hidden">
-      <img src="hero-vials.jpg" alt="GLP 2 (TZ), GLP 3 (RT) and Wolverine (BPC-157 + TB-500) vials lying on sand-toned stone with woven linen in raking light" style="width:100%; height:100%; object-fit:cover; object-position:center center; display:block">
+      <img src="hero-vials-v2.png" alt="GLP 2, GLP 3 and BPC-157 + TB-500 research vials on a sand-toned surface beside woven linen in raking light" style="width:100%; height:100%; object-fit:cover; object-position:center center; display:block">
     </div>
 
     <div style="padding:clamp(26px,4vw,52px) clamp(20px,4vw,56px) clamp(34px,6vw,86px)">
@@ -143,7 +136,7 @@
         <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(34px,7vw,86px); line-height:1.02; letter-spacing:-0.018em; color:#6B1F28; margin:22px auto 0; max-width:24ch; text-wrap:balance">Research, Refined.</h1>
         <p style="font-size:clamp(15px,1.3vw,17px); line-height:1.75; color:#3C312C; margin:clamp(20px,2.6vw,30px) auto 0; max-width:640px; text-wrap:pretty">Ambrosia supplies research-grade peptide reference materials to laboratories and qualified researchers. Materials are supplied for research purposes only, and the certificate of analysis for every lot is published on this site.</p>
 
-        <div data-promo style="display:flex; flex-direction:column; align-items:center; gap:18px; margin-top:clamp(26px,3.4vw,44px)">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:18px; margin-top:clamp(26px,3.4vw,44px)">
           <a href="offer.html" onClick="{{ openOffer }}" style="display:inline-flex; align-items:center; height:58px; padding:0 42px; background:#6B1F28; color:#F0E9DC; font-size:12px; font-weight:600; letter-spacing:0.2em; white-space:nowrap; transition:background-color 500ms cubic-bezier(.2,.6,.2,1)" style-hover="background:#3E1218">UNLOCK WELCOME OFFER</a>
           <div style="font-size:13px; letter-spacing:0.04em; color:#6E6055">A welcome code for a first order verified under our Terms of Sale</div>
         </div>
@@ -199,35 +192,44 @@
             <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$45+ <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
         </a>
-        <a href="glow.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+        <a href="ghk-cu-bpc-157-tb-500.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
           <div style="aspect-ratio:1/1; background:#E4D8C6; overflow:hidden">
-            <img src="vial-glow.png" alt="Glow (GHK-Cu + BPC-157 + TB-500) vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+            <img src="vial-ghk-cu-bpc-157-tb-500-v2.png" alt="GHK-Cu + BPC-157 + TB-500 vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
           </div>
           <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
-            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Glow</div></div>
+            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">GHK&#8209;Cu + BPC&#8209;157 + TB&#8209;500</div><div data-zelle-only style="display:none; font-family:'Instrument Serif', serif; font-size:21px; line-height:1.2; color:#6E6055; margin-top:4px">(Glow)</div></div>
             <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$125 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
-          <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px; padding:0 2px; text-wrap:pretty">(GHK&#8209;Cu + BPC&#8209;157 + TB&#8209;500)</div>
+          
         </a>
-        <a href="klow.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+        <a href="ghk-cu-bpc-157-tb-500-kpv.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
           <div style="aspect-ratio:1/1; background:#E4D8C6; overflow:hidden">
-            <img src="vial-klow.png" alt="Klow (GHK-Cu + BPC-157 + TB-500 + KPV) vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+            <img src="vial-ghk-cu-bpc-157-tb-500-kpv-v2.png" alt="GHK-Cu + BPC-157 + TB-500 + KPV vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
           </div>
           <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
-            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Klow</div></div>
+            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">GHK&#8209;Cu + BPC&#8209;157 + TB&#8209;500 + KPV</div><div data-zelle-only style="display:none; font-family:'Instrument Serif', serif; font-size:21px; line-height:1.2; color:#6E6055; margin-top:4px">(Klow)</div></div>
             <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$180 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
-          <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px; padding:0 2px; text-wrap:pretty">(GHK&#8209;Cu + BPC&#8209;157 + TB&#8209;500 + KPV)</div>
+          
         </a>
-        <a href="wolverine.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+        <a href="bpc-157-tb-500.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
           <div style="aspect-ratio:1/1; background:#E4D8C6; overflow:hidden">
-            <img src="vial-wolverine.png" alt="Wolverine (BPC-157 + TB-500) vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+            <img src="vial-bpc-157-tb-500-v2.png" alt="BPC-157 + TB-500 vial as shipped, research-use-only label legible, on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
           </div>
           <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
-            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Wolverine</div></div>
+            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">BPC&#8209;157 + TB&#8209;500</div><div data-zelle-only style="display:none; font-family:'Instrument Serif', serif; font-size:21px; line-height:1.2; color:#6E6055; margin-top:4px">(Wolverine)</div></div>
             <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$120 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
           </div>
-          <div style="font-size:12.5px; line-height:1.5; letter-spacing:0.01em; color:#6E6055; margin-top:6px; padding:0 2px; text-wrap:pretty">(BPC&#8209;157 + TB&#8209;500)</div>
+          
+        </a>
+        <a href="bacteriostatic-water.html" style="display:block; width:100%; max-width:340px; margin-inline:auto; transition:opacity 450ms cubic-bezier(.2,.6,.2,1)" style-hover="opacity:0.86">
+          <div style="aspect-ratio:1/1; background:#E4D8C6; overflow:hidden">
+            <img src="vial-bac-water-v2.png" alt="Bacteriostatic water 10 mL vial with blue flip-off cap on a textured plinth in raking light" style="width:100%; height:100%; object-fit:cover; display:block">
+          </div>
+          <div style="display:flex; gap:16px; align-items:baseline; justify-content:space-between; padding:18px 2px 0; border-top:1px solid #D8C9B2; margin-top:18px">
+            <div style="min-width:0"><div style="font-family:'Instrument Serif', serif; font-size:26px; line-height:1.15; color:#241C19">Bacteriostatic Water</div></div>
+            <div style="font-family:'Instrument Serif', serif; font-size:21px; line-height:1.15; color:#241C19; white-space:nowrap">$20 <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; color:#6E6055">USD</span></div>
+          </div>
         </a>
       </div>
       </div>
@@ -244,7 +246,7 @@
     </div>
     <div class="stdband" style="max-width:1440px; margin:clamp(14px,1.8vw,26px) auto 0; gap:clamp(18px,2.4vw,40px); align-items:stretch">
       <div class="stdphoto" style="background:#E4D8C6; overflow:hidden">
-        <img src="standard-macro.png" alt="Sealed Glow (GHK-Cu + BPC-157 + TB-500) vial resting on weathered driftwood, its label and research-use statement legible" style="width:100%; height:100%; object-fit:cover; display:block">
+        <img src="standard-ghk-cu.png" alt="Sealed GHK-Cu 50 mg vial resting on weathered driftwood, its label and research-use statement legible" style="width:100%; height:100%; object-fit:cover; display:block">
       </div>
       <div>
           <div class="led" style="gap:clamp(12px,1.4vw,18px); align-items:baseline; padding:0 0 11px; border-top:none">
@@ -381,7 +383,7 @@
       <div style="border-top:1px solid #7A3540; padding:26px 0 clamp(33px,5vw,64px); display:flex; flex-wrap:wrap; gap:24px; justify-content:space-between">
         <div style="font-size:12px; line-height:1.8; color:#A9A096; max-width:640px">
           Ambrosia Research Supply Company, LLC, a Tennessee limited liability company<br>
-          803 Division St, Nashville, TN 37203 &middot; info@ambrosiastandard.com &middot; +1 (615) 207-8043<br>
+          803 Division St, Apt 817, Nashville, TN 37203 &middot; info@ambrosiastandard.com &middot; +1 (615) 207-8043<br>
           Governed by the laws of the State of Tennessee, with exclusive venue in Davidson County, Tennessee.
         </div>
         <div style="font-size:12px; color:#A9A096">&copy; 2026 Ambrosia Research Supply Company, LLC</div>
@@ -399,9 +401,10 @@ class Component extends DCLogic {
       { label: 'GLP 2 (TZ)', href: 'glp-2.html' },
       { label: 'GLP 3 (RT)', href: 'glp-3.html' },
       { label: 'GHK-Cu', href: 'ghk-cu.html' },
-      { label: 'Glow (GHK-Cu + BPC-157 + TB-500)', href: 'glow.html' },
-      { label: 'Klow (GHK-Cu + BPC-157 + TB-500 + KPV)', href: 'klow.html' },
-      { label: 'Wolverine (BPC-157 + TB-500)', href: 'wolverine.html' }
+      { label: 'GHK-Cu + BPC-157 + TB-500', href: 'ghk-cu-bpc-157-tb-500.html' },
+      { label: 'GHK-Cu + BPC-157 + TB-500 + KPV', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
+      { label: 'BPC-157 + TB-500', href: 'bpc-157-tb-500.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
     ] }
   ];
 
@@ -410,9 +413,10 @@ class Component extends DCLogic {
       { label: 'GLP 2 (TZ)', href: 'glp-2.html' },
       { label: 'GLP 3 (RT)', href: 'glp-3.html' },
       { label: 'GHK-Cu', href: 'ghk-cu.html' },
-      { label: 'Glow (GHK-Cu + BPC-157 + TB-500)', href: 'glow.html' },
-      { label: 'Klow (GHK-Cu + BPC-157 + TB-500 + KPV)', href: 'klow.html' },
-      { label: 'Wolverine (BPC-157 + TB-500)', href: 'wolverine.html' }
+      { label: 'GHK-Cu + BPC-157 + TB-500', href: 'ghk-cu-bpc-157-tb-500.html' },
+      { label: 'GHK-Cu + BPC-157 + TB-500 + KPV', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
+      { label: 'BPC-157 + TB-500', href: 'bpc-157-tb-500.html' },
+      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
     ] },
     { label: 'Support', items: [
       { label: 'FAQ', href: 'faq.html' },
@@ -427,7 +431,7 @@ class Component extends DCLogic {
       { label: 'Returns & Documentation', href: 'returns-documentation.html' }
     ] }
   ];
-  state = { menuOpen: false, openGroup: null, openSub: null, offerOpen: false, offerConsent: false, offerCode: '', offerTried: false, zelle: window.AmbrosiaCheckoutMode === 'zelle' };
+  state = { menuOpen: false, openGroup: null, openSub: null, offerOpen: false, offerConsent: false, offerCode: '', offerTried: false };
 
   scrollToHash() {
     const raw = (location.hash || '').slice(1);
@@ -464,22 +468,11 @@ class Component extends DCLogic {
       const ts = Number(localStorage.getItem('ambrosia-entry-ack-at-v2') || 0);
       _passed = localStorage.getItem('ambrosia-entry-ack-v2') === 'yes' && ts > 0 && Date.now() - ts < 30 * 86400000;
     } catch (e) {}
-    const armOffer = () => {
-      if (window.AmbrosiaCheckoutMode === 'zelle') return;
-      if (_passed) this.maybeAutoOffer();
-      else {
-        this._onGate = () => { if (window.AmbrosiaCheckoutMode !== 'zelle') this.maybeAutoOffer(); };
-        document.addEventListener('ambrosia:gate-confirmed', this._onGate, { once: true });
-      }
-    };
-    if (window.AmbrosiaCheckout && window.AmbrosiaCheckout.ready) window.AmbrosiaCheckout.ready.then(armOffer);
-    else armOffer();
-    this._mode = (e) => {
-      const zelle = e.detail === 'zelle';
-      if (zelle) clearTimeout(this._offerTimer);
-      this.setState({ zelle: zelle, offerOpen: zelle ? false : this.state.offerOpen });
-    };
-    window.addEventListener('ambrosia:checkout-mode', this._mode);
+    if (_passed) this.maybeAutoOffer();
+    else {
+      this._onGate = () => this.maybeAutoOffer();
+      document.addEventListener('ambrosia:gate-confirmed', this._onGate, { once: true });
+    }
   }
 
   /* One automatic appearance per browser session, only once the entry gate has
@@ -491,8 +484,7 @@ class Component extends DCLogic {
   secondChance(e) {
     const a = e.target.closest && e.target.closest('a[href]');
     if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey) return;
-    if (!/^(?:\.\/)?(glp-2|glp-3|ghk-cu|glow|klow|wolverine)\.html(?:[?#].*)?$/.test(a.getAttribute('href'))) return;
-    if (this.state.zelle || window.AmbrosiaCheckoutMode === 'zelle') return;
+    if (!/^(?:\.\/)?(glp-2|glp-3|ghk-cu|ghk-cu-bpc-157-tb-500|ghk-cu-bpc-157-tb-500-kpv|bpc-157-tb-500)\.html(?:[?#].*)?$/.test(a.getAttribute('href'))) return;
     if (this.state.offerOpen || document.getElementById('ambrosia-gate')) return;
     try {
       if (localStorage.getItem('ambrosia-offer-consent') !== null || localStorage.getItem('ambrosia-offer-email') !== null) return;
@@ -509,7 +501,6 @@ class Component extends DCLogic {
   componentWillUnmount() {
     clearTimeout(this._offerTimer);
     document.removeEventListener('click', this._onProductClick, true);
-    window.removeEventListener('ambrosia:checkout-mode', this._mode);
   }
 
   maybeAutoOffer() {
@@ -574,7 +565,7 @@ class Component extends DCLogic {
           + ' transition:transform 380ms cubic-bezier(.2,.6,.2,1); transform:rotate('
           + (this.state.openGroup === i ? '90deg' : '0deg') + ')'
       })),
-      offerOpen: this.state.offerOpen && !this.state.zelle,
+      offerOpen: this.state.offerOpen,
       offerAsking: !this.state.offerCode,
       offerDone: !!this.state.offerCode,
       offerConsent: !!this.state.offerConsent,
@@ -591,7 +582,6 @@ class Component extends DCLogic {
       submitOffer: submitOffer,
       openOffer: e => {
         if (e && e.preventDefault) e.preventDefault();
-        if (this.state.zelle || window.AmbrosiaCheckoutMode === 'zelle') return;
         this.setState({ offerOpen: true, offerTried: false });
       },
       closeOffer: () => {

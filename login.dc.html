@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="robots" content="noindex, nofollow">
+<title>Sign in · Ambrosia</title>
+<link rel="preload" href="fonts/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="ambrosia.css?v=5">
+<style>a{color:#6B1F28}a:hover{color:#8E2C36}input:focus-visible,button:focus-visible{outline:2px solid #6B1F28;outline-offset:2px}</style>
+</helmet>
+
+<div data-screen-label="Sign in" style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column">
+
+  <div style="background:#3E1218; padding:12px clamp(20px,4vw,56px)">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px clamp(22px,3vw,44px); text-align:center">
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#C9A227">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</span>
+      <span style="font-size:11px; font-weight:600; letter-spacing:0.16em; color:#A9A096">SOLD EXCLUSIVELY TO QUALIFIED RESEARCHERS AND LICENSED LABORATORIES</span>
+    </div>
+  </div>
+
+  <div style="border-bottom:1px solid #D8C9B2; padding:0 clamp(20px,4vw,56px)">
+    <div style="max-width:1080px; margin:0 auto; min-height:80px; display:flex; align-items:center; gap:12px">
+      <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" style="width:26px; height:26px">
+        <path d="M50 12 L82.9 31 L82.9 69 L50 88 L17.1 69 L17.1 31 Z" stroke="#7A5622" stroke-width="2.6"></path>
+        <path d="M50 50 L82.9 31 M50 50 L82.9 69 M50 50 L17.1 69 M50 50 L17.1 31" stroke="#7A5622" stroke-width="2.6"></path>
+        <g stroke="#7A5622" stroke-width="3.4" fill="#F0E9DC">
+          <circle cx="50" cy="12" r="4.1"></circle><circle cx="82.9" cy="31" r="4.1"></circle>
+          <circle cx="82.9" cy="69" r="4.1"></circle><circle cx="50" cy="88" r="4.1"></circle>
+          <circle cx="17.1" cy="69" r="4.1"></circle><circle cx="17.1" cy="31" r="4.1"></circle>
+        </g>
+        <circle cx="50" cy="50" r="4.8" stroke="#7A5622" stroke-width="3.8" fill="#F0E9DC"></circle>
+      </svg>
+      <span style="font-family:Cinzel, serif; font-weight:600; font-size:19px; letter-spacing:0.32em; color:#6B1F28">AMBROSIA</span>
+    </div>
+  </div>
+
+  <div style="flex:1; padding:clamp(40px,8vw,104px) clamp(20px,4vw,56px) 72px">
+    <div style="max-width:1080px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap:clamp(40px,7vw,96px); align-items:start">
+
+      <div style="display:flex; flex-direction:column; gap:20px; max-width:440px">
+        <div style="font-size:11px; font-weight:600; letter-spacing:0.22em; color:#7A5622">MEMBERS ONLY</div>
+        <h1 style="font-family:'Instrument Serif', serif; font-weight:400; font-size:clamp(38px,5vw,58px); line-height:1.04; color:#241C19; margin:0; text-wrap:pretty">Sign in to view the catalog.</h1>
+        <p style="font-size:16px; line-height:1.75; color:#3C312C; margin:0; text-wrap:pretty">Ambrosia supplies research materials exclusively to qualified researchers and licensed laboratories. Products, pricing and checkout are available to registered accounts only. Creating an account is free and immediate.</p>
+        <p style="font-size:12px; line-height:1.7; color:#6E6055; margin:12px 0 0">For Laboratory and Research Use Only. Not for Human Consumption.</p>
+      </div>
+
+      <div style="background:#F7F2E8; border:1px solid #D8C9B2; padding:clamp(26px,4vw,44px); display:flex; flex-direction:column; gap:28px; max-width:480px; width:100%">
+
+        <div role="tablist" style="display:grid; grid-template-columns:1fr 1fr; border:1px solid #D8C9B2">
+          <button type="button" role="tab" aria-selected="{{ isSignIn }}" onClick="{{ showSignIn }}" style="{{ tabSignIn }}">SIGN IN</button>
+          <button type="button" role="tab" aria-selected="{{ isRegister }}" onClick="{{ showRegister }}" style="{{ tabRegister }}">CREATE ACCOUNT</button>
+        </div>
+
+        <form onSubmit="{{ submit }}" noValidate style="display:flex; flex-direction:column; gap:20px">
+          <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+            <label style="display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">FULL NAME</span>
+              <input name="name" type="text" autoComplete="name" required style="height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-family:inherit; font-size:15px; border-radius:0">
+            </label>
+          </sc-if>
+          <label style="display:flex; flex-direction:column; gap:8px">
+            <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">EMAIL</span>
+            <input name="email" type="email" autoComplete="email" required style="height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-family:inherit; font-size:15px; border-radius:0">
+          </label>
+          <label style="display:flex; flex-direction:column; gap:8px">
+            <span style="font-size:11px; font-weight:600; letter-spacing:0.2em; color:#7A5622">PASSWORD</span>
+            <input name="password" type="password" autoComplete="{{ pwAutocomplete }}" required style="height:52px; padding:0 16px; border:1px solid #D8C9B2; background:#F0E9DC; color:#241C19; font-family:inherit; font-size:15px; border-radius:0">
+            <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:12px; color:#6E6055">At least 10 characters.</span>
+            </sc-if>
+          </label>
+
+          <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="font-size:13px; line-height:1.6; color:#6B1F28">{{ error }}</div>
+          </sc-if>
+
+          <button type="submit" disabled="{{ busy }}" style="height:54px; border:none; background:#6B1F28; color:#F0E9DC; font-family:inherit; font-size:12px; font-weight:600; letter-spacing:0.18em; cursor:pointer; transition:background-color 300ms ease" style-hover="background:#8E2C36">{{ submitLabel }}</button>
+        </form>
+
+        <p style="font-size:12.5px; line-height:1.7; color:#6E6055; margin:0">Trouble signing in? <a href="mailto:info@ambrosiastandard.com">info@ambrosiastandard.com</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { mode: 'signin', busy: false, error: '' };
+
+  componentDidMount() {
+    if (/[?&]new=1\b/.test(location.search)) this.setState({ mode: 'register' });
+  }
+
+  next() {
+    const n = new URLSearchParams(location.search).get('next') || '/';
+    return n.startsWith('/') && !n.startsWith('//') && !n.startsWith('/login') ? n : '/';
+  }
+
+  async submit(e) {
+    e.preventDefault();
+    if (this.state.busy) return;
+    const f = new FormData(e.currentTarget);
+    const reg = this.state.mode === 'register';
+    const data = { email: String(f.get('email') || '').trim(), password: String(f.get('password') || '') };
+    if (reg) data.name = String(f.get('name') || '').trim();
+    if (reg && !data.name) return this.setState({ error: 'Enter your name.' });
+    if (!data.email || !data.password) return this.setState({ error: 'Enter your email and password.' });
+    if (reg && data.password.length < 10) return this.setState({ error: 'Use a password of at least 10 characters.' });
+    this.setState({ busy: true, error: '' });
+    try {
+      const r = await fetch(reg ? '/api/auth/register' : '/api/auth/login', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) return this.setState({ busy: false, error: d.error || 'Something went wrong. Try again.' });
+      location.replace(this.next());
+    } catch (x) {
+      this.setState({ busy: false, error: 'Connection problem. Check your internet and try again.' });
+    }
+  }
+
+  tab(on) {
+    return 'min-height:48px; border:none; font-family:inherit; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; ' +
+      (on ? 'background:#6B1F28; color:#F0E9DC' : 'background:transparent; color:#3C312C');
+  }
+
+  renderVals() {
+    const reg = this.state.mode === 'register';
+    return {
+      isSignIn: !reg,
+      isRegister: reg,
+      tabSignIn: this.tab(!reg),
+      tabRegister: this.tab(reg),
+      showSignIn: () => this.setState({ mode: 'signin', error: '' }),
+      showRegister: () => this.setState({ mode: 'register', error: '' }),
+      pwAutocomplete: reg ? 'new-password' : 'current-password',
+      submit: e => this.submit(e),
+      busy: this.state.busy,
+      hasError: !!this.state.error,
+      error: this.state.error,
+      submitLabel: this.state.busy ? 'ONE MOMENT…' : (reg ? 'CREATE ACCOUNT' : 'SIGN IN')
+    };
+  }
+}
+</script>
+</body>
+</html>
