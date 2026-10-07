@@ -80,7 +80,10 @@
   /* Zelle mode: no popups. Removes the entry gate if it mounted before the
      mode was known, and keeps it from coming back. */
   function killPopups() {
+    if (/^\/offer(\.html)?\/?$/.test(location.pathname)) { location.replace("/"); return; }
     function sweep() {
+      var w = document.querySelectorAll("[data-woo-only]");
+      for (var i = 0; i < w.length; i++) w[i].style.display = "none";
       var g = document.getElementById('ambrosia-gate');
       if (g) { g.remove(); document.body.style.overflow = ''; }
     }

@@ -59,10 +59,25 @@ function safeNext(v) {
 const NEXT = { 'x-middleware-next': '1' };
 const redirect = to => new Response(null, { status: 302, headers: { Location: to, 'Cache-Control': 'no-store' } });
 
+/* Zelle mode turns the login gate off. Read from live-checkout.json, cached
+   for 30 s per edge instance so pages and assets don't each refetch it. */
+let modeCache = { v: null, at: 0 };
+async function zelleMode(url) {
+  if (modeCache.v !== null && Date.now() - modeCache.at < 30000) return modeCache.v;
+  let z = false;
+  try {
+    const r = await fetch(new URL('/live-checkout.json', url), { cache: 'no-store' });
+    if (r.ok) { const v = await r.json(); z = !!v && String(v.mode).trim().toLowerCase() === 'zelle'; }
+  } catch (e) {}
+  modeCache = { v: z, at: Date.now() };
+  return z;
+}
+
 export default async function middleware(request) {
   const url = new URL(request.url);
   const path = url.pathname;
-  const authed = await signedIn(request);
+  let authed = await signedIn(request);
+  if (!authed && await zelleMode(url)) authed = true;
 
   if (path === '/login' || path.startsWith('/login.dc')) {
     if (authed) return redirect(new URL(safeNext(url.searchParams.get('next')), url).toString());
