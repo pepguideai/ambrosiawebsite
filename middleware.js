@@ -1,10 +1,14 @@
 /* Login gate + checkout switch. Runs before every request on the site.
 
-   1. Nothing is served without a valid sign-in cookie (amb_session) except the
-      sign-in page, its assets, the auth API and the admin pages (which have
-      their own password). Pages redirect
+   1. Research-use acknowledgement first. HTML without ambrosia-entry-ack
+      redirects to /enter?next=…. /enter, the legal pages it links to, API,
+      asset, config, and WordPress proxy paths are not checked.
+   2. Then a real sign-in cookie (amb_session). This does not depend on
+      checkout mode: Zelle and WooCommerce both require it. Pages redirect
       to /login?next=…; API calls get 401. Direct links are gated the same way.
-   2. /checkout goes to WooCommerce unless live-checkout.json says "zelle".
+      /enter, /login, the legal pages, their scripts, the auth API, and the
+      admin pages (which have their own password) stay reachable.
+   3. /checkout goes to WooCommerce unless live-checkout.json says "zelle".
       To switch: edit live-checkout.json on GitHub. Vercel redeploys in ~1 minute.
 
    SESSION_SECRET (Vercel env) signs the cookie. If it is missing the gate stays
@@ -13,6 +17,11 @@ export const config = { matcher: ['/', '/:path*'] };
 
 const PUBLIC_PATHS = new Set([
   '/login', '/login.dc', '/login.dc.html',
+  '/enter', '/enter.html',
+  '/research-use-policy', '/research-use-policy.html',
+  '/terms-of-sale', '/terms-of-sale.html',
+  '/privacy-policy', '/privacy-policy.html',
+  '/entry-gate.js', '/checkout-mode.js',
   '/support.js', '/ambrosia.css', '/live-checkout.json', '/favicon.ico', '/robots.txt',
   '/admin-checkout', '/admin-checkout.dc', '/admin-checkout.dc.html',
   '/admin-affiliates', '/admin-affiliates.dc', '/admin-affiliates.dc.html'
@@ -106,20 +115,6 @@ function safeNext(v) {
 const NEXT = { 'x-middleware-next': '1' };
 const redirect = to => new Response(null, { status: 302, headers: { Location: to, 'Cache-Control': 'no-store' } });
 
-/* Zelle mode turns the login gate off. Read from live-checkout.json, cached
-   for 30 s per edge instance so pages and assets don't each refetch it. */
-let modeCache = { v: null, at: 0 };
-async function zelleMode(url) {
-  if (modeCache.v !== null && Date.now() - modeCache.at < 30000) return modeCache.v;
-  let z = false;
-  try {
-    const r = await fetch(new URL('/live-checkout.json', url), { cache: 'no-store' });
-    if (r.ok) { const v = await r.json(); z = !!v && String(v.mode).trim().toLowerCase() === 'zelle'; }
-  } catch (e) {}
-  modeCache = { v: z, at: Date.now() };
-  return z;
-}
-
 export default async function middleware(request) {
   const url = new URL(request.url);
   const path = url.pathname;
@@ -130,8 +125,7 @@ export default async function middleware(request) {
     return redirect(dest.toString());
   }
 
-  let authed = await signedIn(request);
-  if (!authed && await zelleMode(url)) authed = true;
+  const authed = await signedIn(request);
 
   if (path === '/login' || path.startsWith('/login.dc')) {
     if (authed) return redirect(new URL(safeNext(url.searchParams.get('next')), url).toString());
