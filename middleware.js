@@ -98,7 +98,7 @@ function vanityRewrite(url, path) {
   try { slug = decodeURIComponent(slug); } catch (e) {}
   slug = slug.replace(/\/+$/, '').trim().toLowerCase();
   if (!slug || slug.includes('.') || RESERVED.has(slug)) return null;
-  return new Response(null, { headers: { 'x-middleware-rewrite': new URL('/offer.html' + url.search, url).toString(), 'Cache-Control': 'no-store' } });
+  return new Response(null, { headers: { 'x-middleware-rewrite': new URL('/offer' + url.search, url).toString(), 'Cache-Control': 'no-store' } });
 }
 function safeNext(v) {
   return typeof v === 'string' && v.startsWith('/') && !v.startsWith('//') && !v.startsWith('/\\') && !v.startsWith('/login') ? v : '/';
