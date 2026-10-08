@@ -53,7 +53,7 @@
   /* --------------------------------------------------------------------------
      Woo product IDs, by slug.
 
-     GLP-3 (11) is confirmed and is the reference pattern — see loadCatalog()
+     GLP 3 (RT) (11) is confirmed and is the reference pattern — see loadCatalog()
      below and loadSizes() on glp-3.html.
 
      [SERVER] The five nulls need their real Woo parent product IDs. Until then
@@ -82,15 +82,14 @@
      Variable products point at the VARIATION id; the handoff snippet resolves
      its parent server-side. Simple products point at the product itself.
 
-       GLP-3     parent 11   10MG/1 vial 16 · 20MG 17 · 30MG 18
+       GLP 3 (RT) parent 11   10MG/1 vial 16 · 20MG 17 · 30MG 18
                              (10-vial kits: 13 / 14 / 15 — not sold here yet)
-       GLP-2     parent 19   10MG/1 vial 20 · 20MG 22 · 30MG 24
+       GLP 2 (TZ) parent 19   10MG/1 vial 20 · 20MG 22 · 30MG 24
                              (10-vial kits: 21 / 26 / 25 — not sold here yet)
        GHK-Cu    parent 27   50MG 28 · 100MG 29
-       Wolverine simple  30
-       Klow      simple  31
-       Glow      simple  32
-       Bac water simple  47
+       BPC-157 / TB-500 blend simple  30
+       GHK-Cu / BPC-157 / TB-500 / KPV blend simple  31
+       GHK-Cu / BPC-157 / TB-500 blend simple  32
      -------------------------------------------------------------------------- */
   var FALLBACK = {
     'glp-2':        { wooId: 20, name: 'GLP 2 (TZ)',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
@@ -100,9 +99,9 @@
     'glp-3-30':     { wooId: 18, name: 'GLP 3 (RT)',                 mass: '30 MG per vial',  price: 170, img: 'vial-glp-3.png',     href: 'glp-3.html' },
     'ghk-cu':       { wooId: 28, name: 'GHK-Cu',                mass: '50 mg per vial',  price: 45,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
     'ghk-cu-100':   { wooId: 29, name: 'GHK-Cu',                mass: '100 mg per vial', price: 70,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
-    'glow':         { wooId: 32, name: 'Glow (GHK-Cu + BPC-157 + TB-500)',                  mass: '70 mg per vial',  price: 125, img: 'vial-glow.png',      href: 'glow.html' },
-    'klow':         { wooId: 31, name: 'Klow (GHK-Cu + BPC-157 + TB-500 + KPV)',                  mass: '80 mg per vial',  price: 180, img: 'vial-klow.png',      href: 'klow.html' },
-    'wolverine':    { wooId: 30, name: 'Wolverine (BPC-157 + TB-500)',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' }
+    'glow':         { wooId: 32, name: 'GHK-Cu / BPC-157 / TB-500 blend', mass: '70 mg per vial',  price: 125, img: 'vial-ghk-cu-bpc-157-tb-500-v2.png', href: 'ghk-cu-bpc-157-tb-500.html' },
+    'klow':         { wooId: 31, name: 'GHK-Cu / BPC-157 / TB-500 / KPV blend', mass: '80 mg per vial',  price: 180, img: 'vial-ghk-cu-bpc-157-tb-500-kpv-v2.png', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
+    'wolverine':    { wooId: 30, name: 'BPC-157 / TB-500 blend', mass: '20 mg per vial',  price: 120, img: 'vial-bpc-157-tb-500-v2.png', href: 'bpc-157-tb-500.html' }
   };
 
   var CATALOG = {};
@@ -275,7 +274,7 @@
             if (isKit) return;
             var slug = slugFor(baseSlug, conc);
             CATALOG[slug] = {
-              name: p.name,
+              name: (FALLBACK[slug] && FALLBACK[slug].name) || p.name,
               mass: conc ? conc + ' per vial' : '',
               price: centsToDollars(v.prices.price, v.prices.currency_minor_unit),
               img: (v.images && v.images[0] && v.images[0].src) || parentImg || (FALLBACK[slug] && FALLBACK[slug].img),
@@ -286,11 +285,11 @@
           });
         } else {
           CATALOG[baseSlug] = {
-            name: p.name,
+            name: (FALLBACK[baseSlug] && FALLBACK[baseSlug].name) || p.name,
             mass: (FALLBACK[baseSlug] && FALLBACK[baseSlug].mass) || '',
             price: centsToDollars(p.prices.price, p.prices.currency_minor_unit),
             img: parentImg || (FALLBACK[baseSlug] && FALLBACK[baseSlug].img),
-            href: baseSlug + '.html',
+            href: (FALLBACK[baseSlug] && FALLBACK[baseSlug].href) || (baseSlug + '.html'),
             wooId: p.id,
             live: true
           };

@@ -79,10 +79,7 @@ export default async function middleware(request) {
   }
 
   if (path === '/bacteriostatic-water' || path === '/bacteriostatic-water.html') {
-    try {
-      const r = await fetch(new URL('/live-checkout.json', url), { cache: 'no-store' });
-      if (r.ok) { const v = await r.json(); if (v && v.bacWater === false && String(v.mode).trim().toLowerCase() !== 'zelle') return redirect(new URL('/#catalogue', url).toString()); }
-    } catch (e) {}
+    return redirect(new URL('/', url).toString());
   }
 
   if (path === '/checkout') {

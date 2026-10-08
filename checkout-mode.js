@@ -6,10 +6,11 @@
   var PROMO = 'LIMITED TIME \u00b7 25% OFF EVERY ORDER PAID BY ZELLE';
   var live = /(^|\.)ambrosiastandard\.com$|\.vercel\.app$/.test(location.hostname);
   window.AmbrosiaCheckoutMode = 'woocommerce';
-  window.AmbrosiaBacWater = true;
-  var BAC_ID = 'bac-water', BAC_HREF = 'bacteriostatic-water';
+  window.AmbrosiaBacWater = false;
+  var DROPPED_ID = 'bac-water';
 
-  /* Returns the mode string; records the bac water switch on the side. */
+  /* Returns the mode string. live-checkout.json is unchanged; the removed
+     catalogue id is always stripped so an old cart cannot check it out. */
   function fetchMode() {
     if (!live) return Promise.resolve('woocommerce');
     var ctl = window.AbortController ? new AbortController() : null;
@@ -17,7 +18,7 @@
     return fetch('/api/checkout-mode', { cache: 'no-store', signal: ctl && ctl.signal })
       .then(function (r) { return r.ok ? r.json() : { mode: 'woocommerce' }; })
       .then(function (d) {
-        window.AmbrosiaBacWater = !(d && d.bacWater === false);
+        window.AmbrosiaBacWater = false;
         return d && d.mode === 'zelle' ? 'zelle' : 'woocommerce';
       })
       .catch(function () { return 'woocommerce'; })
@@ -47,45 +48,23 @@
     })();
   }
 
-  /* Bac water off: hide every link to it (menus re-render, so keep watching)
-     and take it out of the cart. The middleware redirects the page itself. */
-  function hideBacWater() {
-    var sel = 'a[href^="' + BAC_HREF + '"], a[href^="/' + BAC_HREF + '"]';
-    function sweep() {
-      var els = document.querySelectorAll(sel);
-      for (var i = 0; i < els.length; i++) {
-        if (els[i].style.display !== 'none') els[i].style.display = 'none';
-      }
-    }
-    sweep();
-    try { new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
+  /* Drop a legacy cart line for the removed catalogue id. Menus no longer
+     link to it; this only clears browsers that still have the old line. */
+  function dropRemovedProduct() {
     var tries = 0;
     (function dropFromCart() {
       var CS = window.AmbrosiaCart;
       if (!CS) { if (tries++ < 150) setTimeout(dropFromCart, 60); return; }
-      if (CS.read().some(function (l) { return l.id === BAC_ID; })) CS.remove(BAC_ID);
+      if (CS.read().some(function (l) { return l.id === DROPPED_ID; })) CS.remove(DROPPED_ID);
     })();
   }
 
-  /* Zelle mode: reveal elements marked data-zelle-only (product nicknames). */
-  function showZelleOnly() {
-    function sweep() {
-      var els = document.querySelectorAll('[data-zelle-only]');
-      for (var i = 0; i < els.length; i++) if (els[i].style.display === 'none') els[i].style.display = '';
-    }
-    sweep();
-    try { new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
-  }
-
-  /* Zelle mode: no popups. Removes the entry gate if it mounted before the
-     mode was known, and keeps it from coming back. */
-  function killPopups() {
-    if (/^\/offer(\.html)?\/?$/.test(location.pathname)) { location.replace("/"); return; }
+  /* Zelle mode still hides Woo-only chrome. It does not dismiss the research
+     gate and it does not send /offer or vanity paths away. */
+  function hideWooOnly() {
     function sweep() {
       var w = document.querySelectorAll("[data-woo-only]");
       for (var i = 0; i < w.length; i++) w[i].style.display = "none";
-      var g = document.getElementById('ambrosia-gate');
-      if (g) { g.remove(); document.body.style.overflow = ''; }
     }
     sweep();
     try { new MutationObserver(sweep).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) {}
@@ -93,8 +72,8 @@
 
   var ready = fetchMode().then(function (mode) {
     window.AmbrosiaCheckoutMode = mode;
-    if (!window.AmbrosiaBacWater) hideBacWater();
-    if (mode === 'zelle') { showZelleOnly(); killPopups(); }
+    dropRemovedProduct();
+    if (mode === 'zelle') hideWooOnly();
     if (mode === 'zelle') showPromo();
     try { window.dispatchEvent(new CustomEvent('ambrosia:checkout-mode', { detail: mode })); } catch (e) {}
     return mode;

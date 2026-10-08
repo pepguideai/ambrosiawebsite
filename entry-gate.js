@@ -67,7 +67,7 @@
     err.style.display = ((tried && !ready) || role === 'none') ? 'block' : 'none';
   }
 
-  function mount() {
+    function mount() {
     document.body.appendChild(root);
     var prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -77,6 +77,9 @@
     root.querySelector('#amb-gate-go').addEventListener('click', function () {
       if (!(ageOk && useOk && role && role !== 'none')) { tried = true; paint(); return; }
       try { localStorage.setItem(KEY, 'yes'); localStorage.setItem(AT, String(Date.now())); localStorage.setItem(ROLE, role); } catch (e) {}
+      syncCookie();
+      var next = pendingNext();
+      if (next) { location.replace(next); return; }
       root.remove();
       document.body.style.overflow = prevOverflow;
       document.dispatchEvent(new CustomEvent('ambrosia:gate-confirmed'));
@@ -84,20 +87,49 @@
     paint();
   }
 
-  /* Zelle mode: no popups, so the gate never shows. Any doubt (offline,
-     slow, preview host) falls through to showing it as normal. */
+  /* Acceptance is localStorage (what returning browsers already have) plus a
+     30-day cookie so the edge can refuse deep links that never run this file. */
+  function syncCookie() {
+    try {
+      var parts = ['ambrosia-entry-ack=yes', 'Path=/', 'Max-Age=' + (DAYS * 86400), 'SameSite=Lax'];
+      if (location.protocol === 'https:') parts.push('Secure');
+      document.cookie = parts.join('; ');
+    } catch (e) {}
+  }
+  function pendingNext() {
+    try {
+      var next = new URLSearchParams(location.search).get('next') || '';
+      if (next.charAt(0) === '/' && next.indexOf('//') !== 0 && next.indexOf('/\\') !== 0 && next.indexOf('/enter') !== 0) return next;
+    } catch (e) {}
+    return /^\/enter(\.html)?$/.test(location.pathname) ? '/' : '';
+  }
+  function onEnterShell() { return /^\/enter(\.html)?$/.test(location.pathname); }
+  /* The acknowledgement links to these documents. They stay readable; every
+     other storefront page is refused at the edge until the cookie is set. */
+  function legalPage() { return /\/(research-use-policy|terms-of-sale|privacy-policy)(\.html)?$/.test(location.pathname); }
+
+  var NOTICE = 'For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.';
+  function ensureNotice() {
+    if (document.getElementById('amb-ruo-notice')) return;
+    var p = document.createElement('p');
+    p.id = 'amb-ruo-notice';
+    p.setAttribute('role', 'note');
+    p.textContent = NOTICE;
+    p.style.cssText = 'margin:0; padding:14px 20px; background:#3E1218; color:#C9A227; font-family:Archivo, sans-serif; font-size:12px; line-height:1.6; text-align:center';
+    document.body.appendChild(p);
+  }
+  function bootNotice() {
+    if (document.body) ensureNotice();
+    else document.addEventListener('DOMContentLoaded', ensureNotice);
+  }
   function start() { if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount); }
-  var live = /(^|\.)ambrosiastandard\.com$|\.vercel\.app$/.test(location.hostname);
-  if (!live || !window.fetch) { start(); return; }
-  var done = false;
-  var fallback = setTimeout(function () { if (!done) { done = true; start(); } }, 2500);
-  fetch('/api/checkout-mode', { cache: 'no-store' })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .catch(function () { return null; })
-    .then(function (d) {
-      if (done) return;
-      done = true; clearTimeout(fallback);
-      if (d && d.mode === 'zelle') return;
-      start();
-    });
+
+  bootNotice();
+  if (legalPage()) return;
+  if (acked()) {
+    syncCookie();
+    if (onEnterShell()) location.replace(pendingNext() || '/');
+    return;
+  }
+  start();
 })();

@@ -53,6 +53,53 @@ async function signedIn(request) {
 function isPublic(path) {
   return PUBLIC_PATHS.has(path) || PUBLIC_PREFIXES.some(p => path.startsWith(p));
 }
+
+/* Research-entry cookie. Set beside the existing localStorage acknowledgement.
+   HTML pages are not served until it is present, so a deep link cannot skip
+   the gate. API, asset, config, and WordPress proxy paths are not checked. */
+const ENTRY_COOKIE = 'ambrosia-entry-ack';
+const ENTRY_EXEMPT = new Set([
+  '/enter', '/enter.html',
+  '/research-use-policy', '/research-use-policy.html',
+  '/terms-of-sale', '/terms-of-sale.html',
+  '/privacy-policy', '/privacy-policy.html'
+]);
+function isUngatedPath(path) {
+  if (ENTRY_EXEMPT.has(path)) return true;
+  if (path.startsWith('/api/') || path.startsWith('/wp-json/') || path.startsWith('/wp-admin/') || path.startsWith('/wp-content/') || path.startsWith('/wp-includes/') || path.startsWith('/config/') || path.startsWith('/fonts/') || path.startsWith('/coa/')) return true;
+  return /\.(js|mjs|css|png|jpe?g|webp|gif|svg|ttf|woff2?|pdf|ico|json|map|txt|xml|php)$/i.test(path);
+}
+function entryAcked(request) {
+  return cookie(request, ENTRY_COOKIE) === 'yes';
+}
+function safeEntryNext(path, search) {
+  const next = path + (search || '');
+  if (!next.startsWith('/') || next.startsWith('//') || next.startsWith('/\\') || next.startsWith('/enter')) return '/';
+  return next;
+}
+
+/* Single-segment paths that are real pages. Anything else (/Nicole) is an
+   affiliate vanity URL and is rewritten to the offer screen. Old nickname
+   slugs stay reserved so they are not captured if a redirect is skipped. */
+const RESERVED = new Set([
+  'index', 'cart', 'checkout', 'offer', 'order', 'login', 'enter', 'standard', 'faq', 'contact',
+  'terms-of-sale', 'privacy-policy', 'shipping-restrictions', 'returns-documentation',
+  'research-use-policy', 'affiliate-agreement', 'affiliate', 'affiliate-portal',
+  'admin-checkout', 'admin-affiliates',
+  'ghk-cu', 'ghk-cu-bpc-157-tb-500', 'ghk-cu-bpc-157-tb-500-kpv', 'bpc-157-tb-500',
+  'glp-2', 'glp-3',
+  'glow', 'klow', 'wolverine', 'bacteriostatic-water',
+  'my-account', 'order-received'
+]);
+function vanityRewrite(url, path) {
+  const parts = path.split('/').filter(Boolean);
+  if (parts.length !== 1) return null;
+  let slug = parts[0];
+  try { slug = decodeURIComponent(slug); } catch (e) {}
+  slug = slug.replace(/\/+$/, '').trim().toLowerCase();
+  if (!slug || slug.includes('.') || RESERVED.has(slug)) return null;
+  return new Response(null, { headers: { 'x-middleware-rewrite': new URL('/offer.html' + url.search, url).toString(), 'Cache-Control': 'no-store' } });
+}
 function safeNext(v) {
   return typeof v === 'string' && v.startsWith('/') && !v.startsWith('//') && !v.startsWith('/\\') && !v.startsWith('/login') ? v : '/';
 }
@@ -76,6 +123,13 @@ async function zelleMode(url) {
 export default async function middleware(request) {
   const url = new URL(request.url);
   const path = url.pathname;
+
+  if ((request.method === 'GET' || request.method === 'HEAD') && !isUngatedPath(path) && !entryAcked(request)) {
+    const dest = new URL('/enter', url);
+    dest.searchParams.set('next', safeEntryNext(path, url.search));
+    return redirect(dest.toString());
+  }
+
   let authed = await signedIn(request);
   if (!authed && await zelleMode(url)) authed = true;
 
@@ -93,13 +147,6 @@ export default async function middleware(request) {
     return redirect(login.toString());
   }
 
-  if (path === '/bacteriostatic-water' || path === '/bacteriostatic-water.html') {
-    try {
-      const r = await fetch(new URL('/live-checkout.json', url), { cache: 'no-store' });
-      if (r.ok) { const v = await r.json(); if (v && v.bacWater === false && String(v.mode).trim().toLowerCase() !== 'zelle') return redirect(new URL('/#catalogue', url).toString()); }
-    } catch (e) {}
-  }
-
   if (path === '/checkout') {
     let zelle = url.searchParams.has('order');
     if (!zelle) {
@@ -114,5 +161,7 @@ export default async function middleware(request) {
       return new Response(null, { headers: { 'x-middleware-rewrite': new URL('/order.dc' + url.search, url).toString() } });
     }
   }
+  const vanity = vanityRewrite(url, path);
+  if (vanity) return vanity;
   return new Response(null, { headers: NEXT });
 }

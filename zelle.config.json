@@ -40,8 +40,8 @@
     "glp-3-30":   { "name": "GLP 3 (RT)", "mass": "30 mg per vial", "price": 170 },
     "ghk-cu":     { "name": "GHK-Cu", "mass": "50 mg per vial", "price": 45 },
     "ghk-cu-100": { "name": "GHK-Cu", "mass": "100 mg per vial", "price": 70 },
-    "glow":       { "name": "Glow (GHK-Cu + BPC-157 + TB-500)", "mass": "70 mg per vial", "price": 125 },
-    "klow":       { "name": "Klow (GHK-Cu + BPC-157 + TB-500 + KPV)", "mass": "80 mg per vial", "price": 180 },
-    "wolverine":  { "name": "Wolverine (BPC-157 + TB-500)", "mass": "20 mg per vial", "price": 120 }
+    "glow":       { "name": "GHK-Cu / BPC-157 / TB-500 blend", "mass": "70 mg per vial", "price": 125 },
+    "klow":       { "name": "GHK-Cu / BPC-157 / TB-500 / KPV blend", "mass": "80 mg per vial", "price": 180 },
+    "wolverine":  { "name": "BPC-157 / TB-500 blend", "mass": "20 mg per vial", "price": 120 }
   }
 }

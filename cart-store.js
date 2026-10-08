@@ -67,8 +67,7 @@
     'ghk-cu':    27,
     'glow':      32,
     'klow':      31,
-    'wolverine': 30,
-    'bac-water': 47
+    'wolverine': 30
   };
 
   /* --------------------------------------------------------------------------
@@ -88,10 +87,9 @@
        GLP 2 (TZ) parent 19   10MG/1 vial 20 · 20MG 22 · 30MG 24
                              (10-vial kits: 21 / 26 / 25 — not sold here yet)
        GHK-Cu    parent 27   50MG 28 · 100MG 29
-       BPC-157 + TB-500 simple  30
-       GHK-Cu + BPC-157 + TB-500 + KPV      simple  31
-       GHK-Cu + BPC-157 + TB-500      simple  32
-       Bac water simple  47
+       BPC-157 + TB-500 simple  30   (cart key wolverine; Woo id, not a display name)
+       GHK-Cu + BPC-157 + TB-500 + KPV simple  31   (cart key klow)
+       GHK-Cu + BPC-157 + TB-500 simple  32   (cart key glow)
      -------------------------------------------------------------------------- */
   var FALLBACK = {
     'glp-2':        { wooId: 20, name: 'GLP 2 (TZ)',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
@@ -101,10 +99,9 @@
     'glp-3-30':     { wooId: 18, name: 'GLP 3 (RT)',                 mass: '30 MG per vial',  price: 170, img: 'vial-glp-3.png',     href: 'glp-3.html' },
     'ghk-cu':       { wooId: 28, name: 'GHK-Cu',                mass: '50 mg per vial',  price: 45,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
     'ghk-cu-100':   { wooId: 29, name: 'GHK-Cu',                mass: '100 mg per vial', price: 70,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
-    'glow':         { wooId: 32, name: 'GHK-Cu + BPC-157 + TB-500',                  mass: '70 mg per vial',  price: 125, img: 'vial-ghk-cu-bpc-157-tb-500-v2.png',      href: 'ghk-cu-bpc-157-tb-500.html' },
-    'klow':         { wooId: 31, name: 'GHK-Cu + BPC-157 + TB-500 + KPV',                  mass: '80 mg per vial',  price: 180, img: 'vial-ghk-cu-bpc-157-tb-500-kpv-v2.png',      href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
-    'wolverine':    { wooId: 30, name: 'BPC-157 + TB-500',             mass: '20 mg per vial',  price: 120, img: 'vial-bpc-157-tb-500-v2.png', href: 'bpc-157-tb-500.html' },
-    'bac-water':    { wooId: 47, name: 'Bacteriostatic Water',             mass: '10 mL',           price: 20,  img: 'vial-bac-water-v2.png',          href: 'bacteriostatic-water.html' }
+    'glow':         { wooId: 32, name: 'GHK-Cu / BPC-157 / TB-500 blend', mass: '70 mg per vial',  price: 125, img: 'vial-ghk-cu-bpc-157-tb-500-v2.png', href: 'ghk-cu-bpc-157-tb-500.html' },
+    'klow':         { wooId: 31, name: 'GHK-Cu / BPC-157 / TB-500 / KPV blend', mass: '80 mg per vial',  price: 180, img: 'vial-ghk-cu-bpc-157-tb-500-kpv-v2.png', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
+    'wolverine':    { wooId: 30, name: 'BPC-157 / TB-500 blend', mass: '20 mg per vial',  price: 120, img: 'vial-bpc-157-tb-500-v2.png', href: 'bpc-157-tb-500.html' }
   };
 
   var CATALOG = {};
@@ -278,7 +275,7 @@
             if (isKit) return;
             var slug = slugFor(baseSlug, conc);
             CATALOG[slug] = {
-              name: p.name,
+              name: (FALLBACK[slug] && FALLBACK[slug].name) || p.name,
               mass: conc ? conc + ' per vial' : '',
               price: centsToDollars(v.prices.price, v.prices.currency_minor_unit),
               img: (v.images && v.images[0] && v.images[0].src) || parentImg || (FALLBACK[slug] && FALLBACK[slug].img),
@@ -289,7 +286,7 @@
           });
         } else {
           CATALOG[baseSlug] = {
-            name: p.name,
+            name: (FALLBACK[baseSlug] && FALLBACK[baseSlug].name) || p.name,
             mass: (FALLBACK[baseSlug] && FALLBACK[baseSlug].mass) || '',
             price: centsToDollars(p.prices.price, p.prices.currency_minor_unit),
             img: parentImg || (FALLBACK[baseSlug] && FALLBACK[baseSlug].img),
@@ -323,8 +320,12 @@
       var raw = localStorage.getItem(KEY);
       var v = raw ? JSON.parse(raw) : [];
       if (!Array.isArray(v)) return [];
-      return v.filter(function (l) { return l && CATALOG[l.id] && l.qty > 0; })
+      var next = v.filter(function (l) { return l && CATALOG[l.id] && l.qty > 0; })
               .map(function (l) { return { id: l.id, qty: Math.min(99, Math.max(1, l.qty | 0)) }; });
+      if (v.length !== next.length) {
+        try { localStorage.setItem(KEY, JSON.stringify(next)); } catch (e) {}
+      }
+      return next;
     } catch (e) { return []; }
   }
 

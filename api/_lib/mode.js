@@ -39,8 +39,8 @@ async function readMode() {
   }
 }
 
-/* Bacteriostatic water. Always on in Zelle mode; in WooCommerce mode it
-   follows bacWater in the same file (only an explicit false hides it). */
+/* live-checkout.json bacWater flag, still returned by /api/checkout-mode.
+   The storefront no longer lists that catalogue id. */
 async function readBacWater() {
   try {
     const v = require('../../live-checkout.json');
