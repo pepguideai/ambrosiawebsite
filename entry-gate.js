@@ -13,7 +13,6 @@
     } catch (e) { return false; }
   }
   window.AmbrosiaGate = { passed: acked };
-  if (acked()) return;
 
   var ageOk = false, useOk = false, role = '', tried = false;
   var root = document.createElement('div');
