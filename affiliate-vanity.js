@@ -11,8 +11,17 @@
   });
   window.AmbrosiaVanity = { name: '', ready: ready };
 
+  function paintGreeting(name) {
+    var el = document.querySelector('[data-vanity-greeting]');
+    if (!el) return;
+    if (!name) { el.hidden = true; return; }
+    el.hidden = false;
+    el.textContent = name + ' shared this research-use offer.';
+  }
+
   function finish(name) {
     window.AmbrosiaVanity.name = name || '';
+    paintGreeting(window.AmbrosiaVanity.name);
     window.__ambVanityResolve(window.AmbrosiaVanity.name);
   }
 

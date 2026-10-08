@@ -10,7 +10,7 @@
    Cart keys are SLUGS ('glp-3-30'), not Woo IDs. Every catalogue entry carries a
    `wooId` once live data matches it, so checkout can translate slug -> Woo ID.
    Keeping slugs as the key is what lets the product pages, the multi-vial tiers
-   and the bacteriostatic-water prompt work identically before and after the
+   work identically before and after the
    fetch lands.
 
    [SERVER] markers flag everything that needs a real backend before launch.
@@ -53,8 +53,7 @@
     'ghk-cu':    27,
     'glow':      32,
     'klow':      31,
-    'wolverine': 30,
-    'bac-water': 47
+    'wolverine': 30
   };
 
   /* --------------------------------------------------------------------------
@@ -62,18 +61,17 @@
      and the live fetch is confirmed for it.
      -------------------------------------------------------------------------- */
   var FALLBACK = {
-    'glp-2':        { name: 'GLP-2',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-2-20':     { name: 'GLP-2',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-2-30':     { name: 'GLP-2',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-2.png',     href: 'glp-2.html' },
-    'glp-3':        { name: 'GLP-3',                 mass: '10 MG per vial',  price: 70,  img: 'vial-glp-3.png',     href: 'glp-3.html' },
-    'glp-3-20':     { name: 'GLP-3',                 mass: '20 MG per vial',  price: 120, img: 'vial-glp-3.png',     href: 'glp-3.html' },
-    'glp-3-30':     { name: 'GLP-3',                 mass: '30 MG per vial',  price: 160, img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'glp-2':        { name: 'GLP 2 (TZ)',            mass: '10 MG per vial',  price: 70,  img: 'vial-glp-2.png',     href: 'glp-2.html' },
+    'glp-2-20':     { name: 'GLP 2 (TZ)',            mass: '20 MG per vial',  price: 120, img: 'vial-glp-2.png',     href: 'glp-2.html' },
+    'glp-2-30':     { name: 'GLP 2 (TZ)',            mass: '30 MG per vial',  price: 160, img: 'vial-glp-2.png',     href: 'glp-2.html' },
+    'glp-3':        { name: 'GLP 3 (RT)',            mass: '10 MG per vial',  price: 70,  img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'glp-3-20':     { name: 'GLP 3 (RT)',            mass: '20 MG per vial',  price: 120, img: 'vial-glp-3.png',     href: 'glp-3.html' },
+    'glp-3-30':     { name: 'GLP 3 (RT)',            mass: '30 MG per vial',  price: 160, img: 'vial-glp-3.png',     href: 'glp-3.html' },
     'ghk-cu':       { name: 'GHK-Cu',                mass: '50 mg per vial',  price: 35,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
     'ghk-cu-100':   { name: 'GHK-Cu',                mass: '100 mg per vial', price: 50,  img: 'vial-ghk-cu.png',    href: 'ghk-cu.html' },
-    'glow':         { name: 'Glow',                  mass: '70 mg per vial',  price: 125, img: 'vial-glow.png',      href: 'glow.html' },
-    'klow':         { name: 'Klow',                  mass: '80 mg per vial',  price: 170, img: 'vial-klow.png',      href: 'klow.html' },
-    'wolverine':    { name: 'Wolverine',             mass: '20 mg per vial',  price: 120, img: 'vial-wolverine.png', href: 'wolverine.html' },
-    'bac-water':    { name: 'Bacteriostatic Water',  mass: '10 mL',           price: 20,  img: 'vial-bac-water.png', href: 'bacteriostatic-water.html' }
+    'glow':         { name: 'GHK-Cu / BPC-157 / TB-500 blend', mass: '70 mg per vial',  price: 125, img: 'vial-ghk-cu-bpc-157-tb-500-v2.png', href: 'ghk-cu-bpc-157-tb-500.html' },
+    'klow':         { name: 'GHK-Cu / BPC-157 / TB-500 / KPV blend', mass: '80 mg per vial',  price: 170, img: 'vial-ghk-cu-bpc-157-tb-500-kpv-v2.png', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
+    'wolverine':    { name: 'BPC-157 / TB-500 blend', mass: '20 mg per vial',  price: 120, img: 'vial-bpc-157-tb-500-v2.png', href: 'bpc-157-tb-500.html' }
   };
 
   var CATALOG = {};
@@ -98,7 +96,7 @@
 
   /* --------------------------------------------------------------------------
      Multi-vial pricing: two of any one vial 5% off, three 10%, ten 15%.
-     Applies per line item. Bacteriostatic water is flat $20 and excluded.
+     Applies per line item.
 
      [SERVER] This is presentational only. Woo must enforce the same rule with a
      `woocommerce_before_calculate_totals` hook or a bulk-pricing plugin,
@@ -107,13 +105,11 @@
   var TIERS = [{ qty: 10, rate: 0.15 }, { qty: 3, rate: 0.10 }, { qty: 2, rate: 0.05 }];
 
   function tierRate(id, qty) {
-    if (id === 'bac-water') return 0;
     for (var i = 0; i < TIERS.length; i++) if (qty >= TIERS[i].qty) return TIERS[i].rate;
     return 0;
   }
 
   function nextTier(id, qty) {
-    if (id === 'bac-water') return null;
     for (var i = TIERS.length - 1; i >= 0; i--) if (qty < TIERS[i].qty) return TIERS[i];
     return null;
   }

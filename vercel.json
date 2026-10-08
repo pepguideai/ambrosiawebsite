@@ -67,6 +67,41 @@
       "source": "/coa/klow-80mg.pdf",
       "destination": "/coa/ghk-cu-bpc-157-tb-500-kpv-80mg.pdf",
       "permanent": true
+    },
+    {
+      "source": "/coa/klow-80mg-090126KLOW80.pdf",
+      "destination": "/coa/ghk-cu-bpc-157-tb-500-kpv-80mg.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/wolverine-20mg.pdf",
+      "destination": "/coa/bpc-157-tb-500-20mg.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/glow-70mg-090126GLOW70.pdf",
+      "destination": "/coa/ghk-cu-bpc-157-tb-500-70mg-090126.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/klow-80mg.pdf",
+      "destination": "/coa/ghk-cu-bpc-157-tb-500-kpv-80mg.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/klow-80mg-090126KLOW80.pdf",
+      "destination": "/coa/ghk-cu-bpc-157-tb-500-kpv-80mg.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/bacteriostatic-water",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/bacteriostatic-water.html",
+      "destination": "/",
+      "permanent": true
     }
   ],
   "rewrites": [

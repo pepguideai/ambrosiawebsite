@@ -12,7 +12,8 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=5"></script>
-<script src="entry-gate.js?v=4"></script>
+<script src="entry-gate.js?v=6"></script>
+<script src="affiliate-vanity.js?v=2"></script>
 <script src="checkout-mode.js?v=5"></script>
 <link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
@@ -43,6 +44,7 @@
       <sc-if value="{{ onConsent }}" hint-placeholder-val="{{ true }}">
       <div>
         <h1 style="font-family:Cinzel, serif; font-weight:600; font-size:clamp(24px,3.4vw,38px); letter-spacing:0.16em; line-height:1.24; color:#F0E9DC; margin:0; padding-left:0.16em">UNLOCK YOUR MYSTERY OFFER</h1>
+        <p data-vanity-greeting hidden style="font-size:14px; line-height:1.6; color:#E0CFC0; margin:12px 0 0"></p>
         <p style="font-size:16.5px; line-height:1.8; color:#E0CFC0; margin:26px auto 0; max-width:400px; text-wrap:pretty">Confirm below to reveal your welcome offer. It applies to a first order verified under our Terms of Sale.</p>
 
         <label style="margin-top:clamp(31px,5vw,54px); display:flex; gap:14px; align-items:flex-start; text-align:left; cursor:pointer">
@@ -149,5 +151,6 @@ class Component extends DCLogic {
   }
 }
 </script>
+<p id="amb-ruo-notice" role="note" style="margin:0; padding:14px 20px; background:#3E1218; color:#C9A227; font-family:Archivo, sans-serif; font-size:12px; line-height:1.6; text-align:center">For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.</p>
 </body>
 </html>

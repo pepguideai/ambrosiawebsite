@@ -1,6 +1,6 @@
 const cfg = require('../../config/zelle.config.json');
 const Pricing = require('../../zelle-pricing.js');
-const { readMode, readBacWater } = require('../_lib/mode');
+const { readMode } = require('../_lib/mode');
 const { callSheet } = require('../_lib/sheet');
 const { noStore, body, sameOrigin } = require('../_lib/http');
 
@@ -59,8 +59,8 @@ module.exports = async (req, res) => {
     if (!lines.length) v.errors.form = 'Your cart is empty.';
     if (Object.keys(v.errors).length) return res.status(400).json({ code: 'INVALID', errors: v.errors });
 
-    if (!(await readBacWater()) && lines.some(l => l && l.id === 'bac-water')) {
-      return res.status(400).json({ code: 'INVALID', errors: { form: 'Bacteriostatic water is not available right now. Remove it from your cart to continue.' } });
+    if (lines.some(l => l && l.id === 'bac-water')) {
+      return res.status(400).json({ code: 'INVALID', errors: { form: 'An item in your cart is no longer sold. Remove it to continue.' } });
     }
     const q = Pricing.quote({ lines, shipId: b.shipId, state: v.customer.state, zip: v.customer.zip }, cfg);
     if (q.errors.length || !q.items.length) return res.status(400).json({ code: 'INVALID', errors: { form: 'One of the items in your cart is no longer available.' } });

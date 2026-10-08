@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="entry-gate.js?v=6"></script>
 </head>
 <body>
 <x-dc>
@@ -194,7 +195,7 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const cur = (s.current && s.current.mode) || 'woocommerce';
-    const NAMES = { woocommerce: 'WooCommerce (default)', zelle: 'Zelle + bac water' };
+    const NAMES = { woocommerce: 'WooCommerce (default)', zelle: 'Zelle checkout' };
     const fmt = iso => iso ? new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '';
     return {
       isLoading: s.phase === 'loading', isLogin: s.phase === 'login', isPanel: s.phase === 'panel',
@@ -214,7 +215,7 @@ class Component extends DCLogic {
         const on = cur === m;
         return {
           label: NAMES[m], on,
-          detail: m === 'woocommerce' ? 'Normal card checkout on WordPress.' : 'On-site Zelle checkout, 25% off, offer in the top strip. Bacteriostatic water and product nicknames (Glow, Klow, Wolverine) shown.',
+          detail: m === 'woocommerce' ? 'Normal card checkout on WordPress.' : 'On-site Zelle checkout, 25% off, offer in the top strip. Research-use catalogue only.',
           pick: () => { if (!on) this.setState({ pending: m, panelErr: '' }); },
           style: 'display:flex; flex-direction:column; align-items:flex-start; gap:8px; text-align:left; padding:clamp(18px,2.4vw,26px); min-height:120px; cursor:pointer; transition:background 300ms ease;'
             + (on ? ' background:#6B1F28; color:#F0E9DC' : ' background:transparent; color:#241C19')
@@ -222,7 +223,7 @@ class Component extends DCLogic {
       }),
       pending: !!s.pending,
       pendingText: s.pending === 'zelle'
-        ? 'Switch to Zelle + bac water? New orders will go through the Zelle flow, the 25% offer appears site-wide, and bacteriostatic water and product nicknames are shown.'
+        ? 'Switch to Zelle checkout? New orders will go through the Zelle flow and the 25% offer appears site-wide.'
         : 'Switch checkout back to WooCommerce? New Zelle orders will be blocked; customers mid-payment can still finish.',
       confirmLabel: s.busy ? 'SWITCHING\u2026' : 'SWITCH',
       confirm: () => this.flip(s.pending), cancel: () => this.setState({ pending: null }),
@@ -235,5 +236,6 @@ class Component extends DCLogic {
   }
 }
 </script>
+<p id="amb-ruo-notice" role="note" style="margin:0; padding:14px 20px; background:#3E1218; color:#C9A227; font-family:Archivo, sans-serif; font-size:12px; line-height:1.6; text-align:center">For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.</p>
 </body>
 </html>

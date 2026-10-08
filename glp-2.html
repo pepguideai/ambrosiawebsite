@@ -15,7 +15,7 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <script src="cart-store.js?v=5"></script>
-<script src="entry-gate.js?v=4"></script>
+<script src="entry-gate.js?v=6"></script>
 <script src="checkout-mode.js?v=5"></script>
 <link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
@@ -109,7 +109,7 @@
         </div>
         <div style="margin-top:18px; padding:14px 16px; border:1px solid #6B1F28; display:flex; flex-direction:column; gap:6px">
           <div style="font-size:13px; font-weight:600; letter-spacing:0.14em; line-height:1.4; color:#6B1F28">FOR LABORATORY AND RESEARCH USE ONLY. NOT FOR HUMAN CONSUMPTION.</div>
-          <div style="font-size:13px; line-height:1.6; color:#3C312C">Not for human or animal consumption, therapeutic, clinical or diagnostic use. Sold to laboratories and qualified researchers only.</div>
+          <div style="font-size:13px; line-height:1.6; color:#3C312C">For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.</div>
         </div>
 
         <div style="font-size:11px; font-weight:600; letter-spacing:0.18em; color:#7A5622; margin:clamp(24px,3vw,32px) 0 14px">QUANTITY</div>
@@ -234,11 +234,11 @@
   <!-- ─── previous / next compound ─────────────────────────── -->
   <div style="padding:0 clamp(20px,4vw,56px) clamp(38px,6vw,84px)">
     <div class="pstrip" style="max-width:1440px; margin:0 auto; border-top:1px solid #241C19">
-      <a href="bacteriostatic-water.html" style="display:flex; align-items:center; gap:16px; padding:clamp(20px,2.6vw,30px) 2px; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">
+      <a href="bpc-157-tb-500.html" style="display:flex; align-items:center; gap:16px; padding:clamp(20px,2.6vw,30px) 2px; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">
         <span style="flex:0 0 auto; font-size:18px; line-height:1; color:#6B1F28">&larr;</span>
         <span style="display:flex; flex-direction:column; gap:6px; min-width:0">
           <span style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">PREVIOUS</span>
-          <span style="font-family:'Instrument Serif', serif; font-size:clamp(20px,2.1vw,26px); line-height:1.15; color:#6B1F28">Bacteriostatic Water</span>
+          <span style="font-family:'Instrument Serif', serif; font-size:clamp(20px,2.1vw,26px); line-height:1.15; color:#6B1F28">BPC-157 + TB-500</span>
         </span>
       </a>
       <a href="glp-3.html" style="display:flex; align-items:center; justify-content:flex-end; gap:16px; padding:clamp(20px,2.6vw,30px) 2px; text-align:right; transition:color 400ms cubic-bezier(.2,.6,.2,1)" style-hover="color:#241C19">
@@ -328,7 +328,6 @@ class Component extends DCLogic {
       { label: 'GHK-Cu + BPC-157 + TB-500', href: 'ghk-cu-bpc-157-tb-500.html' },
       { label: 'GHK-Cu + BPC-157 + TB-500 + KPV', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
       { label: 'BPC-157 + TB-500', href: 'bpc-157-tb-500.html' },
-      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
     ] }
   ];
 
@@ -340,7 +339,6 @@ class Component extends DCLogic {
       { label: 'GHK-Cu + BPC-157 + TB-500', href: 'ghk-cu-bpc-157-tb-500.html' },
       { label: 'GHK-Cu + BPC-157 + TB-500 + KPV', href: 'ghk-cu-bpc-157-tb-500-kpv.html' },
       { label: 'BPC-157 + TB-500', href: 'bpc-157-tb-500.html' },
-      { label: 'Bacteriostatic Water', href: 'bacteriostatic-water.html' }
     ] },
     { label: 'Support', items: [
       { label: 'FAQ', href: 'faq.html' },
@@ -427,7 +425,7 @@ class Component extends DCLogic {
     { k: 'MOLECULAR WEIGHT', v: '4813.5 g/mol' },
     { k: 'PHYSICAL FORM', v: 'Lyophilised powder' },
     { k: 'APPEARANCE', v: 'White to off-white powder' },
-    { k: 'SOLUBILITY', v: 'Soluble in laboratory-grade sterile water' },
+    { k: 'SOLUBILITY', v: 'Lyophilised solid. See the certificate of analysis.' },
     { k: 'STORAGE', v: '2\u20138 \u00B0C, protected from light' },
     { k: 'CERTIFICATE OF ANALYSIS', v: 'Third-party tested; downloadable for every lot below' },
     { k: 'LOT DOCUMENTATION', v: 'Production and handling records held for every lot' }
@@ -715,5 +713,6 @@ class Component extends DCLogic {
   }
 }
 </script>
+<p id="amb-ruo-notice" role="note" style="margin:0; padding:14px 20px; background:#3E1218; color:#C9A227; font-family:Archivo, sans-serif; font-size:12px; line-height:1.6; text-align:center">For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.</p>
 </body>
 </html>
