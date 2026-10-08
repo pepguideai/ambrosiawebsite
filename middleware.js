@@ -1,13 +1,12 @@
 /* Login gate + checkout switch. Runs before every request on the site.
 
-   1. Research-use acknowledgement first. HTML without ambrosia-entry-ack
-      redirects to /enter?next=…. /enter, the legal pages it links to, API,
+   1. Real sign-in first (amb_session), in every checkout mode. HTML without it
+      redirects to /login?next=…. API calls get 401. /login, its scripts, the
+      auth API, the legal pages, and the admin pages (own password) do not
+      require a session. /enter does.
+   2. After a valid session, HTML without ambrosia-entry-ack redirects to
+      /enter?next=…. Accepting there continues to the original path. API,
       asset, config, and WordPress proxy paths are not checked.
-   2. Then a real sign-in cookie (amb_session). This does not depend on
-      checkout mode: Zelle and WooCommerce both require it. Pages redirect
-      to /login?next=…; API calls get 401. Direct links are gated the same way.
-      /enter, /login, the legal pages, their scripts, the auth API, and the
-      admin pages (which have their own password) stay reachable.
    3. /checkout goes to WooCommerce unless live-checkout.json says "zelle".
       To switch: edit live-checkout.json on GitHub. Vercel redeploys in ~1 minute.
 
@@ -17,7 +16,6 @@ export const config = { matcher: ['/', '/:path*'] };
 
 const PUBLIC_PATHS = new Set([
   '/login', '/login.dc', '/login.dc.html',
-  '/enter', '/enter.html',
   '/research-use-policy', '/research-use-policy.html',
   '/terms-of-sale', '/terms-of-sale.html',
   '/privacy-policy', '/privacy-policy.html',
@@ -63,12 +61,14 @@ function isPublic(path) {
   return PUBLIC_PATHS.has(path) || PUBLIC_PREFIXES.some(p => path.startsWith(p));
 }
 
-/* Research-entry cookie. Set beside the existing localStorage acknowledgement.
-   HTML pages are not served until it is present, so a deep link cannot skip
-   the gate. API, asset, config, and WordPress proxy paths are not checked. */
+/* Research-entry cookie. Checked only after a valid session, so the
+   researcher gate never appears on the login page. /enter itself is exempt
+   or the gate would redirect to itself. API, asset, config, and WordPress
+   proxy paths are not checked. */
 const ENTRY_COOKIE = 'ambrosia-entry-ack';
 const ENTRY_EXEMPT = new Set([
   '/enter', '/enter.html',
+  '/login', '/login.dc', '/login.dc.html',
   '/research-use-policy', '/research-use-policy.html',
   '/terms-of-sale', '/terms-of-sale.html',
   '/privacy-policy', '/privacy-policy.html'
@@ -83,8 +83,16 @@ function entryAcked(request) {
 }
 function safeEntryNext(path, search) {
   const next = path + (search || '');
-  if (!next.startsWith('/') || next.startsWith('//') || next.startsWith('/\\') || next.startsWith('/enter')) return '/';
+  if (!next.startsWith('/') || next.startsWith('//') || next.startsWith('/\\') || next.startsWith('/enter') || next.startsWith('/login')) return '/';
   return next;
+}
+/* A ?next= value that is safe to land on. /enter and /login are not, or the two gates loop. */
+function safeInner(v) {
+  if (typeof v !== 'string' || !v.startsWith('/') || v.startsWith('//') || v.startsWith('/\\') || v.startsWith('/enter') || v.startsWith('/login')) return '/';
+  return v;
+}
+function onEnter(path) {
+  return path === '/enter' || path === '/enter.html';
 }
 
 /* Single-segment paths that are real pages. Anything else (/Nicole) is an
@@ -118,14 +126,8 @@ const redirect = to => new Response(null, { status: 302, headers: { Location: to
 export default async function middleware(request) {
   const url = new URL(request.url);
   const path = url.pathname;
-
-  if ((request.method === 'GET' || request.method === 'HEAD') && !isUngatedPath(path) && !entryAcked(request)) {
-    const dest = new URL('/enter', url);
-    dest.searchParams.set('next', safeEntryNext(path, url.search));
-    return redirect(dest.toString());
-  }
-
   const authed = await signedIn(request);
+  const getOrHead = request.method === 'GET' || request.method === 'HEAD';
 
   if (path === '/login' || path.startsWith('/login.dc')) {
     if (authed) return redirect(new URL(safeNext(url.searchParams.get('next')), url).toString());
@@ -136,9 +138,24 @@ export default async function middleware(request) {
       return new Response(JSON.stringify({ error: 'Sign in required.' }), { status: 401, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
     }
     const login = new URL('/login', url);
-    const next = path + url.search;
+    /* /enter?next=/Nicole must not become /login?next=/enter?next=/Nicole.
+       Keep the eventual page so login, then the researcher gate, both return there. */
+    let next = path + url.search;
+    if (onEnter(path)) {
+      const inner = url.searchParams.get('next');
+      next = inner ? safeInner(inner) : '/enter';
+    }
     if (next !== '/') login.searchParams.set('next', next);
     return redirect(login.toString());
+  }
+
+  if (authed && getOrHead && onEnter(path) && entryAcked(request)) {
+    return redirect(new URL(safeInner(url.searchParams.get('next')), url).toString());
+  }
+  if (authed && getOrHead && !entryAcked(request) && !isUngatedPath(path)) {
+    const dest = new URL('/enter', url);
+    dest.searchParams.set('next', safeEntryNext(path, url.search));
+    return redirect(dest.toString());
   }
 
   if (path === '/checkout') {
