@@ -39,14 +39,10 @@ async function readMode() {
   }
 }
 
-/* live-checkout.json bacWater flag, still returned by /api/checkout-mode.
-   The storefront no longer lists that catalogue id. */
+/* Bacteriostatic water is not sold. /api/checkout-mode still returns the
+   field, and it is always false — including when mode is zelle. */
 async function readBacWater() {
-  try {
-    const v = require('../../live-checkout.json');
-    if (v && String(v.mode).trim().toLowerCase() === 'zelle') return true;
-    return !(v && v.bacWater === false);
-  } catch (e) { return true; }
+  return false;
 }
 
 /* The admin page shows the same mode the site uses: live-checkout.json. */
