@@ -98,13 +98,17 @@
   function pendingNext() {
     try {
       var next = new URLSearchParams(location.search).get('next') || '';
-      if (next.charAt(0) === '/' && next.indexOf('//') !== 0 && next.indexOf('/\\') !== 0 && next.indexOf('/enter') !== 0) return next;
+      if (next.charAt(0) === '/' && next.indexOf('//') !== 0 && next.indexOf('/\\') !== 0 && next.indexOf('/enter') !== 0 && next.indexOf('/login') !== 0) return next;
     } catch (e) {}
     return /^\/enter(\.html)?$/.test(location.pathname) ? '/' : '';
   }
   function onEnterShell() { return /^\/enter(\.html)?$/.test(location.pathname); }
-  /* The acknowledgement links to these documents. They stay readable; every
-     other storefront page is refused at the edge until the cookie is set. */
+  function loginPage() { return /\/login(\.dc)?(\.html)?$/.test(location.pathname); }
+  function cookieAcked() {
+    return /(?:^|; )ambrosia-entry-ack=yes(?:;|$)/.test(document.cookie);
+  }
+  /* The acknowledgement links to these documents. They stay readable; the
+     overlay itself is only mounted on /enter, and only after sign-in. */
   function legalPage() { return /\/(research-use-policy|terms-of-sale|privacy-policy)(\.html)?$/.test(location.pathname); }
 
   var NOTICE = 'For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.';
@@ -124,11 +128,14 @@
   function start() { if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount); }
 
   bootNotice();
+  /* Login is served with no entry cookie. Never cover it with this gate.
+     A stored acknowledgement is applied on /enter, after sign-in. */
+  if (loginPage()) return;
   if (legalPage()) return;
-  if (acked()) {
-    syncCookie();
+  if (acked() || cookieAcked()) {
+    if (acked()) syncCookie();
     if (onEnterShell()) location.replace(pendingNext() || '/');
     return;
   }
-  start();
+  if (onEnterShell()) start();
 })();
