@@ -15,7 +15,7 @@
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="ambrosia.css?v=5">
-<style>a{color:#6B1F28}a:hover{color:#8E2C36}input:focus-visible,button:focus-visible{outline:2px solid #6B1F28;outline-offset:2px}</style>
+<style>a{color:#6B1F28}a:hover{color:#8E2C36}input:focus-visible,button:focus-visible{outline:2px solid #6B1F28;outline-offset:2px}html,body{height:auto!important;min-height:100%}#dc-root,#dc-root>.sc-host{height:auto!important;min-height:100vh}</style>
 </helmet>
 
 <div data-screen-label="Sign in" style="background:#F0E9DC; color:#241C19; font-family:Archivo, sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; display:flex; flex-direction:column">
@@ -89,8 +89,6 @@
       </div>
     </div>
   </div>
-
-  <p role="note" style="margin:0; padding:14px 20px; background:#3E1218; color:#C9A227; font-size:12px; line-height:1.6; text-align:center">For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.</p>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
@@ -154,6 +152,5 @@ class Component extends DCLogic {
   }
 }
 </script>
-<p id="amb-ruo-notice" hidden style="display:none"></p>
 </body>
 </html>
