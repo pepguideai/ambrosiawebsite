@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <div style="flex:1; padding:clamp(28px,8vw,104px) clamp(20px,4vw,56px) 140px">
+  <div style="flex:1; padding:clamp(28px,8vw,104px) clamp(20px,4vw,56px) 56px">
     <div style="max-width:1080px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap:clamp(28px,7vw,96px); align-items:start">
 
       <div style="display:flex; flex-direction:column; gap:14px; max-width:440px">
@@ -89,6 +89,8 @@
       </div>
     </div>
   </div>
+
+  <p role="note" style="margin:0; padding:14px 20px; background:#3E1218; color:#C9A227; font-size:12px; line-height:1.6; text-align:center">For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.</p>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
@@ -152,6 +154,6 @@ class Component extends DCLogic {
   }
 }
 </script>
-<p id="amb-ruo-notice" role="note" style="margin:0; padding:14px 20px; background:#3E1218; color:#C9A227; font-family:Archivo, sans-serif; font-size:12px; line-height:1.6; text-align:center">For research use only. Not for human or animal consumption. Not a drug, food, or cosmetic.</p>
+<p id="amb-ruo-notice" hidden style="display:none"></p>
 </body>
 </html>
