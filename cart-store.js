@@ -146,7 +146,7 @@
     { hash: '1e5139ca', label: 'Referral', rate: 0.15 },
     { hash: 'abd987d7', label: 'Referral', rate: 0.15 },
     { hash: 'd9b59cf', label: 'Offer', rate: 0.2 },
-      { hash: '6735b260', label: 'Ambrose', rate: 0.1 }
+      { hash: '6735b260', label: 'Ambrose', rate: 0.2 }
   ];
 
   function findDiscount(typed) {
