@@ -13,7 +13,7 @@
 <link rel="preload" href="fonts/Cinzel.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="preload" href="fonts/InstrumentSerif-Regular.ttf" as="font" type="font/ttf" crossorigin>
-<script src="cart-store.js?v=5"></script>
+<script src="cart-store.js?v=6"></script>
 <script src="entry-gate.js?v=8"></script>
 <script src="checkout-mode.js?v=5"></script>
 <link rel="stylesheet" href="ambrosia.css?v=5">
@@ -314,7 +314,11 @@ class Component extends DCLogic {
       const C = window.AmbrosiaCart;
       if (!C) { if (tries++ < 120) requestAnimationFrame(boot); return; }
       if (!C.read().length && (this.props.demoContents ?? true)) C.write(Component.DEMO.slice());
-      if (prefs.applied && C.findDiscount) { const f = C.findDiscount(prefs.applied); if (f) this.setState({ applied: f, code: f.code }); }
+      const restoreCode = () => {
+        if (prefs.applied && C.findDiscount) { const f = C.findDiscount(prefs.applied); if (f) this.setState({ applied: f, code: f.code }); }
+      };
+      restoreCode();
+      if (C.codesReady && C.codesReady.then) C.codesReady.then(restoreCode);
       this.sync();
       this._off = C.on(() => this.sync());
     };
@@ -480,11 +484,16 @@ class Component extends DCLogic {
       code: s.code,
       setCode: e => this.setState({ code: e.target.value, codeErr: '' }),
       applyCode: () => {
-        const key = (s.code || '').trim().toUpperCase();
-        if (!key) return;
-        const found = C && C.findDiscount ? C.findDiscount(key) : null;
-        if (found) { this.setState({ applied: found, codeErr: '', code: key }); this.savePrefs({ applied: key }); }
-        else { this.setState({ applied: null, codeErr: 'That code is not recognised.' }); this.savePrefs({ applied: null }); }
+        const run = () => {
+          const key = (this.state.code || '').trim().toUpperCase();
+          if (!key) return;
+          const found = C && C.findDiscount ? C.findDiscount(key) : null;
+          if (found) { this.setState({ applied: found, codeErr: '', code: found.code }); this.savePrefs({ applied: found.code }); }
+          else { this.setState({ applied: null, codeErr: 'That code is not recognised.' }); this.savePrefs({ applied: null }); }
+        };
+        const ready = C && C.codesReady;
+        if (ready && ready.then) ready.then(run, run);
+        else run();
       },
       codeMessage: s.codeErr || (applied ? applied.label + ' code applied.' : ''),
 

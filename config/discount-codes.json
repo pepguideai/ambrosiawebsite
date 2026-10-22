@@ -1,0 +1,7 @@
+{
+  "stacking": "better-of",
+  "description": "Codes do not stack with the Zelle saving in config/zelle.config.json (discount.rate, currently 25%). The customer receives the higher of the two rates. Equal rates keep the Zelle saving. The code entered is stored on the order either way. Shipping stays based on the pre-discount subtotal. Rose20 is 20%, so on a Zelle order the 25% saving wins and Rose20 is recorded. WooCommerce does not use this file: create coupon Rose20 under Marketing > Coupons (percentage, 20). The cart passes that code through at handoff; WooCommerce accepts or rejects it.",
+  "codes": [
+    { "code": "Rose20", "percent": 20, "active": true, "label": "Rose20" }
+  ]
+}

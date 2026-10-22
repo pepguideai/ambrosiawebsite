@@ -16,7 +16,7 @@
 <script src="cart-store.js?v=5"></script>
 <script src="entry-gate.js?v=8"></script>
 <script src="checkout-mode.js?v=5"></script>
-<script src="zelle-pricing.js?v=1"></script>
+<script src="zelle-pricing.js?v=2"></script>
 <link rel="stylesheet" href="ambrosia.css?v=5">
 </helmet>
 
@@ -233,6 +233,19 @@
             </div>
             <div style="display:flex; flex-direction:column; gap:12px; padding-top:20px">
               <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Subtotal</span><span style="color:#241C19">{{ sum.subtotal }}</span></div>
+              <div style="display:flex; flex-direction:column; gap:8px; padding-top:4px">
+                <label for="discount-code" style="font-size:10px; font-weight:600; letter-spacing:0.2em; color:#7A5622">DISCOUNT CODE</label>
+                <div style="display:flex; gap:8px">
+                  <input id="discount-code" type="text" value="{{ codeInput }}" onChange="{{ setCode }}" onKeyDown="{{ codeKey }}" placeholder="Enter code" aria-label="Discount code" autocomplete="off" autocapitalize="characters" spellcheck="false" style="flex:1 1 auto; min-width:0; height:48px; padding:0 14px; border:1px solid {{ bd.code }}; background:#F0E9DC; color:#241C19; font-size:14px; letter-spacing:0.06em">
+                  <button type="button" onClick="{{ applyCode }}" style="flex:0 0 auto; height:48px; padding:0 18px; border:1px solid #241C19; color:#241C19; font-size:11px; font-weight:600; letter-spacing:0.16em; cursor:pointer; transition:background 380ms cubic-bezier(.2,.6,.2,1), color 380ms" style-hover="background:#241C19; color:#F0E9DC">APPLY</button>
+                </div>
+                <sc-if value="{{ codeMessage }}" hint-placeholder-val="{{ false }}">
+                  <div role="status" style="{{ codeMessageStyle }}">{{ codeMessage }}</div>
+                </sc-if>
+              </div>
+              <sc-if value="{{ sum.hasCode }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Code</span><span style="color:#241C19">{{ sum.code }}</span></div>
+              </sc-if>
               <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">{{ sum.discountLabel }}</span><span style="color:#6B1F28">&minus;{{ sum.discount }}</span></div>
               <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Shipping</span><span style="color:#241C19">{{ sum.shipping }}</span></div>
               <sc-if value="{{ sum.hasTax }}" hint-placeholder-val="{{ false }}">
@@ -297,7 +310,13 @@
           <div style="display:flex; justify-content:space-between; gap:16px; font-size:14px"><span style="color:#3C312C">{{ it.label }}</span><span style="color:#241C19; white-space:nowrap">{{ it.amount }}</span></div>
         </sc-for>
         <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px; border-top:1px solid #D8C9B2; padding-top:12px"><span style="color:#3C312C">Subtotal</span><span style="color:#241C19">{{ order.subtotalL }}</span></div>
+        <sc-if value="{{ order.hasCode }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Code</span><span style="color:#241C19">{{ order.code }}</span></div>
+        </sc-if>
         <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">{{ order.discountLabel }}</span><span style="color:#6B1F28">&minus;{{ order.discountL }}</span></div>
+        <sc-if value="{{ order.codeNote }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12.5px; line-height:1.6; color:#3C312C">{{ order.codeNote }}</div>
+        </sc-if>
         <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Shipping ({{ order.shipLabel }})</span><span style="color:#241C19">{{ order.shippingL }}</span></div>
         <sc-if value="{{ order.hasTax }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Tax</span><span style="color:#241C19">{{ order.taxL }}</span></div>
@@ -346,7 +365,13 @@
           <div style="display:flex; justify-content:space-between; gap:16px; font-size:14px"><span style="color:#3C312C">{{ it.label }}</span><span style="color:#241C19; white-space:nowrap">{{ it.amount }}</span></div>
         </sc-for>
         <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px; border-top:1px solid #D8C9B2; padding-top:12px"><span style="color:#3C312C">Subtotal</span><span style="color:#241C19">{{ order.subtotalL }}</span></div>
+        <sc-if value="{{ order.hasCode }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Code</span><span style="color:#241C19">{{ order.code }}</span></div>
+        </sc-if>
         <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">{{ order.discountLabel }}</span><span style="color:#6B1F28">&minus;{{ order.discountL }}</span></div>
+        <sc-if value="{{ order.codeNote }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12.5px; line-height:1.6; color:#3C312C">{{ order.codeNote }}</div>
+        </sc-if>
         <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Shipping ({{ order.shipLabel }})</span><span style="color:#241C19">{{ order.shippingL }}</span></div>
         <sc-if value="{{ order.hasTax }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex; justify-content:space-between; gap:20px; font-size:14px"><span style="color:#3C312C">Tax</span><span style="color:#241C19">{{ order.taxL }}</span></div>
@@ -390,6 +415,7 @@ class Component extends DCLogic {
 
   state = {
     step: 'loading', cfg: null, cart: [], f: { ...Component.EMPTY }, errors: {}, shipId: 'standard',
+    codeInput: '', appliedCode: '', codeErr: '', codeBook: null,
     ageOk: false, termsOk: false, ageAt: null, termsAt: null, purpose: '', submitting: false, formError: '', modeOff: false,
     order: null, copied: '', emailState: '', count: null, counting: false, loadError: ''
   };
@@ -408,6 +434,7 @@ class Component extends DCLogic {
     let ship = 'standard';
     try { ship = (JSON.parse(localStorage.getItem('ambrosia-checkout-v1') || '{}') || {}).ship || ship; } catch (e) {}
     this.setState({ cfg, shipId: cfg.shipping.options.some(o => o.id === ship) ? ship : 'standard' });
+    await this.loadCodes(cfg);
     if (this.demo) this.bootDemo(cfg); else await this.bootLive(cfg);
   }
 
@@ -429,10 +456,10 @@ class Component extends DCLogic {
     });
   }
 
-  demoOrder(cfg) {
+  demoOrder(cfg, code) {
     cfg = cfg || this.state.cfg;
     const c = { email: 'researcher@lab.org', phone: '(615) 555-0142', name: 'Dana Whitfield', street: '1200 Broadway', apt: 'Suite 4', city: 'Nashville', state: 'TN', zip: '37203', ...this.filled() };
-    const q = window.ZellePricing.quote({ lines: this.state.cart.length ? this.state.cart : Component.DEMO_CART, shipId: this.state.shipId, state: c.state, zip: c.zip }, cfg);
+    const q = window.ZellePricing.quote({ lines: this.state.cart.length ? this.state.cart : Component.DEMO_CART, shipId: this.state.shipId, state: c.state, zip: c.zip, code: code != null ? code : this.state.appliedCode }, cfg, this.state.codeBook);
     return { number: 'AMB-7KQ4RX', token: 'demo', customer: c, ...q };
   }
 
@@ -440,6 +467,70 @@ class Component extends DCLogic {
     const out = {};
     Object.keys(this.state.f).forEach(k => { if (this.state.f[k]) out[k] = this.state.f[k]; });
     return out;
+  }
+
+  /* Discount codes are checked here for the preview and again by
+     /api/zelle/order, which recomputes the amount that is stored. */
+  loadCodes(cfg) {
+    cfg = cfg || this.state.cfg;
+    if (this._codesPromise) return this._codesPromise;
+    this._codesPromise = fetch('config/discount-codes.json', { cache: 'no-store' })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(book => { this.setState({ codeBook: book }); return book; })
+      .catch(() => { this._codesPromise = null; return null; });
+    return this._codesPromise.then(book => {
+      if (!book || !cfg || !window.ZellePricing) return book;
+      let saved = '';
+      try { saved = String((JSON.parse(localStorage.getItem('ambrosia-checkout-v1') || '{}') || {}).applied || ''); } catch (e) {}
+      if (!saved) return book;
+      const q = window.ZellePricing.quote({ lines: [], code: saved }, cfg, book);
+      if (!q.codeError && q.discountCode) this.setState({ codeInput: q.discountCode, appliedCode: q.discountCode, codeErr: '' });
+      return book;
+    });
+  }
+
+  rememberCode(code) {
+    try {
+      const k = 'ambrosia-checkout-v1';
+      const p = JSON.parse(localStorage.getItem(k) || '{}') || {};
+      if (code) p.applied = code; else delete p.applied;
+      localStorage.setItem(k, JSON.stringify(p));
+    } catch (e) {}
+  }
+
+  async applyCode() {
+    const book = this.state.codeBook || await this.loadCodes();
+    const typed = (this.state.codeInput || '').trim();
+    if (!typed) {
+      this.setState({ appliedCode: '', codeErr: '' });
+      this.rememberCode('');
+      return;
+    }
+    if (!book || !window.ZellePricing) {
+      this.setState({ codeErr: 'Discount codes could not be loaded. Place the order and we will check the code.' });
+      return;
+    }
+    const q = window.ZellePricing.quote({ lines: this.state.cart, shipId: this.state.shipId, code: typed }, this.state.cfg, book);
+    if (q.codeError) {
+      this.setState({ appliedCode: '', codeErr: q.codeError });
+      this.rememberCode('');
+      return;
+    }
+    this.setState({ appliedCode: q.discountCode, codeInput: q.discountCode, codeErr: '' });
+    this.rememberCode(q.discountCode);
+  }
+
+  /* Empty is fine. A typed code must match before the order is sent, unless
+     the code list failed to load — then the server decides. */
+  async codeForSubmit() {
+    const typed = (this.state.codeInput || '').trim();
+    if (!typed) return { code: '', error: '' };
+    const book = this.state.codeBook || await this.loadCodes();
+    if (!book) return { code: typed, error: '' };
+    const q = window.ZellePricing.quote({ lines: this.state.cart, shipId: this.state.shipId, code: typed }, this.state.cfg, book);
+    if (q.codeError) return { code: '', error: q.codeError };
+    if (q.discountCode !== this.state.appliedCode) this.setState({ appliedCode: q.discountCode, codeInput: q.discountCode, codeErr: '' });
+    return { code: q.discountCode, error: '' };
   }
 
   async readCart(cfg) {
@@ -519,11 +610,17 @@ class Component extends DCLogic {
     if (Object.keys(errs).length) { this.setState({ errors: errs, formError: 'Please check the highlighted fields.' }); return; }
     this._busy = true;
     this.setState({ submitting: true, formError: '', errors: {}, modeOff: false });
+    const codeResult = await this.codeForSubmit();
+    if (codeResult.error) {
+      this._busy = false;
+      this.setState({ submitting: false, codeErr: codeResult.error, formError: codeResult.error });
+      return;
+    }
 
     if (this.demo) {
       await new Promise(r => setTimeout(r, 600));
       this._busy = false;
-      this.setState({ submitting: false, order: this.demoOrder(), step: 'pay' });
+      this.setState({ submitting: false, order: this.demoOrder(this.state.cfg, codeResult.code), step: 'pay' });
       window.scrollTo(0, 0);
       return;
     }
@@ -535,7 +632,7 @@ class Component extends DCLogic {
         body: JSON.stringify({
           idempotencyKey: this.idemKey(),
           customer: { email: f.email, phone: f.phone, name: f.name, street: f.street, apt: f.apt, city: f.city, state: f.state, zip: f.zip },
-          notes: f.notes, lines: s.cart, shipId: s.shipId,
+          notes: f.notes, lines: s.cart, shipId: s.shipId, code: codeResult.code,
           attest: { age: true, ageAt: s.ageAt, terms: true, termsAt: s.termsAt, purpose: s.purpose }
         })
       });
@@ -550,7 +647,7 @@ class Component extends DCLogic {
       } else if (d.code === 'MODE_OFF') {
         this.setState({ modeOff: true, formError: d.error });
       } else if (d.code === 'INVALID') {
-        this.setState({ errors: d.errors || {}, formError: (d.errors && d.errors.form) || 'Please check the highlighted fields.' });
+        this.setState({ errors: d.errors || {}, codeErr: (d.errors && d.errors.code) || '', formError: (d.errors && (d.errors.code || d.errors.form)) || 'Please check the highlighted fields.' });
       } else {
         this.setState({ formError: d.error || 'We could not place your order just now. Your cart is saved. Please try again in a moment.' });
       }
@@ -621,7 +718,7 @@ class Component extends DCLogic {
     const P = window.ZellePricing;
     const money = P ? P.money : (c => '$' + (Number(c || 0) / 100).toFixed(2));
     const f = s.f;
-    const q = cfg && P ? P.quote({ lines: s.cart, shipId: s.shipId, state: f.state, zip: f.zip }, cfg) : null;
+    const q = cfg && P ? P.quote({ lines: s.cart, shipId: s.shipId, state: f.state, zip: f.zip, code: s.appliedCode }, cfg, s.codeBook) : null;
     const count = s.cart.reduce((a, l) => a + l.qty, 0);
     const bad = k => (s.errors[k] ? '#6B1F28' : '#D8C9B2');
     const on = {};
@@ -644,7 +741,20 @@ class Component extends DCLogic {
 
       countLabel: count === 1 ? '1 ITEM' : count + ' ITEMS',
       f, on, err: s.errors,
-      bd: { email: bad('email'), phone: bad('phone'), name: bad('name'), street: bad('street'), city: bad('city'), state: bad('state'), zip: bad('zip'), age: '#7A5622', terms: '#7A5622' },
+      bd: { email: bad('email'), phone: bad('phone'), name: bad('name'), street: bad('street'), city: bad('city'), state: bad('state'), zip: bad('zip'), age: '#7A5622', terms: '#7A5622', code: s.codeErr ? '#6B1F28' : '#D8C9B2' },
+      codeInput: s.codeInput,
+      setCode: e => {
+        const codeInput = e.target.value;
+        this.setState(p => ({
+          codeInput,
+          codeErr: '',
+          appliedCode: codeInput.trim().toUpperCase() === String(p.appliedCode || '').toUpperCase() ? p.appliedCode : ''
+        }));
+      },
+      applyCode: () => this.applyCode(),
+      codeKey: e => { if (e.key === 'Enter') { e.preventDefault(); this.applyCode(); } },
+      codeMessage: s.codeErr || (q && q.codeNote) || '',
+      codeMessageStyle: 'font-size:12.5px; line-height:1.6; color:' + (s.codeErr ? '#6B1F28' : '#3C312C'),
       states: Component.STATES,
 
       shipping: (cfg ? cfg.shipping.options : []).map(opt => {
@@ -676,19 +786,21 @@ class Component extends DCLogic {
       sum: q ? {
         items: q.items.map(i => ({ name: i.name, meta: i.mass + ' \u00b7 Qty ' + i.qty, amount: money(i.line) })),
         subtotal: money(q.subtotal), discountLabel: q.discountLabel, discount: money(q.discount),
+        hasCode: !!q.discountCode, code: q.discountCode, codeNote: q.codeNote,
         shipping: q.shipping ? money(q.shipping) : 'Free', hasTax: q.taxCharged > 0, tax: money(q.taxCharged),
         total: money(q.total)
-      } : { items: [], subtotal: '', discountLabel: '', discount: '', shipping: '', hasTax: false, tax: '', total: '' },
+      } : { items: [], subtotal: '', discountLabel: '', discount: '', shipping: '', hasTax: false, tax: '', total: '', hasCode: false, code: '', codeNote: '' },
 
       order: o ? {
         number: o.number,
         items: (o.items || []).map(i => ({ label: i.name + ' \u00b7 ' + i.mass + ' \u00d7 ' + i.qty, amount: money(i.line) })),
         subtotalL: money(o.subtotal), discountLabel: o.discountLabel, discountL: money(o.discount),
+        hasCode: !!o.discountCode, code: o.discountCode || '', codeNote: o.codeNote || '',
         shipLabel: o.shipLabel, shippingL: o.shipping ? money(o.shipping) : 'Free',
         hasTax: o.taxCharged > 0, taxL: money(o.taxCharged), totalL: money(o.total),
         shipName: oc.name || '', shipLine1: [oc.street, oc.apt].filter(Boolean).join(', '),
         shipLine2: oc.city ? oc.city + ', ' + oc.state + ' ' + oc.zip : ''
-      } : { number: '', items: [], hasTax: false },
+      } : { number: '', items: [], hasTax: false, hasCode: false, code: '', codeNote: '' },
 
       payRows: o ? [
         { k: 'email', label: 'ZELLE EMAIL', value: zelle.email, style: 'font-size:16px; color:#241C19; word-break:break-all' },

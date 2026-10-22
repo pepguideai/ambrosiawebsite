@@ -1,4 +1,5 @@
 const cfg = require('../../config/zelle.config.json');
+const codes = require('../../config/discount-codes.json');
 const Pricing = require('../../zelle-pricing.js');
 const { readMode } = require('../_lib/mode');
 const { callSheet } = require('../_lib/sheet');
@@ -62,7 +63,8 @@ module.exports = async (req, res) => {
     if (lines.some(l => l && l.id === 'bac-water')) {
       return res.status(400).json({ code: 'INVALID', errors: { form: 'An item in your cart is no longer sold. Remove it to continue.' } });
     }
-    const q = Pricing.quote({ lines, shipId: b.shipId, state: v.customer.state, zip: v.customer.zip }, cfg);
+    const q = Pricing.quote({ lines, shipId: b.shipId, state: v.customer.state, zip: v.customer.zip, code: str(b.code, 40) }, cfg, codes);
+    if (q.codeError) return res.status(400).json({ code: 'INVALID', errors: { code: q.codeError } });
     if (q.errors.length || !q.items.length) return res.status(400).json({ code: 'INVALID', errors: { form: 'One of the items in your cart is no longer available.' } });
 
     const d = await callSheet('create', {
@@ -73,7 +75,20 @@ module.exports = async (req, res) => {
       },
       zelle: cfg.zelle, support: cfg.support
     });
-    res.status(200).json({ ok: true, order: d.order, existing: !!d.existing });
+    /* The sheet stores quote (including discountCode) in Items JSON even before
+       the Apps Script column writer is redeployed. Copy the code fields onto
+       the response so the payment screen can show them immediately. */
+    const order = Object.assign({}, d.order, {
+      discountCode: q.discountCode,
+      discountCodeRecord: q.discountCodeRecord,
+      discountSource: q.discountSource,
+      codeNote: q.codeNote,
+      stacking: q.stacking,
+      discountLabel: q.discountLabel,
+      discount: q.discount,
+      total: q.total
+    });
+    res.status(200).json({ ok: true, order: order, existing: !!d.existing });
   } catch (e) {
     console.error('[zelle/order]', e.code || '', e.message);
     const nf = e.code === 'NOT_FOUND';

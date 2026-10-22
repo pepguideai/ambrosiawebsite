@@ -115,7 +115,7 @@ function create(req) {
     row[C['Shipping State']] = c.state;
     row[C['Items']] = q.items.map(function (it) { return it.name + ' ' + it.mass + ' x ' + it.qty; }).join('; ');
     row[C['Subtotal']] = d(q.subtotal);
-    row[C['Discount Code']] = 'ZELLE25';
+    row[C['Discount Code']] = q.discountCodeRecord || (q.discountCode ? q.discountCode : 'ZELLE25');
     row[C['Discount Amount']] = d(q.discount);
     row[C['Shipping']] = d(q.shipping);
     row[C['Tax Charged']] = d(q.taxCharged);
@@ -155,6 +155,8 @@ function publicView(hit) {
     customerSentAt: r[C['Customer Marked Sent']] ? new Date(r[C['Customer Marked Sent']]).toISOString() : null,
     customer: c, notes: j.notes || '',
     items: q.items || [], subtotal: q.subtotal, discount: q.discount, discountLabel: q.discountLabel,
+    discountCode: q.discountCode || '', discountCodeRecord: q.discountCodeRecord || '',
+    codeNote: q.codeNote || '', stacking: q.stacking || '', discountSource: q.discountSource || '',
     shipping: q.shipping, shipLabel: q.shipLabel, taxCharged: q.taxCharged, total: q.total
   };
 }
@@ -234,7 +236,9 @@ function summaryHtml(v) {
   var h = '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">';
   v.items.forEach(function (it) { h += line(esc(it.name) + ' &middot; ' + esc(it.mass) + ' &times; ' + it.qty, money(it.line)); });
   h += line('Subtotal', money(v.subtotal));
+  if (v.discountCode) h += line('Code', esc(v.discountCode));
   if (v.discount) h += line(esc(v.discountLabel), '&minus;' + money(v.discount));
+  if (v.codeNote) h += '<tr><td colspan="2" style="padding:4px 0 8px;font-size:12px;line-height:1.6;color:#3C312C">' + esc(v.codeNote) + '</td></tr>';
   h += line('Shipping (' + esc(v.shipLabel) + ')', v.shipping ? money(v.shipping) : 'Free');
   if (v.taxCharged) h += line('Tax', money(v.taxCharged));
   h += line('Total', money(v.total), true);

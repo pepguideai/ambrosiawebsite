@@ -148,6 +148,19 @@
     { hash: 'd9b59cf', label: 'Offer', rate: 0.2 }
   ];
 
+  /* Public promo codes live in config/discount-codes.json, not in this file.
+     The hashed table above stays for the older referral codes. WooCommerce
+     still revalidates the code at handoff. */
+  var extraCodes = [];
+  var codesReady = fetch('config/discount-codes.json', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.json() : { codes: [] }; })
+    .then(function (book) {
+      extraCodes = (book && book.codes || []).filter(function (c) {
+        return c && c.active === true && c.code && Number(c.percent) > 0 && Number(c.percent) <= 100;
+      });
+    })
+    .catch(function () { extraCodes = []; });
+
   function findDiscount(typed) {
     var key = String(typed || '').trim().toUpperCase();
     if (!key) return null;
@@ -155,6 +168,12 @@
     for (var i = 0; i < DISCOUNTS.length; i++) {
       if (DISCOUNTS[i].hash === hash) {
         return { code: key, label: DISCOUNTS[i].label, rate: DISCOUNTS[i].rate };
+      }
+    }
+    for (var j = 0; j < extraCodes.length; j++) {
+      if (String(extraCodes[j].code).trim().toUpperCase() === key) {
+        var name = String(extraCodes[j].code).trim();
+        return { code: name, label: extraCodes[j].label || name, rate: Number(extraCodes[j].percent) / 100 };
       }
     }
     return null;
@@ -543,7 +562,7 @@
     STORE_API_URL: STORE_API_URL,
     WOO_PRODUCT_IDS: WOO_PRODUCT_IDS,
     SHIPPING: SHIPPING, WELCOME: WELCOME, TIERS: TIERS,
-    findDiscount: findDiscount,
+    findDiscount: findDiscount, codesReady: codesReady,
     tierRate: tierRate, nextTier: nextTier,
     read: read, write: write, add: add, setQty: setQty, remove: remove, clear: clear,
     count: count, lines: lines, subtotal: subtotal, savings: savings,
